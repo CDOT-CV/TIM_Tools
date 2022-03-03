@@ -1,0 +1,219 @@
+{
+    "request": {
+        "rsus": [
+            {
+                "latitude": 40.0000000,
+                "longitude": -106.0000000,
+                "rsuId": 1,
+                "route": "Route",
+                "milepost": 100,
+                "rsuTarget": "10.10.10.10",
+                "rsuRetries": 3,
+                "rsuTimeout": 5000,
+                "rsuIndex": 2
+            }
+        ],
+        "snmp": {
+            "rsuid": "83",
+            "msgid": 31,
+            "mode": 1,
+            "channel": 178,
+            "interval": 2,
+            "deliverystart": "2022-02-16T21:13:18.901Z",
+            "deliverystop": "2022-03-11T02:33Z",
+            "enable": 1,
+            "status": 4
+        }
+    },
+    "tim": {
+        "msgCnt": 1,
+        "timeStamp": "2022-02-16T21:13:20.592036Z",
+        "packetID": "9FCCDEE38C37F93229",
+        "urlB": "null",
+        "dataframes": [
+            {
+                "sspTimRights": 1,
+                "frameType": "advisory",
+                "msgId": {
+                    "roadSignID": {
+                        "position": {
+                            "latitude": 41.72708829,
+                            "longitude": -106.4598871
+                        },
+                        "viewAngle": "1111111111111111",
+                        "mutcdCode": "warning"
+                    }
+                },
+                "startDateTime": "2022-02-16T21:13:18.901Z",
+                "durationTime": 32000,
+                "priority": 5,
+                "sspLocationRights": 1,
+                "regions": [
+                    {
+                        "name": "D_WY 72_RSU-10.10.10.10_RC_EMW72EMHANB-0",
+                        "regulatorID": 0,
+                        "segmentID": 0,
+                        "anchorPosition": {
+                            "latitude": 41.72708829,
+                            "longitude": -106.4598871
+                        },
+                        "laneWidth": 50,
+                        "directionality": "3",
+                        "closedPath": false,
+                        "direction": "1100000100001111",
+                        "description": "path",
+                        "path": {
+                            "scale": 0,
+                            "type": "ll",
+                            "nodes": [
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00143981,
+                                    "nodeLong": -0.00007261
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00432072,
+                                    "nodeLong": 0.00005176
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00541066,
+                                    "nodeLong": 0.00260535
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00283110,
+                                    "nodeLong": 0.0006824
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00277709,
+                                    "nodeLong": -0.00092662
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00222039,
+                                    "nodeLong": -0.00245454
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00418972,
+                                    "nodeLong": -0.00790583
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00227330,
+                                    "nodeLong": -0.00238756
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00272420,
+                                    "nodeLong": -0.00129100
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.02423259,
+                                    "nodeLong": -0.00617617
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.01184629,
+                                    "nodeLong": -0.00737534
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.01275912,
+                                    "nodeLong": -0.00374505
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00129693,
+                                    "nodeLong": -0.00085205
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00380007,
+                                    "nodeLong": -0.00581494
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00253158,
+                                    "nodeLong": -0.00184339
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00416225,
+                                    "nodeLong": -0.00170544
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00117012,
+                                    "nodeLong": -0.00113558
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00134877,
+                                    "nodeLong": -0.00340718
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00432131,
+                                    "nodeLong": -0.01008781
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00414996,
+                                    "nodeLong": -0.0053974
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00775263,
+                                    "nodeLong": -0.00877108
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00239563,
+                                    "nodeLong": -0.00219391
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.04004011,
+                                    "nodeLong": -0.00557145
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": -0.03884354,
+                                    "nodeLong": 0.00447042
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00464382,
+                                    "nodeLong": -0.00463344
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00373405,
+                                    "nodeLong": -0.00298429
+                                },
+                                {
+                                    "delta": "node-LL",
+                                    "nodeLat": 0.00700567,
+                                    "nodeLong": -0.00982446
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "sspMsgTypes": 1,
+                "sspMsgContent": 1,
+                "content": "advisory",
+                "items": [
+                    "5895",
+                    "5907"
+                ],
+                "url": "null"
+            }
+        ]
+    }
+}
