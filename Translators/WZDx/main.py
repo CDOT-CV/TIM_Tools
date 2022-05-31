@@ -81,20 +81,31 @@ def getRsuRequest(feature):
     }
     return tim_req
 
+
 def getDurationTimeMinutes(feature):
     # "start_date": "2022-02-13T16:00:00Z",
     # "end_date": "2022-02-13T16:55:00Z",
-    start_date = datetime.strptime(feature.get("properties").get("start_date"), "%Y-%m-%dT%H:%M:%SZ")
-    end_date = datetime.strptime(feature.get("properties").get("end_date"), "%Y-%m-%dT%H:%M:%SZ")
+    start_date = datetime.strptime(feature.get(
+        "properties").get("start_date"), "%Y-%m-%dT%H:%M:%SZ")
+    end_date = datetime.strptime(feature.get(
+        "properties").get("end_date"), "%Y-%m-%dT%H:%M:%SZ")
     duration = (end_date - start_date).seconds / 60
     return int(duration) if duration < 32000 else 32000
+
+
+def getAnchor(feature):
+    # TODO: calculate anchor from geospatial function call
+    return {
+        "latitude": 40.60476,
+        "longitude": -105.00139
+    }
 
 
 def generateTim(feature):
     tim_body = {
         "msgCnt": "1",
-        "timeStamp": "2020-04-30T14:24:11.581Z",# TODO: determine timestamp
-        "packetID": secrets.token_hex(9).upper(),#"67AEF692F8BB63067D",
+        "timeStamp": "2020-04-30T14:24:11.581Z",  # TODO: determine timestamp
+        "packetID": secrets.token_hex(9).upper(),  # "67AEF692F8BB63067D",
         "urlB": "null",
         "dataframes": [
             {
@@ -117,11 +128,8 @@ def generateTim(feature):
                 "regions": [
                     {
                         "name": "I_I 25_SAT-1CEE1793",
-                        "anchorPosition": {
-                            "latitude": 40.60476,
-                            "longitude": -105.00139
-                        },
-                        "laneWidth": "327",
+                        "anchorPosition": getAnchor(feature),
+                        "laneWidth": "50", # defaulting lane width to 50
                         "directionality": "3",
                         "closedPath": "false",
                         "description": "path",
