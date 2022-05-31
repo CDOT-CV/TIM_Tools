@@ -1,8 +1,8 @@
-
 import sys
 import functions_framework
 import json
 import secrets
+from datetime import datetime
 
 
 def getBoundingBox(geometry):
@@ -81,16 +81,101 @@ def getRsuRequest(feature):
     }
     return tim_req
 
+def getDurationTimeMinutes(feature):
+    # "start_date": "2022-02-13T16:00:00Z",
+    # "end_date": "2022-02-13T16:55:00Z",
+    start_date = datetime.strptime(feature.get("properties").get("start_date"), "%Y-%m-%dT%H:%M:%SZ")
+    end_date = datetime.strptime(feature.get("properties").get("end_date"), "%Y-%m-%dT%H:%M:%SZ")
+    duration = (end_date - start_date).seconds / 60
+    return int(duration) if duration < 32000 else 32000
 
-def generateTim(wzdx_geojson):
-    return None
+
+def generateTim(feature):
+    tim_body = {
+        "msgCnt": "1",
+        "timeStamp": "2020-04-30T14:24:11.581Z",# TODO: determine timestamp
+        "packetID": secrets.token_hex(9).upper(),#"67AEF692F8BB63067D",
+        "urlB": "null",
+        "dataframes": [
+            {
+                "startDateTime": feature.get("properties").get("start_date"),
+                "durationTime": getDurationTimeMinutes(feature),
+                "sspTimRights": "1",
+                "frameType": "advisory",
+                "msgId": {
+                    "roadSignID": {
+                        "mutcdCode": "warning",
+                        "viewAngle": "1111111111111111",
+                        "position": {
+                            "latitude": 40.60476,
+                            "longitude": -105.00139
+                        }
+                    }
+                },
+                "priority": "5",
+                "sspLocationRights": "1",
+                "regions": [
+                    {
+                        "name": "I_I 25_SAT-1CEE1793",
+                        "anchorPosition": {
+                            "latitude": 40.60476,
+                            "longitude": -105.00139
+                        },
+                        "laneWidth": "327",
+                        "directionality": "3",
+                        "closedPath": "false",
+                        "description": "path",
+                        "path": {
+                            "nodes": [
+                                {
+                                    "nodeLong": "-105.00128",
+                                    "nodeLat": "40.61901",
+                                    "delta": "node-LatLon"
+                                },
+                                {
+                                    "nodeLong": "-105.00097",
+                                    "nodeLat": "40.63349",
+                                    "delta": "node-LatLon"
+                                },
+                                {
+                                    "nodeLong": "-105.00086",
+                                    "nodeLat": "40.64806",
+                                    "delta": "node-LatLon"
+                                },
+                                {
+                                    "nodeLong": "-105.00092",
+                                    "nodeLat": "40.66257",
+                                    "delta": "node-LatLon"
+                                },
+                                {
+                                    "nodeLong": "-105.0008",
+                                    "nodeLat": "40.67695",
+                                    "delta": "node-LatLon"
+                                }
+                            ],
+                            "type": "xy"
+                        },
+                        "direction": "1000000000000001"
+                    }
+                ],
+                "sspMsgTypes": "1",
+                "sspMsgContent": "1",
+                "content": "advisory",
+                "items": [
+                    "5127"
+                ],
+                "url": "null"
+            }
+        ]
+    }
+    return tim_body
 
 
 def translate(wzdx_geojson):
     tims = []
     # TODO: generate two messages, one for sdx and one for rsu
     for feature in wzdx_geojson.get("features"):
-        tim_body = generateTim(wzdx_geojson)
+        tim_body = generateTim(feature)
         sdx_tim = {
             "request": getSdwRequest(feature.get("geometry")),
             "tim": tim_body
