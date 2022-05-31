@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Module",
+            "name": "WZDx TIM Translator",
             "type": "python",
             "request": "launch",
             "module": "functions_framework",
