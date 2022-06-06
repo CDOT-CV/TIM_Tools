@@ -1,12 +1,21 @@
 import sys
+from tracemalloc import start
 import functions_framework
 import json
 import secrets
 from datetime import datetime
+import pyproj
 
 
 def getBoundingBox(geometry):
-    # TODO: calculate bounding box and return
+    '''Calculates bounding box by iterating over the provided coordinates and finding the extreme values
+
+    Parameters:
+        geometry (dict): A GeoJSON geometry object
+
+    Returns:
+        nwCorner (dict), seCorner (dict): bounding box composed of the NW and SE corners of the geometry'''
+
     nwCorner = {"latitude": -90, "longitude": 180}
     seCorner = {"latitude": 90, "longitude": -180}
     # loop through coordinates and calculate max corners
@@ -24,8 +33,15 @@ def getBoundingBox(geometry):
 
 
 def getSdwRequest(geometry):
+    '''Creates an SDW request object for the provided geometry
+
+    Parameters:
+        geometry (dict): A GeoJSON geometry object
+
+    Returns:
+        sdwRequest (dict): SDW request object'''
     nwCorner, seCorner = getBoundingBox(geometry)
-    sdx_req = {
+    sdwRequest = {
         "sdw": {
             "ttl": "oneday",
             "recordId": secrets.token_hex(4).upper(),
@@ -41,10 +57,13 @@ def getSdwRequest(geometry):
             }
         }
     }
-    return sdx_req
+    return sdwRequest
 
 
 def getRsusForMessage():
+    # TODO: calculate actual RSUs along path
+    # we have start/end points, get path between and all RSUs along it
+    # also rsus upstream 20 miles
     return [
         {
             "latitude": 40.0000000,
@@ -60,7 +79,15 @@ def getRsusForMessage():
     ]
 
 
-def getDefaultSnmpSettings(feature):
+def getSnmpSettings(feature):
+    '''Creates an SNMP settings object for the provided feature
+
+    Parameters:
+        feature (dict): A GeoJSON feature object
+
+    Returns:
+        snmpSettings (dict): SNMP settings object'''
+
     return {
         "rsuid": "83",
         "msgid": 31,
@@ -77,12 +104,19 @@ def getDefaultSnmpSettings(feature):
 def getRsuRequest(feature):
     tim_req = {
         "rsus": getRsusForMessage(),
-        "snmp": getDefaultSnmpSettings(feature)
+        "snmp": getSnmpSettings(feature)
     }
     return tim_req
 
 
 def getDurationTimeMinutes(feature):
+    '''Get duration in minutes from a GeoJSON feature object with start_date and end_date properties
+
+    Parameters:
+        feature (dict): A GeoJSON feature object. Assumed to have properties 'start_date' and 'end_date'
+
+    Returns:
+        duration (int): Duration in minutes. Note 32000 represents infinity'''
     # "start_date": "2022-02-13T16:00:00Z",
     # "end_date": "2022-02-13T16:55:00Z",
     start_date = datetime.strptime(feature.get(
@@ -95,9 +129,157 @@ def getDurationTimeMinutes(feature):
 
 def getAnchor(feature):
     # TODO: calculate anchor from geospatial function call
+    # take start point, and go upstream
     return {
         "latitude": 40.60476,
         "longitude": -105.00139
+    }
+
+
+def getItisCodes(feature):
+    # TODO: calculate itis codes
+    return [
+        "1025"  # Road Construction
+    ]
+
+def getDirectionFromBearing(bearing):
+    direction: int = 0
+
+    if (bearing >= 0 and bearing <= 22.5):
+        direction = 1
+    elif (bearing > 22.5 and bearing <= 45):
+        direction = 2
+    elif (bearing > 45 and bearing <= 67.5):
+        direction = 4
+    elif (bearing > 67.5 and bearing <= 90):
+        direction = 8
+    elif (bearing > 90 and bearing <= 112.5):
+        direction = 16
+    elif (bearing > 112.5 and bearing <= 135):
+        direction = 32
+    elif (bearing > 135 and bearing <= 157.5):
+        direction = 64
+    elif (bearing > 157.5 and bearing <= 180):
+        direction = 128
+    elif (bearing > 180 and bearing <= 202.5):
+        direction = 256
+    elif (bearing > 202.5 and bearing <= 225):
+        direction = 512
+    elif (bearing > 225 and bearing <= 247.5):
+        direction = 1024
+    elif (bearing > 247.5 and bearing <= 270):
+        direction = 2048
+    elif (bearing > 270 and bearing <= 292.5):
+        direction = 4096
+    elif (bearing > 292.5 and bearing <= 315):
+        direction = 8192
+    elif (bearing > 315 and bearing <= 337.5):
+        direction = 16384
+    elif (bearing > 337.5 and bearing <= 360):
+        direction = 32768
+
+    return direction
+
+def calculateDirection(coords, anchor):
+    # coords is array of [lon,lat]
+    timDirection: int = 0
+    startLat = float(anchor.get("latitude"))
+    startLon = float(anchor.get("longitude"))
+    geodesic = pyproj.Geod(ellps='WGS84')
+    for i in range(len(coords)):
+        lat = float(coords[i][1])
+        lon = float(coords[i][0])
+
+        fwd_azimuth,back_azimuth,distance = geodesic.inv(startLon, startLat, lon, lat)
+        timDirection |= getDirectionFromBearing(fwd_azimuth)
+        # reset for next round
+        startLat = lat
+        startLon = lon
+    
+    # set direction based on bearings
+    dirTest = str(bin(timDirection)[2:])
+    # pad with zeros to 16 bits
+    dirTest = dirTest.zfill(16)
+    # reverse
+    dirTest = dirTest[::-1]
+    return dirTest
+
+
+def getRegion(feature):
+    anchor = getAnchor(feature)
+    return {
+        "name": "I_I 25_SAT-1CEE1793",
+        "anchorPosition": anchor,
+        "laneWidth": "50",  # defaulting lane width to 50
+        "directionality": "3",  # 0 - unavailable, 1 - forward, 2 - backward, 3 - both
+        "closedPath": "false",  # default
+        "description": "path",  # default
+        "path": {
+            "nodes": [
+                {
+                    "nodeLong": "-105.00128",
+                    "nodeLat": "40.61901",
+                    "delta": "node-LatLon"
+                },
+                {
+                    "nodeLong": "-105.00097",
+                    "nodeLat": "40.63349",
+                    "delta": "node-LatLon"
+                },
+                {
+                    "nodeLong": "-105.00086",
+                    "nodeLat": "40.64806",
+                    "delta": "node-LatLon"
+                },
+                {
+                    "nodeLong": "-105.00092",
+                    "nodeLat": "40.66257",
+                    "delta": "node-LatLon"
+                },
+                {
+                    "nodeLong": "-105.0008",
+                    "nodeLat": "40.67695",
+                    "delta": "node-LatLon"
+                }
+            ],
+            "type": "xy"
+        },
+        "direction": calculateDirection(feature.get("geometry").get("coordinates"), anchor)
+    }
+
+
+def getMsgId(feature):
+    # TODO: calculate msgId
+    return {
+        "roadSignID": {
+            # if speed limit or road signage, then "regulatory" else "warning"
+            "mutcdCode": "warning",
+            "viewAngle": "1111111111111111",  # default view angle
+            "position": {
+                "latitude": 40.60476,
+                "longitude": -105.00139
+            }
+        }
+    }
+
+
+def getDataFrame(feature):
+    return {
+        "startDateTime": feature.get("properties").get("start_date"),
+        "durationTime": getDurationTimeMinutes(feature),
+        "sspTimRights": "1",  # default value
+        "frameType": "advisory",  # TODO: determine frame type
+        "msgId": getMsgId(feature),
+        "priority": "5",  # default value
+        "sspLocationRights": "1",  # default value
+        "regions": [
+            getRegion(feature)
+        ],
+        "sspMsgTypes": "1",  # default value
+        "sspMsgContent": "1",  # default value
+        "content": "workzone",  # TODO: determine content, defaulting workzone for now
+        "items": getItisCodes(feature),
+        "url": "null"
     }
 
 
@@ -108,72 +290,7 @@ def generateTim(feature):
         "packetID": secrets.token_hex(9).upper(),  # "67AEF692F8BB63067D",
         "urlB": "null",
         "dataframes": [
-            {
-                "startDateTime": feature.get("properties").get("start_date"),
-                "durationTime": getDurationTimeMinutes(feature),
-                "sspTimRights": "1",
-                "frameType": "advisory",
-                "msgId": {
-                    "roadSignID": {
-                        "mutcdCode": "warning",
-                        "viewAngle": "1111111111111111",
-                        "position": {
-                            "latitude": 40.60476,
-                            "longitude": -105.00139
-                        }
-                    }
-                },
-                "priority": "5",
-                "sspLocationRights": "1",
-                "regions": [
-                    {
-                        "name": "I_I 25_SAT-1CEE1793",
-                        "anchorPosition": getAnchor(feature),
-                        "laneWidth": "50", # defaulting lane width to 50
-                        "directionality": "3",
-                        "closedPath": "false",
-                        "description": "path",
-                        "path": {
-                            "nodes": [
-                                {
-                                    "nodeLong": "-105.00128",
-                                    "nodeLat": "40.61901",
-                                    "delta": "node-LatLon"
-                                },
-                                {
-                                    "nodeLong": "-105.00097",
-                                    "nodeLat": "40.63349",
-                                    "delta": "node-LatLon"
-                                },
-                                {
-                                    "nodeLong": "-105.00086",
-                                    "nodeLat": "40.64806",
-                                    "delta": "node-LatLon"
-                                },
-                                {
-                                    "nodeLong": "-105.00092",
-                                    "nodeLat": "40.66257",
-                                    "delta": "node-LatLon"
-                                },
-                                {
-                                    "nodeLong": "-105.0008",
-                                    "nodeLat": "40.67695",
-                                    "delta": "node-LatLon"
-                                }
-                            ],
-                            "type": "xy"
-                        },
-                        "direction": "1000000000000001"
-                    }
-                ],
-                "sspMsgTypes": "1",
-                "sspMsgContent": "1",
-                "content": "advisory",
-                "items": [
-                    "5127"
-                ],
-                "url": "null"
-            }
+            getDataFrame(feature)
         ]
     }
     return tim_body
@@ -182,6 +299,7 @@ def generateTim(feature):
 def translate(wzdx_geojson):
     tims = []
     # TODO: generate two messages, one for sdx and one for rsu
+    # if no RSUs found, drop that one
     for feature in wzdx_geojson.get("features"):
         tim_body = generateTim(feature)
         sdx_tim = {
