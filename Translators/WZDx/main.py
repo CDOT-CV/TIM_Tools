@@ -216,11 +216,15 @@ def calculateDirection(coords, anchor):
     return dirTest
 
 
-def calculatePath(coords, anchor):
-    # TODO: calculate offset path
-    # coords is array of [lon,lat]
-    # we want offset to reduce size
-
+def calculateOffsetPath(coords, anchor):
+    '''Creates an offset path from passed in coordinates and anchor point
+    
+    Parameters:
+        coords (list): A list of coordinates
+        anchor (dict): A coordinate representing the anchor point, or initial point to begin from
+        
+    Returns:
+        offsetPath (dict): A path object with offset ll nodes'''
     # loop through coords and calculate offset path
     startLat = float(anchor.get("latitude"))
     startLon = float(anchor.get("longitude"))
@@ -256,7 +260,7 @@ def calculatePath(coords, anchor):
 
 
 def getRegion(coords, anchor):
-    # anchor = getAnchor(feature)
+    # TODO: update fields, name, directionality
     return {
         "name": "I_I 25_SAT-1CEE1793",
         "anchorPosition": anchor,
@@ -264,7 +268,7 @@ def getRegion(coords, anchor):
         "directionality": "3",  # 0 - unavailable, 1 - forward, 2 - backward, 3 - both
         "closedPath": "false",  # default
         "description": "path",  # default
-        "path": calculatePath(coords, anchor),
+        "path": calculateOffsetPath(coords, anchor),
         "direction": calculateDirection(coords, anchor)
     }
 
