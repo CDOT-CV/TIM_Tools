@@ -142,6 +142,7 @@ def getItisCodes(feature):
         "1025"  # Road Construction
     ]
 
+
 def getDirectionFromBearing(bearing):
     direction: int = 0
 
@@ -180,7 +181,16 @@ def getDirectionFromBearing(bearing):
 
     return direction
 
+
 def calculateDirection(coords, anchor):
+    '''Creates a heading HeadingSlice from passed in coordinates and anchor point
+
+    Parameters:
+        coords (list): A list of coordinates
+        anchor (dict): A coordinate representing the anchor point, or initial point to begin from
+
+    Returns:
+        headingSlice (dict): A HeadingSlice object'''
     # coords is array of [lon,lat]
     timDirection: int = 0
     startLat = float(anchor.get("latitude"))
@@ -190,12 +200,13 @@ def calculateDirection(coords, anchor):
         lat = float(coords[i][1])
         lon = float(coords[i][0])
 
-        fwd_azimuth,back_azimuth,distance = geodesic.inv(startLon, startLat, lon, lat)
+        fwd_azimuth, back_azimuth, distance = geodesic.inv(
+            startLon, startLat, lon, lat)
         timDirection |= getDirectionFromBearing(fwd_azimuth)
         # reset for next round
         startLat = lat
         startLon = lon
-    
+
     # set direction based on bearings
     dirTest = str(bin(timDirection)[2:])
     # pad with zeros to 16 bits
@@ -205,8 +216,47 @@ def calculateDirection(coords, anchor):
     return dirTest
 
 
-def getRegion(feature):
-    anchor = getAnchor(feature)
+def calculatePath(coords, anchor):
+    # TODO: calculate offset path
+    # coords is array of [lon,lat]
+    # we want offset to reduce size
+
+    # loop through coords and calculate offset path
+    startLat = float(anchor.get("latitude"))
+    startLon = float(anchor.get("longitude"))
+    nodes = []
+    coords_len = len(coords)
+    if(coords_len == 1):
+        # Per J2735, NodeSetLL's must contain at least 2 nodes. ODE will fail to
+        # PER-encode TIM if we supply less than 2. If we only have 1 node for the path,
+        # include a node with an offset of (0, 0) which is effectively a point that's
+        # right on top of the anchor point.
+        nodes.append({
+            "nodeLat": 0,
+            "nodeLon": 0,
+            "delta": "node-LL"
+        })
+
+    for i in range(coords_len):
+        latOffset = float(coords[i][1]) - startLat
+        lonOffset = float(coords[i][0]) - startLon
+        nodes.append({
+            "nodeLat": latOffset,
+            "nodeLon": lonOffset,
+            "delta": "node-LL"
+        })
+        startLon = float(coords[i][0])
+        startLat = float(coords[i][1])
+    path = {
+        "scale": 0,
+        "nodes": nodes,
+        "type": "ll"
+    }
+    return path
+
+
+def getRegion(coords, anchor):
+    # anchor = getAnchor(feature)
     return {
         "name": "I_I 25_SAT-1CEE1793",
         "anchorPosition": anchor,
@@ -214,66 +264,45 @@ def getRegion(feature):
         "directionality": "3",  # 0 - unavailable, 1 - forward, 2 - backward, 3 - both
         "closedPath": "false",  # default
         "description": "path",  # default
-        "path": {
-            "nodes": [
-                {
-                    "nodeLong": "-105.00128",
-                    "nodeLat": "40.61901",
-                    "delta": "node-LatLon"
-                },
-                {
-                    "nodeLong": "-105.00097",
-                    "nodeLat": "40.63349",
-                    "delta": "node-LatLon"
-                },
-                {
-                    "nodeLong": "-105.00086",
-                    "nodeLat": "40.64806",
-                    "delta": "node-LatLon"
-                },
-                {
-                    "nodeLong": "-105.00092",
-                    "nodeLat": "40.66257",
-                    "delta": "node-LatLon"
-                },
-                {
-                    "nodeLong": "-105.0008",
-                    "nodeLat": "40.67695",
-                    "delta": "node-LatLon"
-                }
-            ],
-            "type": "xy"
-        },
-        "direction": calculateDirection(feature.get("geometry").get("coordinates"), anchor)
+        "path": calculatePath(coords, anchor),
+        "direction": calculateDirection(coords, anchor)
     }
 
 
-def getMsgId(feature):
-    # TODO: calculate msgId
+def getMsgId(anchor):
+    '''Generates a MsgId object, with roadSignID
+
+    Parameters:
+        anchor (dict): A coordinate representing the anchor point to display the message at
+
+    Returns:
+        MsgId (dict): A MsgId object'''
+
     return {
         "roadSignID": {
             # if speed limit or road signage, then "regulatory" else "warning"
             "mutcdCode": "warning",
             "viewAngle": "1111111111111111",  # default view angle
             "position": {
-                "latitude": 40.60476,
-                "longitude": -105.00139
+                "latitude": anchor.get("latitude"),
+                "longitude": anchor.get("longitude")
             }
         }
     }
 
 
 def getDataFrame(feature):
+    anchor = getAnchor(feature)
     return {
         "startDateTime": feature.get("properties").get("start_date"),
         "durationTime": getDurationTimeMinutes(feature),
         "sspTimRights": "1",  # default value
         "frameType": "advisory",  # TODO: determine frame type
-        "msgId": getMsgId(feature),
+        "msgId": getMsgId(anchor),
         "priority": "5",  # default value
         "sspLocationRights": "1",  # default value
         "regions": [
-            getRegion(feature)
+            getRegion(feature.get("geometry").get("coordinates"), anchor)
         ],
         "sspMsgTypes": "1",  # default value
         "sspMsgContent": "1",  # default value
