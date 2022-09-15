@@ -50,8 +50,8 @@ def calculateDirection(coords, anchor):
         headingSlice (dict): A HeadingSlice object'''
     # coords is array of [lon,lat]
     timDirection: int = 0
-    startLat = float(anchor.get("latitude"))
-    startLon = float(anchor.get("longitude"))
+    startLat = float(anchor["latitude"])
+    startLon = float(anchor["longitude"])
     geodesic = pyproj.Geod(ellps='WGS84')
     for i in range(len(coords)):
         lat = float(coords[i][1])

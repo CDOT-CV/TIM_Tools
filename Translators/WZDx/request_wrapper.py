@@ -13,14 +13,14 @@ def getBoundingBox(geometry):
     seCorner = {"latitude": 90, "longitude": -180}
     # loop through coordinates and calculate max corners
     # coordinates are stored longitude, latitude
-    for coords in geometry.get("coordinates"):
-        if coords[0] < nwCorner.get("longitude"):
+    for coords in geometry["coordinates"]:
+        if coords[0] < nwCorner["longitude"]:
             nwCorner["longitude"] = coords[0]
-        if coords[1] > nwCorner.get("latitude"):
+        if coords[1] > nwCorner["latitude"]:
             nwCorner["latitude"] = coords[1]
-        if coords[0] > seCorner.get("longitude"):
+        if coords[0] > seCorner["longitude"]:
             seCorner["longitude"] = coords[0]
-        if coords[1] < seCorner.get("latitude"):
+        if coords[1] < seCorner["latitude"]:
             seCorner["latitude"] = coords[1]
     return nwCorner, seCorner
 
@@ -39,12 +39,12 @@ def getSdwRequest(geometry):
             "recordId": secrets.token_hex(4).upper(),
             "serviceRegion": {
                 "nwCorner": {
-                    "latitude": nwCorner.get("latitude"),
-                    "longitude": nwCorner.get("longitude")
+                    "latitude": nwCorner["latitude"],
+                    "longitude": nwCorner["longitude"]
                 },
                 "seCorner": {
-                    "latitude": seCorner.get("latitude"),
-                    "longitude": seCorner.get("longitude")
+                    "latitude": seCorner["latitude"],
+                    "longitude": seCorner["longitude"]
                 }
             }
         }
@@ -85,8 +85,8 @@ def getSnmpSettings(feature):
         "mode": 1,
         "channel": 178,
         "interval": 2,
-        "deliverystart": feature.get("properties").get("start_date"),
-        "deliverystop": feature.get("properties").get("end_date"),
+        "deliverystart": feature["properties"]["start_date"],
+        "deliverystop": feature["properties"]["end_date"],
         "enable": 1,
         "status": 4
     }

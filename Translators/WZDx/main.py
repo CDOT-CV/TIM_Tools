@@ -6,6 +6,7 @@ from Translators.WZDx.geospatial_service import getUpstreamAnchor
 from Translators.WZDx.request_wrapper import getRsuRequest, getSdwRequest
 from Translators.WZDx.utils import calculateDirection, translateRoute
 
+
 def getDurationTimeMinutes(feature):
     '''Get duration in minutes from a GeoJSON feature object with start_date and end_date properties
 
@@ -16,10 +17,10 @@ def getDurationTimeMinutes(feature):
         duration (int): Duration in minutes. Note 32000 represents infinity'''
     # "start_date": "2022-02-13T16:00:00Z",
     # "end_date": "2022-02-13T16:55:00Z",
-    start_date = datetime.strptime(feature.get(
-        "properties").get("start_date"), "%Y-%m-%dT%H:%M:%SZ")
-    end_date = datetime.strptime(feature.get(
-        "properties").get("end_date"), "%Y-%m-%dT%H:%M:%SZ")
+    start_date = datetime.strptime(feature[
+        "properties"]["start_date"], "%Y-%m-%dT%H:%M:%SZ")
+    end_date = datetime.strptime(feature[
+        "properties"]["end_date"], "%Y-%m-%dT%H:%M:%SZ")
     duration = (end_date - start_date).seconds / 60
     return int(duration) if duration < 32000 else 32000
 
@@ -27,8 +28,8 @@ def getDurationTimeMinutes(feature):
 def getAnchor(feature):
     # TODO: calculate anchor from geospatial function call
     # take start point, and go upstream
-    coords = feature.get("geometry").get("coordinates")
-    route = translateRoute(feature.get("properties").get("core_details").get("road_names"))
+    coords = feature["geometry"]["coordinates"]
+    route = translateRoute(feature["properties"]["core_details"]["road_names"])
     return getUpstreamAnchor(coords, route)
 
 
@@ -41,16 +42,16 @@ def getItisCodes(feature):
 
 def calculateOffsetPath(coords, anchor):
     '''Creates an offset path from passed in coordinates and anchor point
-    
+
     Parameters:
         coords (list): A list of coordinates
         anchor (dict): A coordinate representing the anchor point, or initial point to begin from
-        
+
     Returns:
         offsetPath (dict): A path object with offset ll nodes'''
     # loop through coords and calculate offset path
-    startLat = float(anchor.get("latitude"))
-    startLon = float(anchor.get("longitude"))
+    startLat = float(anchor["latitude"])
+    startLon = float(anchor["longitude"])
     nodes = []
     coords_len = len(coords)
     if(coords_len == 1):
@@ -111,18 +112,18 @@ def getMsgId(anchor):
             "mutcdCode": "warning",
             "viewAngle": "1111111111111111",  # default view angle
             "position": {
-                "latitude": anchor.get("latitude"),
-                "longitude": anchor.get("longitude")
+                "latitude": anchor["latitude"],
+                "longitude": anchor["longitude"]
             }
         }
     }
 
 
 def getDataFrame(feature):
-    coords = feature.get("geometry").get("coordinates")
+    coords = feature["geometry"]["coordinates"]
     anchor = getAnchor(feature)
     return {
-        "startDateTime": feature.get("properties").get("start_date"),
+        "startDateTime": feature["properties"]["start_date"],
         "durationTime": getDurationTimeMinutes(feature),
         "sspTimRights": "1",  # default value
         "frameType": "advisory",  # TODO: determine frame type
@@ -143,7 +144,7 @@ def getDataFrame(feature):
 def generateTim(feature):
     tim_body = {
         "msgCnt": "1",
-        "timeStamp": "2020-04-30T14:24:11.581Z",  # TODO: determine timestamp
+        "timeStamp": feature["properties"]["core_details"]["update_date"],
         "packetID": secrets.token_hex(9).upper(),  # "67AEF692F8BB63067D",
         "urlB": "null",
         "dataframes": [
@@ -157,10 +158,10 @@ def translate(wzdx_geojson):
     tims = []
     # TODO: generate two messages, one for sdx and one for rsu
     # if no RSUs found, drop that one
-    for feature in wzdx_geojson.get("features"):
+    for feature in wzdx_geojson["features"]:
         tim_body = generateTim(feature)
         sdx_tim = {
-            "request": getSdwRequest(feature.get("geometry")),
+            "request": getSdwRequest(feature["geometry"]),
             "tim": tim_body
         }
         rsu_tim = {
