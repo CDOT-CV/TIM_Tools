@@ -76,4 +76,7 @@ def calculateDirection(coords, anchor):
 def translateRoute(wzdxRouteNames):
     # TODO: translate route
     # note wzdxRouteNames is an array
+    # for now just translate the first
+    wzdxName = wzdxRouteNames[0] #I-70E
+
     return "070A"
