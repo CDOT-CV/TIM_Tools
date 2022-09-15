@@ -31,9 +31,12 @@ def getAnchor(feature):
 
 def getItisCodes(feature):
     # TODO: calculate itis codes
-    return [
-        "1025"  # Road Construction
-    ]
+    itisCodes = ["1025"] # Road Construction
+    
+    vehicleImpact = feature["properties"]["vehicle_impact"]
+    if vehicleImpact == "all-lanes-closed":
+        itisCodes.append("769") # closed-to-traffic
+            
 
 
 def calculateOffsetPath(coords, anchor):
