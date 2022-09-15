@@ -1,6 +1,7 @@
 import os
 import requests
 
+geospatialEndpoint = os.environ['dual_carriageway_endpoint']
 
 def measureAtPoint(lat, lon, route) -> int:
     '''Finds the measure at a given point for a given route
@@ -12,7 +13,6 @@ def measureAtPoint(lat, lon, route) -> int:
 
     Returns:
         measure (int): Measure of point on route'''
-    geospatialEndpoint = os.environ['dual_carriageway_endpoint']
     r = requests.get(
         f'{geospatialEndpoint}/MeasureAtPoint?x={lon}&y={lat}&inSR=4326&routeId={route}&tolerance=&outSR=4326&f=pjson', verify=False)
     data = r.json()
@@ -28,7 +28,6 @@ def pointAtMeasure(measure, route):
 
     Returns:
         point (dict): Coordinate of point on route'''
-    geospatialEndpoint = os.environ['dual_carriageway_endpoint']
     r = requests.get(
         f'{geospatialEndpoint}/PointAtMeasure?routeId={route}&measure={measure}&inSR=4326&outSR=4326&f=pjson', verify=False)
     data = r.json()
