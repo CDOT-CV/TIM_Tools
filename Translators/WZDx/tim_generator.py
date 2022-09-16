@@ -1,7 +1,9 @@
 import secrets
 from datetime import datetime
 from Translators.WZDx.geospatial_service import getUpstreamAnchor
+from Translators.WZDx.itis_codes import ItisCodes
 from Translators.WZDx.utils import calculateDirection, translateRoute
+
 
 def getDurationTimeMinutes(feature):
     '''Get duration in minutes from a GeoJSON feature object with start_date and end_date properties
@@ -31,12 +33,13 @@ def getAnchor(feature):
 
 def getItisCodes(feature):
     # TODO: calculate itis codes
-    itisCodes = ["1025"] # Road Construction
-    
+    itisCodes = []
+
     vehicleImpact = feature["properties"]["vehicle_impact"]
     if vehicleImpact == "all-lanes-closed":
-        itisCodes.append("769") # closed-to-traffic
-            
+        itisCodes.append(ItisCodes.CLOSED.value)
+
+    return itisCodes
 
 
 def calculateOffsetPath(coords, anchor):
@@ -53,7 +56,7 @@ def calculateOffsetPath(coords, anchor):
     startLon = float(anchor["longitude"])
     nodes = []
     coords_len = len(coords)
-    if(coords_len == 1):
+    if (coords_len == 1):
         # Per J2735, NodeSetLL's must contain at least 2 nodes. ODE will fail to
         # PER-encode TIM if we supply less than 2. If we only have 1 node for the path,
         # include a node with an offset of (0, 0) which is effectively a point that's
@@ -118,26 +121,73 @@ def getMsgId(anchor):
     }
 
 
-def getDataFrame(feature):
-    coords = feature["geometry"]["coordinates"]
-    anchor = getAnchor(feature)
+def getWorkZoneDataFrame(start_date, duration, msgId, regions):
     return {
-        "startDateTime": feature["properties"]["start_date"],
-        "durationTime": getDurationTimeMinutes(feature),
+        "startDateTime": start_date,
+        "durationTime": duration,
         "sspTimRights": "1",  # default value
         "frameType": "advisory",  # TODO: determine frame type
-        "msgId": getMsgId(anchor),
+        "msgId": msgId,
         "priority": "5",  # default value
         "sspLocationRights": "1",  # default value
-        "regions": [
-            getRegion(coords, anchor)
-        ],
+        "regions": regions,
         "sspMsgTypes": "1",  # default value
         "sspMsgContent": "1",  # default value
-        "content": "workzone",  # TODO: determine content, defaulting workzone for now
+        "content": "workzone",
+        "items": [ItisCodes.ROAD_CONSTRUCTION.value],
+        "url": "null"
+    }
+
+
+def getContentType(feature):
+    # TODO: determine content type
+    return "advisory"
+
+
+def getVehicleImpactDataFrame(feature, start_date, duration, msgId, regions):
+    dframe = {
+        "startDateTime": start_date,
+        "durationTime": duration,
+        "sspTimRights": "1",  # default value
+        "frameType": "advisory",  # TODO: determine frame type
+        "msgId": msgId,
+        "priority": "5",  # default value
+        "sspLocationRights": "1",  # default value
+        "regions": regions,
+        "sspMsgTypes": "1",  # default value
+        "sspMsgContent": "1",  # default value
+        # TODO: determine content, defaulting workzone for now
+        "content": getContentType(feature),
         "items": getItisCodes(feature),
         "url": "null"
     }
+    return dframe
+
+
+def vehicleImpactSupported(vehicle_impact):
+    if vehicle_impact == "all-lanes-closed":
+        return True
+    return False
+
+
+def getDataFrames(feature):
+    coords = feature["geometry"]["coordinates"]
+    anchor = getAnchor(feature)
+    start_date = feature["properties"]["start_date"]
+    duration = getDurationTimeMinutes(feature)
+    msgId = getMsgId(anchor)
+    regions = [getRegion(coords, anchor)]
+
+    data_frames = [getWorkZoneDataFrame(start_date, duration, msgId, regions)]
+
+    # TODO: add additional data frames as appropriate
+    vehicle_Impact = feature["properties"]["vehicle_impact"]
+    if vehicleImpactSupported(vehicle_Impact):
+        vehicle_impact_dataFrame = getVehicleImpactDataFrame(
+            feature, start_date, duration, msgId, regions)
+        data_frames.append(vehicle_impact_dataFrame)
+
+    return data_frames
 
 
 def generateTim(feature):
@@ -146,8 +196,6 @@ def generateTim(feature):
         "timeStamp": feature["properties"]["core_details"]["update_date"],
         "packetID": secrets.token_hex(9).upper(),  # "67AEF692F8BB63067D",
         "urlB": "null",
-        "dataframes": [
-            getDataFrame(feature)
-        ]
+        "dataframes": getDataFrames(feature)
     }
     return tim_body
