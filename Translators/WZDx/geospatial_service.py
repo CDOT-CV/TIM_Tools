@@ -15,7 +15,7 @@ def measureAtPoint(lat, lon, route) -> int:
     Returns:
         measure (int): Measure of point on route'''
     r = requests.get(
-        f'{getGeospatialEndpoint()}/MeasureAtPoint?x={lon}&y={lat}&inSR=4326&routeId={route}&tolerance=&outSR=4326&f=pjson', verify=False)
+        f'{getGeospatialEndpoint()}/MeasureAtPoint?x={lon}&y={lat}&inSR=4326&routeId={route}&tolerance=&outSR=4326&f=pjson')
     data = r.json()
     return int(data["features"][0]["attributes"]["Measure"])
 
@@ -30,7 +30,7 @@ def pointAtMeasure(measure, route):
     Returns:
         point (dict): Coordinate of point on route'''
     r = requests.get(
-        f'{getGeospatialEndpoint()}/PointAtMeasure?routeId={route}&measure={measure}&inSR=4326&outSR=4326&f=pjson', verify=False)
+        f'{getGeospatialEndpoint()}/PointAtMeasure?routeId={route}&measure={measure}&inSR=4326&outSR=4326&f=pjson')
     data = r.json()
     return{
         "longitude": data['features'][0]['geometry']['x'],
