@@ -1,6 +1,6 @@
 import secrets
 from datetime import datetime
-from Translators.WZDx.geospatial_service import getUpstreamAnchor
+from Translators.WZDx import geospatial_service
 from Translators.WZDx.itis_codes import ItisCodes
 from Translators.WZDx.utils import calculateDirection, translateRoute
 
@@ -19,7 +19,7 @@ def getDurationTimeMinutes(feature):
         "properties"]["start_date"], "%Y-%m-%dT%H:%M:%SZ")
     end_date = datetime.strptime(feature[
         "properties"]["end_date"], "%Y-%m-%dT%H:%M:%SZ")
-    duration = (end_date - start_date).seconds / 60
+    duration = (end_date - start_date).total_seconds() / 60
     return int(duration) if duration < 32000 else 32000
 
 
@@ -28,7 +28,7 @@ def getAnchor(feature):
     # take start point, and go upstream
     coords = feature["geometry"]["coordinates"]
     route = translateRoute(feature["properties"]["core_details"]["road_names"])
-    return getUpstreamAnchor(coords, route)
+    return geospatial_service.getUpstreamAnchor(coords, route)
 
 
 def getItisCodes(feature):
