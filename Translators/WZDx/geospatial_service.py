@@ -1,8 +1,14 @@
 import os
 import requests
 
-def getGeospatialEndpoint(): 
+
+def getGeospatialEndpoint():
     return os.environ['dual_carriageway_endpoint']
+
+
+def getMapServerEndpoint():
+    return os.environ['dual_carriageway_endpoint'].split('/exts', 1)[0]
+
 
 def measureAtPoint(lat, lon, route) -> int:
     '''Finds the measure at a given point for a given route
@@ -15,7 +21,7 @@ def measureAtPoint(lat, lon, route) -> int:
     Returns:
         measure (int): Measure of point on route'''
     r = requests.get(
-        f'{getGeospatialEndpoint()}/MeasureAtPoint?x={lon}&y={lat}&inSR=4326&routeId={route}&tolerance=&outSR=4326&f=pjson')
+        f'{getGeospatialEndpoint()}/MeasureAtPoint?x={lon}&y={lat}&inSR=4326&routeId={route}&tolerance=&outSR=4326&f=pjson', verify=False)
     data = r.json()
     return int(data["features"][0]["attributes"]["Measure"])
 
@@ -30,12 +36,47 @@ def pointAtMeasure(measure, route):
     Returns:
         point (dict): Coordinate of point on route'''
     r = requests.get(
-        f'{getGeospatialEndpoint()}/PointAtMeasure?routeId={route}&measure={measure}&inSR=4326&outSR=4326&f=pjson')
+        f'{getGeospatialEndpoint()}/PointAtMeasure?routeId={route}&measure={measure}&inSR=4326&outSR=4326&f=pjson', verify=False)
     data = r.json()
-    return{
+    return {
         "longitude": data['features'][0]['geometry']['x'],
         "latitude": data['features'][0]['geometry']['y']
     }
+
+
+def getTenMeterExtent(lon, lat):
+    '''Finds the extent approximately 10 meter each direction around a given coordinate
+
+    Parameters:
+        lat (float): Latitude of point
+        lon (float): Longitude of point
+
+    Returns:
+        extent (str): A string representing the extent of the 10 meter square'''
+    maxLon = lon + 0.0001
+    minLon = lon - 0.0001
+    maxLat = lat + 0.0001
+    minLat = lat - 0.0001
+    return f'{minLon},{minLat},{maxLon},{maxLat}'
+
+
+def pointToRouteId(lon, lat):
+    '''Finds the route ID for a given coordinate
+
+    Parameters:
+        lat (float): Latitude of point
+        lon (float): Longitude of point
+
+    Returns:
+        route (str): Route ID'''
+    # colorado_extent = "-109.081667,37.002220,-102.028444,40.979583"
+    # NOTE: currently failing to find proper routes on occasion...
+    r = requests.get(
+        f'{getMapServerEndpoint()}/identify?geometry={lon},{lat}&geometryType=esriGeometryPoint&sr=4326&tolerance=50&mapExtent={getTenMeterExtent(lon,lat)}&imageDisplay=600,550,96&returnGeometry=false&returnZ=false&returnM=false&returnUnformattedValues=false&returnFieldName=false&f=json', verify=False)
+    data = r.json()
+    if (len(data['results']) > 1):
+        print("Multiple routes found")
+    return data["results"][0]["attributes"]["RouteId_Legacy"]
 
 
 def getUpstreamAnchor(coords, route):

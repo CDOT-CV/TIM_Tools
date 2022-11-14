@@ -24,10 +24,10 @@ def getDurationTimeMinutes(feature):
 
 
 def getAnchor(feature):
-    # TODO: calculate anchor from geospatial function call
-    # take start point, and go upstream
     coords = feature["geometry"]["coordinates"]
-    route = translateRoute(feature["properties"]["core_details"]["road_names"])
+    route = geospatial_service.pointToRouteId(feature["geometry"]["coordinates"][0][0], feature["geometry"]["coordinates"][0][1])
+    print('found route ' + route)
+    # route = translateRoute(feature["properties"]["core_details"]["road_names"])
     return geospatial_service.getUpstreamAnchor(coords, route)
 
 
