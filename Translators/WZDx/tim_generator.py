@@ -173,6 +173,8 @@ def vehicleImpactSupported(vehicle_impact):
 def getDataFrames(feature):
     coords = feature["geometry"]["coordinates"]
     anchor = getAnchor(feature)
+    if anchor is None:
+        return None
     start_date = feature["properties"]["start_date"]
     duration = getDurationTimeMinutes(feature)
     msgId = getMsgId(anchor)
@@ -191,6 +193,10 @@ def getDataFrames(feature):
 
 
 def generateTim(feature):
+    data_frames = getDataFrames(feature)
+    if data_frames is None:
+        return None
+        
     tim_body = {
         "msgCnt": "1",
         "timeStamp": feature["properties"]["core_details"]["update_date"],

@@ -10,16 +10,17 @@ def translate(wzdx_geojson):
     # if no RSUs found, drop that one
     for feature in wzdx_geojson["features"]:
         tim_body = generateTim(feature)
-        sdx_tim = {
-            "request": getSdwRequest(feature["geometry"]),
-            "tim": tim_body
-        }
-        rsu_tim = {
-            "request": getRsuRequest(feature),
-            "tim": tim_body
-        }
-        tims.append(sdx_tim)
-        tims.append(rsu_tim)
+        if tim_body is not None:
+            sdx_tim = {
+                "request": getSdwRequest(feature["geometry"]),
+                "tim": tim_body
+            }
+            rsu_tim = {
+                "request": getRsuRequest(feature),
+                "tim": tim_body
+            }
+            tims.append(sdx_tim)
+            tims.append(rsu_tim)
     return tims
 
 

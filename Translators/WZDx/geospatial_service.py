@@ -38,6 +38,9 @@ def pointAtMeasure(measure, route):
     r = requests.get(
         f'{getGeospatialEndpoint()}/PointAtMeasure?routeId={route}&measure={measure}&inSR=4326&outSR=4326&f=pjson', verify=False)
     data = r.json()
+    if 'error' in data:
+        print(data)
+        return None
     return {
         "longitude": data['features'][0]['geometry']['x'],
         "latitude": data['features'][0]['geometry']['y']
@@ -75,7 +78,8 @@ def pointToRouteId(lon, lat):
         f'{getMapServerEndpoint()}/identify?geometry={lon},{lat}&geometryType=esriGeometryPoint&sr=4326&tolerance=50&mapExtent={getTenMeterExtent(lon,lat)}&imageDisplay=600,550,96&returnGeometry=false&returnZ=false&returnM=false&returnUnformattedValues=false&returnFieldName=false&f=json', verify=False)
     data = r.json()
     if (len(data['results']) > 1):
-        print("Multiple routes found")
+        str_results = [*map(lambda x: x['attributes']['RouteId_Legacy'], data['results'])]
+        print('Multiple routes found: ' + ', '.join(str_results))
     return data["results"][0]["attributes"]["RouteId_Legacy"]
 
 
