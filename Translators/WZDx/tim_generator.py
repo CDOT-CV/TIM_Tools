@@ -85,10 +85,10 @@ def calculateOffsetPath(coords, anchor):
     return path
 
 
-def getRegion(coords, anchor):
-    # TODO: update fields, name, directionality
+def getRegion(coords, anchor, roadName):
+    # TODO: update fields, name (for directionality), directionality
     return {
-        "name": "I_I 25_SAT-1CEE1793",
+        "name": f"I_{roadName}_IDENTIFIER",
         "anchorPosition": anchor,
         "laneWidth": "50",  # defaulting lane width to 50
         "directionality": "3",  # 0 - unavailable, 1 - forward, 2 - backward, 3 - both
@@ -169,6 +169,9 @@ def vehicleImpactSupported(vehicle_impact):
         return True
     return False
 
+def getFirstRoadName(feature):
+    return feature["properties"]["core_details"]["road_names"][0]
+
 
 def getDataFrames(feature):
     coords = feature["geometry"]["coordinates"]
@@ -178,7 +181,7 @@ def getDataFrames(feature):
     start_date = feature["properties"]["start_date"]
     duration = getDurationTimeMinutes(feature)
     msgId = getMsgId(anchor)
-    regions = [getRegion(coords, anchor)]
+    regions = [getRegion(coords, anchor, roadName=getFirstRoadName(feature))]
 
     data_frames = [getWorkZoneDataFrame(start_date, duration, msgId, regions)]
 
@@ -196,12 +199,12 @@ def generateTim(feature):
     data_frames = getDataFrames(feature)
     if data_frames is None:
         return None
-        
+
     tim_body = {
         "msgCnt": "1",
         "timeStamp": feature["properties"]["core_details"]["update_date"],
         "packetID": secrets.token_hex(9).upper(),  # "67AEF692F8BB63067D",
         "urlB": "null",
-        "dataframes": getDataFrames(feature)
+        "dataframes": data_frames
     }
     return tim_body
