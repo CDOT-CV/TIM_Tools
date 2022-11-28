@@ -1,7 +1,26 @@
 import functions_framework
 import json
+import copy
 from Translators.WZDx.request_wrapper import getRsuRequest, getSdwRequest
 from Translators.WZDx.tim_generator import generateTim
+
+
+def updateSatRegionName(request, tim_body):
+    new_tim = copy.deepcopy(tim_body)
+    region_name = new_tim['dataframes'][0]['regions'][0]['name']
+    region_name = region_name.replace(
+        'IDENTIFIER', f"SAT_{request['sdw']['recordId']}")
+    new_tim['dataframes'][0]['regions'][0]['name'] = region_name
+    return new_tim
+
+
+def updateRsuRegionName(request, tim_body):
+    new_tim = copy.deepcopy(tim_body)
+    region_name = new_tim['dataframes'][0]['regions'][0]['name']
+    region_name = region_name.replace(
+        'IDENTIFIER', f"RSU_{request['rsus'][0]['rsuTarget']}")
+    new_tim['dataframes'][0]['regions'][0]['name'] = region_name
+    return new_tim
 
 
 def translate(wzdx_geojson):
@@ -11,16 +30,20 @@ def translate(wzdx_geojson):
     for feature in wzdx_geojson["features"]:
         tim_body = generateTim(feature)
         if tim_body is not None:
+            sdx_request = getSdwRequest(feature["geometry"])
             sdx_tim = {
-                "request": getSdwRequest(feature["geometry"]),
-                "tim": tim_body
-            }
-            rsu_tim = {
-                "request": getRsuRequest(feature),
-                "tim": tim_body
+                "request": sdx_request,
+                "tim": updateSatRegionName(sdx_request, tim_body)
             }
             tims.append(sdx_tim)
-            tims.append(rsu_tim)
+
+            rsu_request = getRsuRequest(feature)
+            if rsu_request is not None:
+                rsu_tim = {
+                    "request": rsu_request,
+                    "tim": updateRsuRegionName(rsu_request, tim_body)
+                }
+                tims.append(rsu_tim)
     return tims
 
 
