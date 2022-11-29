@@ -1,8 +1,13 @@
 import functions_framework
 import json
 import copy
+import logging
+import os
 from Translators.WZDx.request_wrapper import get_rsu_request, get_sdw_request
 from Translators.WZDx.tim_generator import generateTim
+
+log_level = os.environ.get('LOGGING_LEVEL', 'INFO')
+logging.basicConfig(format='%(levelname)s:%(message)s', level=log_level)
 
 
 def updateSatRegionName(request, tim_body):
