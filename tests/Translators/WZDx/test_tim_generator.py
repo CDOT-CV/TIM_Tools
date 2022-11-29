@@ -10,7 +10,7 @@ def test_getDurationTimeMinutes():
             'end_date': '2022-02-13T16:55:00Z'
         }
     }
-    duration = tim_generator.getDurationTimeMinutes(feature)
+    duration = tim_generator.get_duration_time_minutes(feature)
     assert duration == 55
 
 def test_getDurationTimeMinutes_withLargeTime():
@@ -20,7 +20,7 @@ def test_getDurationTimeMinutes_withLargeTime():
             'end_date': '2022-07-13T16:55:00Z'
         }
     }
-    duration = tim_generator.getDurationTimeMinutes(feature)
+    duration = tim_generator.get_duration_time_minutes(feature)
     assert duration == 32000
 
 ############################ getAnchor ############################    
@@ -50,7 +50,7 @@ def test_getAnchor(mock_upstreamAnchor, mock_translateRoute):
             }
         }
     }
-    anchor = tim_generator.getAnchor(feature)
+    anchor = tim_generator.get_anchor(feature)
     assert anchor == {
         'latitude': 37.795,
         'longitude': -122.403
@@ -63,7 +63,7 @@ def test_getItisCodes_allLanesClosed():
             'vehicle_impact': 'all-lanes-closed'
         }
     }
-    itisCodes = tim_generator.getItisCodes(feature)
+    itisCodes = tim_generator.get_itis_codes(feature)
     assert itisCodes == ['770']  # ItisCodes.CLOSED.value
 
 ############################ calculateOffsetPath ############################
@@ -82,7 +82,7 @@ def test_calculateOffsetPath():
         'latitude': 37.795,
         'longitude': -122.403
     }
-    offsetPath = tim_generator.calculateOffsetPath(coords, anchor)
+    offsetPath = tim_generator.calculate_offset_path(coords, anchor)
     assert offsetPath ==  {
         'scale': 0,
         'nodes': [
