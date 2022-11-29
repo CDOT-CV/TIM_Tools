@@ -59,18 +59,22 @@ def get_sdw_request(geometry):
 # takes in a linestring and buffers by 0.0001 degrees
 
 
-def buffer_geometry(geometry):
-    line_string = LineString(geometry["coordinates"])
+def buffer_geometry(coords):
+    line_string = LineString(coords)
     # ~ 10m buffer. 0.0001 degrees = 11.1m at equator
     return line_string.buffer(0.0001)
 
 
 def get_rsus_for_message(geometry):
-    # TODO: add 20 miles upstream
-    initialPoint = geometry["coordinates"][0]
+    route_id = geospatial_service.point_to_route_id(
+        geometry["coordinates"][0][0], geometry["coordinates"][0][1])
+    measures = geospatial_service.get_upstream_measures(geometry["coordinates"], route_id, 20)
+    extendedGeometry = geospatial_service.get_route_between_measures(
+        route_id, measures["upstream_measure"], measures["first_point_measure"])
+    extendedGeometry.extend(geometry["coordinates"])
 
     # create buffer around geometry so we get a "fat" line
-    bufferedPolygon = buffer_geometry(geometry)
+    bufferedPolygon = buffer_geometry(extendedGeometry)
     rsus = rsu_service.get_rsus_intersecting_geometry(bufferedPolygon)
     return rsus
 
