@@ -5,9 +5,9 @@ from Translators.WZDx import tim_generator
 ############################ getDurationTimeMinutes ############################
 def test_getDurationTimeMinutes():
     feature = {
-        "properties": {
-            "start_date": "2022-02-13T16:00:00Z",
-            "end_date": "2022-02-13T16:55:00Z"
+        'properties': {
+            'start_date': '2022-02-13T16:00:00Z',
+            'end_date': '2022-02-13T16:55:00Z'
         }
     }
     duration = tim_generator.getDurationTimeMinutes(feature)
@@ -15,9 +15,9 @@ def test_getDurationTimeMinutes():
 
 def test_getDurationTimeMinutes_withLargeTime():
     feature = {
-        "properties": {
-            "start_date": "2022-02-13T16:00:00Z",
-            "end_date": "2022-07-13T16:55:00Z"
+        'properties': {
+            'start_date': '2022-02-13T16:00:00Z',
+            'end_date': '2022-07-13T16:55:00Z'
         }
     }
     duration = tim_generator.getDurationTimeMinutes(feature)
@@ -30,8 +30,8 @@ def test_getAnchor(mock_upstreamAnchor, mock_translateRoute):
     mock_translateRoute.return_value = 'I-80'
     mock_upstreamAnchor.return_value = {'latitude': 37.795, 'longitude': -122.403}
     feature = {
-        "geometry": {
-            "coordinates": [
+        'geometry': {
+            'coordinates': [
                 [
                     -122.403,
                     37.795
@@ -42,25 +42,25 @@ def test_getAnchor(mock_upstreamAnchor, mock_translateRoute):
                 ]
             ]
         },
-        "properties": {
-            "core_details": {
-                "road_names": [
-                    "I-80"
+        'properties': {
+            'core_details': {
+                'road_names': [
+                    'I-80'
                 ]
             }
         }
     }
     anchor = tim_generator.getAnchor(feature)
     assert anchor == {
-        "latitude": 37.795,
-        "longitude": -122.403
+        'latitude': 37.795,
+        'longitude': -122.403
     }
 
 ############################ getItisCodes ############################
 def test_getItisCodes_allLanesClosed():
     feature = {
-        "properties": {
-            "vehicle_impact": "all-lanes-closed"
+        'properties': {
+            'vehicle_impact': 'all-lanes-closed'
         }
     }
     itisCodes = tim_generator.getItisCodes(feature)
@@ -79,27 +79,23 @@ def test_calculateOffsetPath():
         ]
     ]
     anchor = {
-        "latitude": 37.795,
-        "longitude": -122.403
+        'latitude': 37.795,
+        'longitude': -122.403
     }
     offsetPath = tim_generator.calculateOffsetPath(coords, anchor)
-    assert offsetPath == {
-        "offsetLL": {
-            "latOffset": 0,
-            "longOffset": 0
-        },
-        "path": {
-            "nodes": [
+    assert offsetPath ==  {
+        'scale': 0,
+        'nodes': [
                 {
-                    "delta": 0,
-                    "lat": 37.795,
-                    "long": -122.403
+                    'delta': 0,
+                    'lat': 37.795,
+                    'long': -122.403
                 },
                 {
-                    "delta": 0,
-                    "lat": 37.795,
-                    "long": -122.403
+                    'delta': 0,
+                    'lat': 37.795,
+                    'long': -122.403
                 }
-            ]
-        }
-    }    
+            ],
+        'type': 'll'
+    }

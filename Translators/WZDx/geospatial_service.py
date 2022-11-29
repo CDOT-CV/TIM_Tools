@@ -80,9 +80,33 @@ def pointToRouteId(lon, lat):
         f'{getMapServerEndpoint()}/identify?geometry={lon},{lat}&geometryType=esriGeometryPoint&sr=4326&tolerance=50&mapExtent={getTenMeterExtent(lon,lat)}&imageDisplay=600,550,96&returnGeometry=false&returnZ=false&returnM=false&returnUnformattedValues=false&returnFieldName=false&f=json', verify=False)
     data = r.json()
     if (len(data['results']) > 1):
-        str_results = [*map(lambda x: x['attributes']['RouteId_Legacy'], data['results'])]
+        str_results = [*map(lambda x: x['attributes']
+                            ['RouteId_Legacy'], data['results'])]
         print('Multiple routes found: ' + ', '.join(str_results))
     return data["results"][0]["attributes"]["RouteId_Legacy"]
+
+
+def get_direction_of_travel(coords, route):
+    '''Finds the direction of travel for a given route and coordinate list
+
+    Parameters:
+        coords (list): A list of coordinates
+        route (str): A route ID
+
+    Returns:
+        direction (str): A string representing the direction of travel'''
+    # get measure at point for first coord & 2nd coord to determine measure direction
+
+    if len(coords) == 1:
+        return None
+
+    start_measure = measureAtPoint(coords[0][1], coords[0][0], route)
+    end_measure = measureAtPoint(coords[1][1], coords[1][0], route)
+
+    return {
+        'start_measure': start_measure,
+        'direction': 'increasing' if end_measure > start_measure else 'decreasing'
+    }
 
 
 def getUpstreamAnchor(coords, route):
@@ -97,13 +121,32 @@ def getUpstreamAnchor(coords, route):
     # get measure at point for first coord & 2nd coord to determine measure direction
     # then go opposite direction and use point at measure
 
-    if len(coords) == 1:
+    travel = get_direction_of_travel(coords, route)
+    if travel is None:
         return None
 
-    start_measure = measureAtPoint(coords[0][1], coords[0][0], route)
-    end_measure = measureAtPoint(coords[1][1], coords[1][0], route)
-
-    new_measure = start_measure - \
-        0.25 if end_measure > start_measure else start_measure + 0.25
+    new_measure = travel['start_measure'] - \
+        0.25 if travel['direction'] == 'increasing' else travel['start_measure'] + 0.25
     anchor = pointAtMeasure(new_measure, route)
     return anchor
+
+
+def getRouteBetweenMeasures(routeId, startMeasure, endMeasure):
+    '''Finds the lat/lon points between two measures for a given route
+
+    Parameters:
+        routeId (str): A route ID
+        startMeasure (int): The starting measure
+        endMeasure (int): The ending measure
+
+    Returns:
+        route (list): A list of coordinates representing the route'''
+    r = requests.get(
+        f'{getGeospatialEndpoint()}/RouteBetweenMeasures?routeId={routeId}&fromMeasure={startMeasure}&toMeasure={endMeasure}&inSR=4326&outSR=4326&f=pjson', verify=False)
+    data = r.json()
+
+    linestring = []
+    for feature in data.get('features', []):
+        for path in feature.get('geometry', {}).get('paths', []):
+            linestring.extend(path)
+    return linestring

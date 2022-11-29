@@ -4,7 +4,7 @@ from shapely.geometry import Point
 import shapely.wkt
 
 
-def getRsusIntersectingGeometry(geometry):
+def get_rsus_intersecting_geometry(geometry):
     query = f"SELECT rsu_id, primary_route, milepost, ipv4_address,  ST_AsText(geography) point FROM rsus WHERE ST_Intersects('{str(geometry)}', geography)"
     try:
         result = pgquery.query_db(query)

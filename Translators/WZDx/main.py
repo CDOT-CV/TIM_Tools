@@ -1,7 +1,7 @@
 import functions_framework
 import json
 import copy
-from Translators.WZDx.request_wrapper import getRsuRequest, getSdwRequest
+from Translators.WZDx.request_wrapper import get_rsu_request, get_sdw_request
 from Translators.WZDx.tim_generator import generateTim
 
 
@@ -30,14 +30,14 @@ def translate(wzdx_geojson):
     for feature in wzdx_geojson["features"]:
         tim_body = generateTim(feature)
         if tim_body is not None:
-            sdx_request = getSdwRequest(feature["geometry"])
+            sdx_request = get_sdw_request(feature["geometry"])
             sdx_tim = {
                 "request": sdx_request,
                 "tim": updateSatRegionName(sdx_request, tim_body)
             }
             tims.append(sdx_tim)
 
-            rsu_request = getRsuRequest(feature)
+            rsu_request = get_rsu_request(feature)
             if rsu_request is not None:
                 rsu_tim = {
                     "request": rsu_request,

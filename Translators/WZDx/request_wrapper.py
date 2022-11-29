@@ -1,9 +1,10 @@
 import secrets
 from shapely.geometry import LineString
 import rsu_service
+import geospatial_service
 
 
-def getBoundingBox(geometry):
+def get_bounding_box(geometry):
     '''Calculates bounding box by iterating over the provided coordinates and finding the extreme values
 
     Parameters:
@@ -28,7 +29,7 @@ def getBoundingBox(geometry):
     return nwCorner, seCorner
 
 
-def getSdwRequest(geometry):
+def get_sdw_request(geometry):
     '''Creates an SDW request object for the provided geometry
 
     Parameters:
@@ -36,7 +37,7 @@ def getSdwRequest(geometry):
 
     Returns:
         sdwRequest (dict): SDW request object'''
-    nwCorner, seCorner = getBoundingBox(geometry)
+    nwCorner, seCorner = get_bounding_box(geometry)
     sdwRequest = {
         "sdw": {
             "ttl": "oneday",
@@ -56,24 +57,25 @@ def getSdwRequest(geometry):
     return sdwRequest
 
 # takes in a linestring and buffers by 0.0001 degrees
-def bufferGeometry(geometry):
+
+
+def buffer_geometry(geometry):
     line_string = LineString(geometry["coordinates"])
     # ~ 10m buffer. 0.0001 degrees = 11.1m at equator
     return line_string.buffer(0.0001)
 
 
-def getRsusForMessage(geometry):
-    # TODO: calculate actual RSUs along path
-    # we have start/end points, get path between and all RSUs along it
-    # also rsus upstream 20 miles
+def get_rsus_for_message(geometry):
+    # TODO: add 20 miles upstream
+    initialPoint = geometry["coordinates"][0]
 
     # create buffer around geometry so we get a "fat" line
-    bufferedPolygon = bufferGeometry(geometry)
-    rsus = rsu_service.getRsusIntersectingGeometry(bufferedPolygon)
+    bufferedPolygon = buffer_geometry(geometry)
+    rsus = rsu_service.get_rsus_intersecting_geometry(bufferedPolygon)
     return rsus
 
 
-def getSnmpSettings(feature):
+def get_snmp_settings(feature):
     '''Creates an SNMP settings object for the provided feature
 
     Parameters:
@@ -95,13 +97,13 @@ def getSnmpSettings(feature):
     }
 
 
-def getRsuRequest(feature):
-    rsus = getRsusForMessage(feature['geometry'])
+def get_rsu_request(feature):
+    rsus = get_rsus_for_message(feature['geometry'])
     if rsus is None:
         return None
 
     tim_req = {
         "rsus": rsus,
-        "snmp": getSnmpSettings(feature)
+        "snmp": get_snmp_settings(feature)
     }
     return tim_req
