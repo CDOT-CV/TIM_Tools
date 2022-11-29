@@ -1,6 +1,5 @@
 import logging
 import pgquery
-from shapely.geometry import Point
 import shapely.wkt
 
 
@@ -12,6 +11,7 @@ def get_rsus_intersecting_geometry(geometry):
         logging.info(f'Error selecting intersected date')
         return  None
     return_value = [] if (len(result) > 0) else None
+    logging.info(f'Found {len(result)} RSUs intersecting geometry')
 
     for row in result:
         pt = shapely.wkt.loads(row["point"])
@@ -21,7 +21,7 @@ def get_rsus_intersecting_geometry(geometry):
             "rsuId": row["rsu_id"],
             "route": row["primary_route"],
             "milepost": row["milepost"],
-            "rsuTarget": row["ipv4_address"],
+            "rsuTarget": str(row["ipv4_address"]),
             "rsuRetries": 3,
             "rsuTimeout": 5000,
             "rsuIndex": 2
