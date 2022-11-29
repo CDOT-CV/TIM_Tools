@@ -1,7 +1,7 @@
 import pyproj
 
 
-def getDirectionFromBearing(bearing):
+def get_direction_from_bearing(bearing):
     direction: int = 0
 
     if (bearing >= 0 and bearing <= 22.5):
@@ -39,7 +39,7 @@ def getDirectionFromBearing(bearing):
 
     return direction
 
-def calculateDirection(coords, anchor):
+def calculate_direction(coords, anchor):
     '''Creates a heading HeadingSlice from passed in coordinates and anchor point
 
     Parameters:
@@ -59,7 +59,7 @@ def calculateDirection(coords, anchor):
 
         fwd_azimuth, back_azimuth, distance = geodesic.inv(
             startLon, startLat, lon, lat)
-        timDirection |= getDirectionFromBearing(fwd_azimuth)
+        timDirection |= get_direction_from_bearing(fwd_azimuth)
         # reset for next round
         startLat = lat
         startLon = lon
@@ -70,13 +70,4 @@ def calculateDirection(coords, anchor):
     dirTest = dirTest.zfill(16)
     # reverse
     dirTest = dirTest[::-1]
-    return dirTest    
-
-
-def translateRoute(wzdxRouteNames):
-    # TODO: translate route
-    # note wzdxRouteNames is an array
-    # for now just translate the first
-    wzdxName = wzdxRouteNames[0] #I-70E
-
-    return "070A"
+    return dirTest

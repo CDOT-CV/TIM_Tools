@@ -2,10 +2,10 @@ import secrets
 from datetime import datetime
 from Translators.WZDx import geospatial_service
 from Translators.WZDx.itis_codes import ItisCodes
-from Translators.WZDx.utils import calculateDirection, translateRoute
+from Translators.WZDx.utils import calculate_direction
 
 
-def getDurationTimeMinutes(feature):
+def get_duration_time_minutes(feature):
     '''Get duration in minutes from a GeoJSON feature object with start_date and end_date properties
 
     Parameters:
@@ -23,7 +23,7 @@ def getDurationTimeMinutes(feature):
     return int(duration) if duration < 32000 else 32000
 
 
-def getAnchor(feature):
+def get_anchor(feature):
     coords = feature["geometry"]["coordinates"]
     route = geospatial_service.point_to_route_id(
         feature["geometry"]["coordinates"][0][0], feature["geometry"]["coordinates"][0][1])
@@ -32,7 +32,7 @@ def getAnchor(feature):
     return geospatial_service.get_upstream_point(coords, route, 0.25)
 
 
-def getItisCodes(feature):
+def get_itis_codes(feature):
     # TODO: calculate itis codes
     itisCodes = []
 
@@ -43,7 +43,7 @@ def getItisCodes(feature):
     return itisCodes
 
 
-def calculateOffsetPath(coords, anchor):
+def calculate_offset_path(coords, anchor):
     '''Creates an offset path from passed in coordinates and anchor point
 
     Parameters:
@@ -86,7 +86,7 @@ def calculateOffsetPath(coords, anchor):
     return path
 
 
-def getRegion(coords, anchor, roadName):
+def get_region(coords, anchor, roadName):
     # TODO: update fields, name (for directionality), directionality
     return {
         "name": f"I_{roadName}_IDENTIFIER",
@@ -95,12 +95,12 @@ def getRegion(coords, anchor, roadName):
         "directionality": "3",  # 0 - unavailable, 1 - forward, 2 - backward, 3 - both
         "closedPath": "false",  # default
         "description": "path",  # default
-        "path": calculateOffsetPath(coords, anchor),
-        "direction": calculateDirection(coords, anchor)
+        "path": calculate_offset_path(coords, anchor),
+        "direction": calculate_direction(coords, anchor)
     }
 
 
-def getMsgId(anchor):
+def get_msg_id(anchor):
     '''Generates a MsgId object, with roadSignID
 
     Parameters:
@@ -122,7 +122,7 @@ def getMsgId(anchor):
     }
 
 
-def getWorkZoneDataFrame(start_date, duration, msgId, regions):
+def get_work_zone_data_frame(start_date, duration, msgId, regions):
     return {
         "startDateTime": start_date,
         "durationTime": duration,
@@ -140,12 +140,12 @@ def getWorkZoneDataFrame(start_date, duration, msgId, regions):
     }
 
 
-def getContentType(feature):
+def get_content_type(feature):
     # TODO: determine content type
     return "advisory"
 
 
-def getVehicleImpactDataFrame(feature, start_date, duration, msgId, regions):
+def get_vehicle_impact_data_frame(feature, start_date, duration, msgId, regions):
     dframe = {
         "startDateTime": start_date,
         "durationTime": duration,
@@ -158,47 +158,47 @@ def getVehicleImpactDataFrame(feature, start_date, duration, msgId, regions):
         "sspMsgTypes": "1",  # default value
         "sspMsgContent": "1",  # default value
         # TODO: determine content, defaulting workzone for now
-        "content": getContentType(feature),
-        "items": getItisCodes(feature),
+        "content": get_content_type(feature),
+        "items": get_itis_codes(feature),
         "url": "null"
     }
     return dframe
 
 
-def vehicleImpactSupported(vehicle_impact):
+def vehicle_impact_supported(vehicle_impact):
     if vehicle_impact == "all-lanes-closed":
         return True
     return False
 
 
-def getFirstRoadName(feature):
+def get_first_road_name(feature):
     return feature["properties"]["core_details"]["road_names"][0]
 
 
-def getDataFrames(feature):
+def get_data_frames(feature):
     coords = feature["geometry"]["coordinates"]
-    anchor = getAnchor(feature)
+    anchor = get_anchor(feature)
     if anchor is None:
         return None
     start_date = feature["properties"]["start_date"]
-    duration = getDurationTimeMinutes(feature)
-    msgId = getMsgId(anchor)
-    regions = [getRegion(coords, anchor, roadName=getFirstRoadName(feature))]
+    duration = get_duration_time_minutes(feature)
+    msgId = get_msg_id(anchor)
+    regions = [get_region(coords, anchor, roadName=get_first_road_name(feature))]
 
-    data_frames = [getWorkZoneDataFrame(start_date, duration, msgId, regions)]
+    data_frames = [get_work_zone_data_frame(start_date, duration, msgId, regions)]
 
     # TODO: add additional data frames as appropriate
     vehicle_Impact = feature["properties"]["vehicle_impact"]
-    if vehicleImpactSupported(vehicle_Impact):
-        vehicle_impact_dataFrame = getVehicleImpactDataFrame(
+    if vehicle_impact_supported(vehicle_Impact):
+        vehicle_impact_dataFrame = get_vehicle_impact_data_frame(
             feature, start_date, duration, msgId, regions)
         data_frames.append(vehicle_impact_dataFrame)
 
     return data_frames
 
 
-def generateTim(feature):
-    data_frames = getDataFrames(feature)
+def generate_tim(feature):
+    data_frames = get_data_frames(feature)
     if data_frames is None:
         return None
 

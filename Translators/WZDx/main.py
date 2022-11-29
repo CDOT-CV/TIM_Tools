@@ -4,13 +4,13 @@ import copy
 import logging
 import os
 from Translators.WZDx.request_wrapper import get_rsu_request, get_sdw_request
-from Translators.WZDx.tim_generator import generateTim
+from Translators.WZDx.tim_generator import generate_tim
 
 log_level = os.environ.get('LOGGING_LEVEL', 'INFO')
 logging.basicConfig(format='%(levelname)s:%(message)s', level=log_level)
 
 
-def updateSatRegionName(request, tim_body):
+def update_sat_region_name(request, tim_body):
     new_tim = copy.deepcopy(tim_body)
     region_name = new_tim['dataframes'][0]['regions'][0]['name']
     region_name = region_name.replace(
@@ -19,7 +19,7 @@ def updateSatRegionName(request, tim_body):
     return new_tim
 
 
-def updateRsuRegionName(request, tim_body):
+def update_rsu_region_name(request, tim_body):
     new_tim = copy.deepcopy(tim_body)
     region_name = new_tim['dataframes'][0]['regions'][0]['name']
     region_name = region_name.replace(
@@ -33,12 +33,12 @@ def translate(wzdx_geojson):
     # TODO: generate two messages, one for sdx and one for rsu
     # if no RSUs found, drop that one
     for feature in wzdx_geojson["features"]:
-        tim_body = generateTim(feature)
+        tim_body = generate_tim(feature)
         if tim_body is not None:
             sdx_request = get_sdw_request(feature["geometry"])
             sdx_tim = {
                 "request": sdx_request,
-                "tim": updateSatRegionName(sdx_request, tim_body)
+                "tim": update_sat_region_name(sdx_request, tim_body)
             }
             tims.append(sdx_tim)
 
@@ -46,7 +46,7 @@ def translate(wzdx_geojson):
             if rsu_request is not None:
                 rsu_tim = {
                     "request": rsu_request,
-                    "tim": updateRsuRegionName(rsu_request, tim_body)
+                    "tim": update_rsu_region_name(rsu_request, tim_body)
                 }
                 tims.append(rsu_tim)
     return tims
