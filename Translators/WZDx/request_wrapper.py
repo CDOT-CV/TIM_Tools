@@ -1,4 +1,7 @@
 import secrets
+from shapely.geometry import LineString
+import rsu_service
+
 
 def getBoundingBox(geometry):
     '''Calculates bounding box by iterating over the provided coordinates and finding the extreme values
@@ -23,6 +26,7 @@ def getBoundingBox(geometry):
         if coords[1] < seCorner["latitude"]:
             seCorner["latitude"] = coords[1]
     return nwCorner, seCorner
+
 
 def getSdwRequest(geometry):
     '''Creates an SDW request object for the provided geometry
@@ -51,23 +55,22 @@ def getSdwRequest(geometry):
     }
     return sdwRequest
 
-def getRsusForMessage():
+# takes in a linestring and buffers by 0.0001 degrees
+def bufferGeometry(geometry):
+    line_string = LineString(geometry["coordinates"])
+    # ~ 10m buffer. 0.0001 degrees = 11.1m at equator
+    return line_string.buffer(0.0001)
+
+
+def getRsusForMessage(geometry):
     # TODO: calculate actual RSUs along path
     # we have start/end points, get path between and all RSUs along it
     # also rsus upstream 20 miles
-    return [
-        {
-            "latitude": 40.0000000,
-            "longitude": -106.0000000,
-            "rsuId": 1,
-            "route": "Route",
-            "milepost": 100,
-            "rsuTarget": "10.10.10.10",
-            "rsuRetries": 3,
-            "rsuTimeout": 5000,
-            "rsuIndex": 2
-        }
-    ]
+
+    # create buffer around geometry so we get a "fat" line
+    bufferedPolygon = bufferGeometry(geometry)
+    rsus = rsu_service.getRsusIntersectingGeometry(bufferedPolygon)
+    return rsus
 
 
 def getSnmpSettings(feature):
@@ -93,8 +96,12 @@ def getSnmpSettings(feature):
 
 
 def getRsuRequest(feature):
+    rsus = getRsusForMessage(feature['geometry'])
+    if rsus is None:
+        return None
+
     tim_req = {
-        "rsus": getRsusForMessage(),
+        "rsus": rsus,
         "snmp": getSnmpSettings(feature)
     }
-    return tim_req    
+    return tim_req
