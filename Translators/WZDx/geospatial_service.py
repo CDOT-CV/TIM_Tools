@@ -4,15 +4,15 @@ import urllib3
 urllib3.disable_warnings()
 
 
-def getGeospatialEndpoint():
+def get_geospatial_endpoint():
     return os.environ['dual_carriageway_endpoint']
 
 
-def getMapServerEndpoint():
+def get_map_server_endpoint():
     return os.environ['dual_carriageway_endpoint'].split('/exts', 1)[0]
 
 
-def measureAtPoint(lat, lon, route) -> int:
+def measure_at_point(lat, lon, route) -> int:
     '''Finds the measure at a given point for a given route
 
     Parameters:
@@ -23,12 +23,12 @@ def measureAtPoint(lat, lon, route) -> int:
     Returns:
         measure (int): Measure of point on route'''
     r = requests.get(
-        f'{getGeospatialEndpoint()}/MeasureAtPoint?x={lon}&y={lat}&inSR=4326&routeId={route}&tolerance=&outSR=4326&f=pjson', verify=False)
+        f'{get_geospatial_endpoint()}/MeasureAtPoint?x={lon}&y={lat}&inSR=4326&routeId={route}&tolerance=&outSR=4326&f=pjson', verify=False)
     data = r.json()
     return int(data["features"][0]["attributes"]["Measure"])
 
 
-def pointAtMeasure(measure, route):
+def point_at_measure(measure, route):
     '''Finds the coordinate at a given measure for a given route
 
     Parameters:
@@ -38,7 +38,7 @@ def pointAtMeasure(measure, route):
     Returns:
         point (dict): Coordinate of point on route'''
     r = requests.get(
-        f'{getGeospatialEndpoint()}/PointAtMeasure?routeId={route}&measure={measure}&inSR=4326&outSR=4326&f=pjson', verify=False)
+        f'{get_geospatial_endpoint()}/PointAtMeasure?routeId={route}&measure={measure}&inSR=4326&outSR=4326&f=pjson', verify=False)
     data = r.json()
     if 'error' in data:
         print(data)
@@ -49,7 +49,7 @@ def pointAtMeasure(measure, route):
     }
 
 
-def getTenMeterExtent(lon, lat):
+def get_ten_meter_extent(lon, lat):
     '''Finds the extent approximately 10 meter each direction around a given coordinate
 
     Parameters:
@@ -65,7 +65,7 @@ def getTenMeterExtent(lon, lat):
     return f'{minLon},{minLat},{maxLon},{maxLat}'
 
 
-def pointToRouteId(lon, lat):
+def point_to_route_id(lon, lat):
     '''Finds the route ID for a given coordinate
 
     Parameters:
@@ -77,7 +77,7 @@ def pointToRouteId(lon, lat):
     # colorado_extent = "-109.081667,37.002220,-102.028444,40.979583"
     # NOTE: currently failing to find proper routes on occasion...
     r = requests.get(
-        f'{getMapServerEndpoint()}/identify?geometry={lon},{lat}&geometryType=esriGeometryPoint&sr=4326&tolerance=50&mapExtent={getTenMeterExtent(lon,lat)}&imageDisplay=600,550,96&returnGeometry=false&returnZ=false&returnM=false&returnUnformattedValues=false&returnFieldName=false&f=json', verify=False)
+        f'{get_map_server_endpoint()}/identify?geometry={lon},{lat}&geometryType=esriGeometryPoint&sr=4326&tolerance=50&mapExtent={get_ten_meter_extent(lon,lat)}&imageDisplay=600,550,96&returnGeometry=false&returnZ=false&returnM=false&returnUnformattedValues=false&returnFieldName=false&f=json', verify=False)
     data = r.json()
     if (len(data['results']) > 1):
         str_results = [*map(lambda x: x['attributes']
@@ -100,8 +100,8 @@ def get_direction_of_travel(coords, route):
     if len(coords) == 1:
         return None
 
-    start_measure = measureAtPoint(coords[0][1], coords[0][0], route)
-    end_measure = measureAtPoint(coords[1][1], coords[1][0], route)
+    start_measure = measure_at_point(coords[0][1], coords[0][0], route)
+    end_measure = measure_at_point(coords[1][1], coords[1][0], route)
 
     return {
         'start_measure': start_measure,
@@ -109,7 +109,7 @@ def get_direction_of_travel(coords, route):
     }
 
 
-def getUpstreamAnchor(coords, route):
+def get_upstream_point(coords, route, distance):
     '''Finds the upstream anchor point for a given route and coordinate list
 
     Parameters:
@@ -126,12 +126,12 @@ def getUpstreamAnchor(coords, route):
         return None
 
     new_measure = travel['start_measure'] - \
-        0.25 if travel['direction'] == 'increasing' else travel['start_measure'] + 0.25
-    anchor = pointAtMeasure(new_measure, route)
+        distance if travel['direction'] == 'increasing' else travel['start_measure'] + distance
+    anchor = point_at_measure(new_measure, route)
     return anchor
 
 
-def getRouteBetweenMeasures(routeId, startMeasure, endMeasure):
+def get_route_between_measures(routeId, startMeasure, endMeasure):
     '''Finds the lat/lon points between two measures for a given route
 
     Parameters:
@@ -142,7 +142,7 @@ def getRouteBetweenMeasures(routeId, startMeasure, endMeasure):
     Returns:
         route (list): A list of coordinates representing the route'''
     r = requests.get(
-        f'{getGeospatialEndpoint()}/RouteBetweenMeasures?routeId={routeId}&fromMeasure={startMeasure}&toMeasure={endMeasure}&inSR=4326&outSR=4326&f=pjson', verify=False)
+        f'{get_geospatial_endpoint()}/RouteBetweenMeasures?routeId={routeId}&fromMeasure={startMeasure}&toMeasure={endMeasure}&inSR=4326&outSR=4326&f=pjson', verify=False)
     data = r.json()
 
     linestring = []

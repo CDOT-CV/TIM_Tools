@@ -25,10 +25,11 @@ def getDurationTimeMinutes(feature):
 
 def getAnchor(feature):
     coords = feature["geometry"]["coordinates"]
-    route = geospatial_service.pointToRouteId(feature["geometry"]["coordinates"][0][0], feature["geometry"]["coordinates"][0][1])
+    route = geospatial_service.point_to_route_id(
+        feature["geometry"]["coordinates"][0][0], feature["geometry"]["coordinates"][0][1])
     print('found route ' + route)
     # route = translateRoute(feature["properties"]["core_details"]["road_names"])
-    return geospatial_service.getUpstreamAnchor(coords, route)
+    return geospatial_service.get_upstream_point(coords, route, 0.25)
 
 
 def getItisCodes(feature):
@@ -168,6 +169,7 @@ def vehicleImpactSupported(vehicle_impact):
     if vehicle_impact == "all-lanes-closed":
         return True
     return False
+
 
 def getFirstRoadName(feature):
     return feature["properties"]["core_details"]["road_names"][0]
