@@ -12,7 +12,7 @@ def get_map_server_endpoint():
     return os.environ['dual_carriageway_endpoint'].split('/exts', 1)[0]
 
 
-def measure_at_point(lat, lon, route) -> int:
+def measure_at_point(lat, lon, routeId) -> int:
     '''Finds the measure at a given point for a given route
 
     Parameters:
@@ -23,12 +23,12 @@ def measure_at_point(lat, lon, route) -> int:
     Returns:
         measure (int): Measure of point on route'''
     r = requests.get(
-        f'{get_geospatial_endpoint()}/MeasureAtPoint?x={lon}&y={lat}&inSR=4326&routeId={route}&tolerance=&outSR=4326&f=pjson', verify=False)
+        f'{get_geospatial_endpoint()}/MeasureAtPoint?x={lon}&y={lat}&inSR=4326&routeId={routeId}&tolerance=&outSR=4326&f=pjson', verify=False)
     data = r.json()
     return int(data["features"][0]["attributes"]["Measure"])
 
 
-def point_at_measure(measure, route):
+def point_at_measure(measure, routeId):
     '''Finds the coordinate at a given measure for a given route
 
     Parameters:
@@ -38,7 +38,7 @@ def point_at_measure(measure, route):
     Returns:
         point (dict): Coordinate of point on route'''
     r = requests.get(
-        f'{get_geospatial_endpoint()}/PointAtMeasure?routeId={route}&measure={measure}&inSR=4326&outSR=4326&f=pjson', verify=False)
+        f'{get_geospatial_endpoint()}/PointAtMeasure?routeId={routeId}&measure={measure}&inSR=4326&outSR=4326&f=pjson', verify=False)
     data = r.json()
     if 'error' in data:
         print(data)
@@ -86,7 +86,7 @@ def point_to_route_id(lon, lat):
     return data["results"][0]["attributes"]["RouteId_Legacy"]
 
 
-def get_direction_of_travel(coords, route):
+def get_direction_of_travel(coords, routeId):
     '''Finds the direction of travel for a given route and coordinate list
 
     Parameters:
@@ -100,8 +100,9 @@ def get_direction_of_travel(coords, route):
     if len(coords) == 1:
         return None
 
-    start_measure = measure_at_point(coords[0][1], coords[0][0], route)
-    end_measure = measure_at_point(coords[1][1], coords[1][0], route)
+    start_measure = measure_at_point(coords[0][1], coords[0][0], routeId)
+    end_index = len(coords) - 1
+    end_measure = measure_at_point(coords[end_index][1], coords[end_index][0], routeId)
 
     return {
         'start_measure': start_measure,
@@ -109,7 +110,31 @@ def get_direction_of_travel(coords, route):
     }
 
 
-def get_upstream_point(coords, route, distance):
+def get_upstream_measures(coords, routeId, distance):
+    '''Finds the first point measure and upstream measure for a given route and coordinate list
+
+    Parameters:
+        coords (list): A list of coordinates
+        route (str): A route ID
+
+    Returns:
+        measures (dict): An object representing measures for first point and upstream point from beginning coordinate'''
+    # get measure at point for first coord & 2nd coord to determine measure direction
+    # then go opposite direction and use point at measure
+
+    travel = get_direction_of_travel(coords, routeId)
+    if travel is None:
+        return None
+
+    new_measure = travel['start_measure'] - \
+        distance if travel['direction'] == 'increasing' else travel['start_measure'] + distance
+    return {
+        'first_point_measure': travel['start_measure'],
+        'upstream_measure': new_measure
+    }
+
+
+def get_upstream_point(coords, routeId, distance):
     '''Finds the upstream anchor point for a given route and coordinate list
 
     Parameters:
@@ -121,13 +146,13 @@ def get_upstream_point(coords, route, distance):
     # get measure at point for first coord & 2nd coord to determine measure direction
     # then go opposite direction and use point at measure
 
-    travel = get_direction_of_travel(coords, route)
+    travel = get_direction_of_travel(coords, routeId)
     if travel is None:
         return None
 
     new_measure = travel['start_measure'] - \
         distance if travel['direction'] == 'increasing' else travel['start_measure'] + distance
-    anchor = point_at_measure(new_measure, route)
+    anchor = point_at_measure(new_measure, routeId)
     return anchor
 
 
