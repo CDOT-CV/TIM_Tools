@@ -59,6 +59,8 @@ def calculate_direction(coords, anchor):
 
         fwd_azimuth, back_azimuth, distance = geodesic.inv(
             startLon, startLat, lon, lat)
+        if (fwd_azimuth < 0):
+            fwd_azimuth = 360 + fwd_azimuth
         timDirection |= get_direction_from_bearing(fwd_azimuth)
         # reset for next round
         startLat = lat
