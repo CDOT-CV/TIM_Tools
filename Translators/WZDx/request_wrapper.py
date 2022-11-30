@@ -1,7 +1,7 @@
 import secrets
 from shapely.geometry import LineString
-import rsu_service
-import geospatial_service
+import Translators.WZDx.rsu_service as rsu_service
+import Translators.WZDx.geospatial_service as geospatial_service
 
 
 def get_bounding_box(geometry):
@@ -60,6 +60,13 @@ def get_sdw_request(geometry):
 
 
 def buffer_geometry(coords):
+    '''Creates a buffer around the provided geometry
+
+    Parameters:
+        coords (list): A list of coordinates
+
+    Returns:
+        bufferedPolygon (dict): A GeoJSON polygon object'''
     line_string = LineString(coords)
     # ~ 10m buffer. 0.0001 degrees = 11.1m at equator
     return line_string.buffer(0.0001)

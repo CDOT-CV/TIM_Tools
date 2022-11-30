@@ -1,4 +1,3 @@
-from unittest.mock import MagicMock, patch, Mock
 from Translators.WZDx import utils
 import tests.Translators.WZDx.data.utils_data as utils_data
 
