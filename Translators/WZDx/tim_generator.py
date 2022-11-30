@@ -63,18 +63,18 @@ def calculate_offset_path(coords, anchor):
         # include a node with an offset of (0, 0) which is effectively a point that's
         # right on top of the anchor point.
         nodes.append({
+            "delta": "node-LL",
             "nodeLat": 0,
-            "nodeLon": 0,
-            "delta": "node-LL"
+            "nodeLong": 0
         })
 
     for i in range(coords_len):
         latOffset = float(coords[i][1]) - startLat
         lonOffset = float(coords[i][0]) - startLon
         nodes.append({
+            "delta": "node-LL",
             "nodeLat": latOffset,
-            "nodeLon": lonOffset,
-            "delta": "node-LL"
+            "nodeLong": lonOffset
         })
         startLon = float(coords[i][0])
         startLat = float(coords[i][1])
@@ -183,9 +183,11 @@ def get_data_frames(feature):
     start_date = feature["properties"]["start_date"]
     duration = get_duration_time_minutes(feature)
     msgId = get_msg_id(anchor)
-    regions = [get_region(coords, anchor, roadName=get_first_road_name(feature))]
+    regions = [get_region(
+        coords, anchor, roadName=get_first_road_name(feature))]
 
-    data_frames = [get_work_zone_data_frame(start_date, duration, msgId, regions)]
+    data_frames = [get_work_zone_data_frame(
+        start_date, duration, msgId, regions)]
 
     # TODO: add additional data frames as appropriate
     vehicle_Impact = feature["properties"]["vehicle_impact"]

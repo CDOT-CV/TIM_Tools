@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock, patch, Mock
+from unittest.mock import patch
 from Translators.WZDx import tim_generator
 
 
@@ -24,11 +24,10 @@ def test_getDurationTimeMinutes_withLargeTime():
     assert duration == 32000
 
 ############################ getAnchor ############################    
-@patch('Translators.WZDx.tim_generator.translateRoute')
-@patch('Translators.WZDx.tim_generator.geospatial_service.getUpstreamAnchor')
-def test_getAnchor(mock_upstreamAnchor, mock_translateRoute):
-    mock_translateRoute.return_value = 'I-80'
-    mock_upstreamAnchor.return_value = {'latitude': 37.795, 'longitude': -122.403}
+@patch('Translators.WZDx.tim_generator.geospatial_service')
+def test_getAnchor(mock_geospacial_service):
+    mock_geospacial_service.point_to_route_id.return_value = 'route'
+    mock_geospacial_service.get_upstream_point.return_value = {'latitude': 37.795, 'longitude': -122.403}
     feature = {
         'geometry': {
             'coordinates': [
@@ -70,8 +69,8 @@ def test_getItisCodes_allLanesClosed():
 def test_calculateOffsetPath():
     coords = [
         [
-            -122.403,
-            37.795
+            -122.401,
+            37.750
         ],
         [
             -122.403,
@@ -79,22 +78,22 @@ def test_calculateOffsetPath():
         ]
     ]
     anchor = {
-        'latitude': 37.795,
-        'longitude': -122.403
+        'latitude': 37.700,
+        'longitude': -122.400
     }
     offsetPath = tim_generator.calculate_offset_path(coords, anchor)
     assert offsetPath ==  {
         'scale': 0,
         'nodes': [
                 {
-                    'delta': 0,
-                    'lat': 37.795,
-                    'long': -122.403
+                    'delta': 'node-LL',
+                    'nodeLat': 0.04999999999999716,
+                    'nodeLong': -0.000999999999990564
                 },
                 {
-                    'delta': 0,
-                    'lat': 37.795,
-                    'long': -122.403
+                    'delta': 'node-LL',
+                    'nodeLat': 0.045000000000001705,
+                    'nodeLong': -0.0020000000000095497
                 }
             ],
         'type': 'll'
