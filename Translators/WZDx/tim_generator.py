@@ -87,7 +87,7 @@ def calculate_offset_path(coords, anchor):
 
 
 def get_region(coords, anchor, roadName):
-    # TODO: update fields, name (for directionality), directionality
+    # TODO: update fields, name (for directionality)
     return {
         "name": f"I_{roadName}_IDENTIFIER",
         "anchorPosition": anchor,

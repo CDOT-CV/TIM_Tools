@@ -30,7 +30,6 @@ def update_rsu_region_name(request, tim_body):
 
 def translate(wzdx_geojson):
     tims = []
-    # TODO: generate two messages, one for sdx and one for rsu
     # if no RSUs found, drop that one
     for feature in wzdx_geojson["features"]:
         tim_body = generate_tim(feature)
