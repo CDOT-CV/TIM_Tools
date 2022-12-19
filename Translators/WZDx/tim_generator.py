@@ -157,7 +157,6 @@ def get_vehicle_impact_data_frame(feature, start_date, duration, msgId, regions)
         "regions": regions,
         "sspMsgTypes": "1",  # default value
         "sspMsgContent": "1",  # default value
-        # TODO: determine content, defaulting workzone for now
         "content": get_content_type(feature),
         "items": get_itis_codes(feature),
         "url": "null"
