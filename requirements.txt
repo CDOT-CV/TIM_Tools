@@ -6,3 +6,5 @@ flask==2.0.2
 google-cloud-error-reporting==1.4.1
 pyproj==3.3.1
 requests
+shapely==1.8.5
+sqlalchemy
