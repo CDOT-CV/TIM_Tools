@@ -1,7 +1,9 @@
+import logging
 import os
 import requests
 import urllib3
 urllib3.disable_warnings()
+import Schemas.geospatial_schemas as geospatial_schemas
 
 
 def get_geospatial_endpoint():
@@ -24,7 +26,17 @@ def measure_at_point(lat, lon, routeId) -> int:
         measure (int): Measure of point on route'''
     r = requests.get(
         f'{get_geospatial_endpoint()}/MeasureAtPoint?x={lon}&y={lat}&inSR=4326&routeId={routeId}&tolerance=&outSR=4326&f=pjson', verify=False)
+    if (r.status_code != 200):
+        logging.warning(r.text)
+        return -1
+
     data = r.json()
+    schema = geospatial_schemas.MeasureAtPointReturnSchema()
+    errors = schema.validate(data)
+    if errors:
+        logging.warning(str(errors))
+        return -1
+        
     return int(data["features"][0]["attributes"]["Measure"])
 
 
@@ -102,7 +114,8 @@ def get_direction_of_travel(coords, routeId):
 
     start_measure = measure_at_point(coords[0][1], coords[0][0], routeId)
     end_index = len(coords) - 1
-    end_measure = measure_at_point(coords[end_index][1], coords[end_index][0], routeId)
+    end_measure = measure_at_point(
+        coords[end_index][1], coords[end_index][0], routeId)
 
     return {
         'start_measure': start_measure,
