@@ -1,5 +1,5 @@
 import logging
-import Translators.WZDx.pgquery as pgquery
+import pgquery as pgquery
 import shapely.wkt
 
 

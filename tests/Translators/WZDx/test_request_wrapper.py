@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock, patch, Mock
+from unittest.mock import patch
 from Translators.WZDx import request_wrapper
 import tests.Translators.WZDx.data.request_wrapper_data as data
 

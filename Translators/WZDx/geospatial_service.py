@@ -3,7 +3,7 @@ import os
 import requests
 import urllib3
 urllib3.disable_warnings()
-import Schemas.geospatial_schemas as geospatial_schemas
+from Schemas import geospatial_schemas as geospatial_schemas
 
 
 def get_geospatial_endpoint():

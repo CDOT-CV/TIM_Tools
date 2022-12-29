@@ -1,8 +1,8 @@
 import secrets
 from datetime import datetime
-from Translators.WZDx import geospatial_service
-from Translators.WZDx.itis_codes import ItisCodes
-from Translators.WZDx.utils import calculate_direction
+import geospatial_service
+from itis_codes import ItisCodes
+from utils import calculate_direction
 
 
 def get_duration_time_minutes(feature):

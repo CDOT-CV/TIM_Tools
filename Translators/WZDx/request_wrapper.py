@@ -1,7 +1,7 @@
 import secrets
 from shapely.geometry import LineString
-import Translators.WZDx.rsu_service as rsu_service
-import Translators.WZDx.geospatial_service as geospatial_service
+import rsu_service
+import geospatial_service
 
 
 def get_bounding_box(geometry):
