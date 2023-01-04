@@ -1,0 +1,23 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "WZDx TIM Translator",
+            "type": "python",
+            "request": "launch",
+            "module": "functions_framework",
+            "envFile": "${workspaceRoot}/Translators/WZDx/.env",
+            "args": [
+                "--target",
+                "translateWzdxTIM",
+                "--source",
+                "Translators/WZDx/main.py",
+                "--debug"
+            ],
+            "preLaunchTask": "build-wzdx-translator",
+        }
+    ]
+}
