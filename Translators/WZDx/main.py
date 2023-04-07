@@ -1,5 +1,6 @@
 import functions_framework
 import json
+import requests
 import copy
 import logging
 import os
@@ -48,6 +49,8 @@ def translate(wzdx_geojson):
                     "tim": update_rsu_region_name(rsu_request, tim_body)
                 }
                 tims.append(rsu_tim)
+        else:
+            logging.info(f'Failed to generate TIM for feature: {feature["id"]}')
     return tims
 
 
@@ -82,3 +85,45 @@ def translateWzdxTIM(request):
 
     tims = translate(request.get_json())
     return (json.dumps(tims), 200, headers)
+
+def entry(request):
+    logging.info('TIM Translator Timer Called...')
+    if request.method == 'OPTIONS':
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '3600'
+        }
+
+        return ('', 204, headers)
+
+    headers = {
+        'Access-Control-Allow-Origin': '*'
+    }
+
+    # Scrape the CDOT endpoint to get current list of WZDX features
+    geoJSON =  json.loads(requests.get(f'https://{os.getenv("WZDX_ENDPOINT")}/api/v1/wzdx?apiKey={os.getenv("WZDX_API_KEY")}').content.decode('utf-8'))
+    
+    tim_list = translate(geoJSON)
+
+    logging.info('Pushing TIMs to ODE...')
+
+    errNo = 0
+    for tim in tim_list:
+        for msg in tim["tim"]["dataframes"]:
+            # change 'workzone' to 'workZone' before pushing to ODE
+            if msg["content"] == "workzone":
+                msg["content"] = "workZone"
+            # update start date to include milliseconds if missing
+            if msg["startDateTime"][-5] != ".":
+                msg["startDateTime"] = msg["startDateTime"][:-1] + ".000Z"
+        return_value = requests.post(f'{os.getenv("TIM_TIMER_URL")}/tim', json=tim)
+        if return_value.status_code != 200:
+            errNo += 1
+            logging.info(f'Error pushing TIM to ODE: {return_value.content.decode("utf-8")}')
+    if errNo > 1:
+        logging.info(f'Failed to push {errNo} TIMs to ODE')
+    logging.info(f'Successfully pushed {len(tim_list) - errNo} TIMs to ODE')
+
+    return (f'Successfully pushed {len(tim_list) - errNo} TIMs to ODE', 200, headers)
