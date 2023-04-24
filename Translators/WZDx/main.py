@@ -35,6 +35,14 @@ def translate(wzdx_geojson):
     for feature in wzdx_geojson["features"]:
         tim_body = generate_tim(feature)
         if tim_body is not None:
+            for msg in tim_body["dataframes"]:
+                # change 'workzone' to 'workZone' before appending TIM
+                if msg["content"] == "workzone":
+                    msg["content"] = "workZone"
+                # update start date to include milliseconds if missing
+                if msg["startDateTime"][-5] != ".":
+                    msg["startDateTime"] = msg["startDateTime"][:-1] + ".000Z"
+
             sdx_request = get_sdw_request(feature["geometry"])
             sdx_tim = {
                 "request": sdx_request,
@@ -111,13 +119,6 @@ def entry(request):
 
     errNo = 0
     for tim in tim_list:
-        for msg in tim["tim"]["dataframes"]:
-            # change 'workzone' to 'workZone' before pushing to ODE
-            if msg["content"] == "workzone":
-                msg["content"] = "workZone"
-            # update start date to include milliseconds if missing
-            if msg["startDateTime"][-5] != ".":
-                msg["startDateTime"] = msg["startDateTime"][:-1] + ".000Z"
         return_value = requests.post(f'{os.getenv("TIM_TIMER_URL")}/tim', json=tim)
         if return_value.status_code != 200:
             errNo += 1

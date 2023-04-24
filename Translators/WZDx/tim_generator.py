@@ -199,15 +199,13 @@ def get_data_frames(feature):
 
         for index in range(0, numPaths):
             rangeEnd = pathLength + 1 if index < remainder else pathLength
-            regionCoords = feature['geometry']['coordinates'][0 : rangeEnd]
+            regionCoords = coords[0 : rangeEnd]
             anchor = get_anchor(feature)
             regions.append(get_region(regionCoords, anchor, roadName=get_first_road_name(feature)))
-            del feature['geometry']['coordinates'][0 : rangeEnd]
+            del coords[0 : rangeEnd]
     else: 
         regions = [get_region(
             coords, anchor, roadName=get_first_road_name(feature))]
-
-    feature["geometry"]["coordinates"] = coords
 
     data_frames = [get_work_zone_data_frame(
         start_date, duration, msgId, regions)]
