@@ -184,6 +184,6 @@ expected_dataframes = [
      ],
         'sspMsgTypes': '1',
      'sspMsgContent': '1',
-     'content': 'workzone',
+     'content': 'workZone',
      'items': ['1025'],
      'url': 'null'}]

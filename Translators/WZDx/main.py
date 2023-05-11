@@ -36,9 +36,6 @@ def translate(wzdx_geojson):
         tim_body = generate_tim(feature)
         if tim_body is not None:
             for msg in tim_body["dataframes"]:
-                # change 'workzone' to 'workZone' before appending TIM
-                if msg["content"] == "workzone":
-                    msg["content"] = "workZone"
                 # update start date to include milliseconds if missing
                 if msg["startDateTime"][-5] != ".":
                     msg["startDateTime"] = msg["startDateTime"][:-1] + ".000Z"
@@ -119,7 +116,7 @@ def entry(request):
 
     errNo = 0
     for tim in tim_list:
-        return_value = requests.post(f'{os.getenv("TIM_TIMER_URL")}/tim', json=tim)
+        return_value = requests.post(f'{os.getenv("ODE_ENDPOINT")}/tim', json=tim)
         if return_value.status_code != 200:
             errNo += 1
             logging.info(f'Error pushing TIM to ODE: {return_value.content.decode("utf-8")}')

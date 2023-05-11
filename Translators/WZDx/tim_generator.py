@@ -5,6 +5,7 @@ from datetime import datetime
 import geospatial_service
 from itis_codes import ItisCodes
 from utils import calculate_direction
+import logging
 
 
 def get_duration_time_minutes(feature):
@@ -32,7 +33,7 @@ def get_anchor(feature):
     # route = translateRoute(feature["properties"]["core_details"]["road_names"])
     if route is None:
         return None
-    print('found route ' + route)
+    logging.info('found route ' + route)
     return geospatial_service.get_upstream_point(coords, route, 0.25)
 
 
@@ -138,7 +139,7 @@ def get_work_zone_data_frame(start_date, duration, msgId, regions):
         "regions": regions,
         "sspMsgTypes": "1",  # default value
         "sspMsgContent": "1",  # default value
-        "content": "workzone",
+        "content": "workZone",
         "items": [ItisCodes.ROAD_CONSTRUCTION.value],
         "url": "null"
     }
