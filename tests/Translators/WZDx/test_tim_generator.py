@@ -1,5 +1,6 @@
 from unittest.mock import patch
 from Translators.WZDx import tim_generator
+import tests.Translators.WZDx.data.dataframes_data as dataframes_data
 
 
 ############################ getDurationTimeMinutes ############################
@@ -98,3 +99,35 @@ def test_calculateOffsetPath():
             ],
         'type': 'll'
     }
+
+############################ getDataFrames ############################
+
+# create a pytest for the get_data_frames function
+@patch('Translators.WZDx.tim_generator.get_anchor')
+@patch('Translators.WZDx.tim_generator.copy.deepcopy')
+@patch('Translators.WZDx.tim_generator.get_duration_time_minutes')
+@patch('Translators.WZDx.tim_generator.get_msg_id')
+@patch('Translators.WZDx.tim_generator.vehicle_impact_supported')
+@patch('Translators.WZDx.tim_generator.get_first_road_name')
+def test_getDataFrames(mockRoad, mockSupported, mockMsgId, mockDuration, mockDeepCopy, mockAnchor):
+
+    mockDeepCopy.return_value = dataframes_data.coords
+    mockAnchor.return_value = dataframes_data.anchor
+    mockDuration.return_value = 0
+    mockMsgId.return_value = "some-id"
+    mockSupported.return_value = False
+    mockRoad.return_value = "some-road"
+
+    feature = {
+        'geometry': {
+            'coordinates': dataframes_data.coords
+        },
+        'properties': {
+            'start_date': '2022-02-13T16:00:00Z',
+            'vehicle_impact': "some-impact",
+        }
+    }
+
+    dataFrames = tim_generator.get_data_frames(feature)
+    assert dataFrames == dataframes_data.expected_dataframes
+

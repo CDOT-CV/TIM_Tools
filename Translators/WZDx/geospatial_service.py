@@ -95,6 +95,8 @@ def point_to_route_id(lon, lat):
         str_results = [*map(lambda x: x['attributes']
                             ['RouteId_Legacy'], data['results'])]
         print('Multiple routes found: ' + ', '.join(str_results))
+    if data["results"] == []:
+        return None
     return data["results"][0]["attributes"]["RouteId_Legacy"]
 
 

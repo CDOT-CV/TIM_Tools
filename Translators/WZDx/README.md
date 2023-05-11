@@ -27,6 +27,13 @@ Alternatively, if you are running VSCode there is a task available to run this o
 
 The scripts also require access to the CDOT Postgres database. This can be accessed by setting the environment variables in the .env file. The .env file is not included in the repository for security reasons, however a sample.env file has been provided to show structure required. 
 
+In addition to the environment variables for accessing the CDOT Postgres database, the scripts also require the following environment variables to scrape the WZDx endpoint:
+<ol>
+    <li>WZDX_ENDPOINT - the CDOT WZDx URL</li>
+    <li>WZDX_API_KEY - the API key for accessing the WZDx data</li>
+    <li>ODE_ENDPOINT - the ODE URL where translated TIMs will be submitted </li>
+</ol>
+
 ### Testing
 Unit tests are ran with the python pytest module. To run the tests, run the following command from the root of the project:
 

@@ -1,8 +1,11 @@
+import math
+import copy
 import secrets
 from datetime import datetime
 import geospatial_service
 from itis_codes import ItisCodes
 from utils import calculate_direction
+import logging
 
 
 def get_duration_time_minutes(feature):
@@ -27,8 +30,10 @@ def get_anchor(feature):
     coords = feature["geometry"]["coordinates"]
     route = geospatial_service.point_to_route_id(
         feature["geometry"]["coordinates"][0][0], feature["geometry"]["coordinates"][0][1])
-    print('found route ' + route)
     # route = translateRoute(feature["properties"]["core_details"]["road_names"])
+    if route is None:
+        return None
+    logging.info('found route ' + route)
     return geospatial_service.get_upstream_point(coords, route, 0.25)
 
 
@@ -134,7 +139,7 @@ def get_work_zone_data_frame(start_date, duration, msgId, regions):
         "regions": regions,
         "sspMsgTypes": "1",  # default value
         "sspMsgContent": "1",  # default value
-        "content": "workzone",
+        "content": "workZone",
         "items": [ItisCodes.ROAD_CONSTRUCTION.value],
         "url": "null"
     }
@@ -175,15 +180,33 @@ def get_first_road_name(feature):
 
 
 def get_data_frames(feature):
-    coords = feature["geometry"]["coordinates"]
+    coords = copy.deepcopy(feature["geometry"]["coordinates"])
     anchor = get_anchor(feature)
     if anchor is None:
         return None
     start_date = feature["properties"]["start_date"]
     duration = get_duration_time_minutes(feature)
     msgId = get_msg_id(anchor)
-    regions = [get_region(
-        coords, anchor, roadName=get_first_road_name(feature))]
+
+    # In here need to calculate if size of path is greater than 63
+    # then generate regions accordingly
+    maxLength = 62
+    msgLength = len(feature['geometry']['coordinates'])
+    regions = []
+    if (msgLength > maxLength):
+        numPaths = math.ceil(msgLength / maxLength)
+        pathLength = (int) (msgLength / numPaths)
+        remainder = msgLength % pathLength
+
+        for index in range(0, numPaths):
+            rangeEnd = pathLength + 1 if index < remainder else pathLength
+            regionCoords = coords[0 : rangeEnd]
+            anchor = get_anchor(feature)
+            regions.append(get_region(regionCoords, anchor, roadName=get_first_road_name(feature)))
+            del coords[0 : rangeEnd]
+    else: 
+        regions = [get_region(
+            coords, anchor, roadName=get_first_road_name(feature))]
 
     data_frames = [get_work_zone_data_frame(
         start_date, duration, msgId, regions)]

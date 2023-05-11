@@ -18,6 +18,23 @@
                 "--debug"
             ],
             "preLaunchTask": "build-wzdx-translator",
-        }
+        },
+        {
+            "name": "TIM Translator Timer",
+            "type": "python",
+            "request": "launch",
+            "module": "functions_framework",
+            "envFile": "${workspaceRoot}/Translators/WZDx/.env",
+            "args": [
+                "--target",
+                "entry",
+                "--source",
+                "Translators/WZDx/main.py",
+                "--port",
+                "8081",
+                "--debug"
+            ],
+            "preLaunchTask": "build-wzdx-translator",
+        },
     ]
 }
