@@ -1,0 +1,31 @@
+# Pipeline for creating and pushing Cloud Function artifacts
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - "Translators/WZDx/*"
+
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: ArchiveFiles@2
+    name: zip_wzdxTranslator
+    inputs:
+      rootFolderOrFile: "Translators/WZDx"
+      includeRootFolder: false
+      archiveType: "zip"
+      archiveFile: "$(Build.ArtifactStagingDirectory)/WZDx.zip"
+      replaceExistingArchive: true
+      verbose: true
+
+  # Publish the artifacts directory for consumption in publish pipeline
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: "$(Build.ArtifactStagingDirectory)"
+      ArtifactName: "zipped_functions"
+      publishLocation: "Container"
