@@ -31,6 +31,7 @@ def update_rsu_region_name(request, tim_body):
 
 def translate(wzdx_geojson):
     tims = []
+    duration = os.getenv("DURATION_TIME")
     # if no RSUs found, drop that one
     for feature in wzdx_geojson["features"]:
         tim_body = generate_tim(feature)
@@ -39,6 +40,8 @@ def translate(wzdx_geojson):
                 # update start date to include milliseconds if missing
                 if msg["startDateTime"][-5] != ".":
                     msg["startDateTime"] = msg["startDateTime"][:-1] + ".000Z"
+                # set duration time
+                msg["durationTime"] = duration
 
             sdx_request = get_sdw_request(feature["geometry"])
             sdx_tim = {
