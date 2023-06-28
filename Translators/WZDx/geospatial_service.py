@@ -4,7 +4,21 @@ import requests
 import urllib3
 urllib3.disable_warnings()
 from Schemas import geospatial_schemas as geospatial_schemas
+import redis
+import json
 
+cache = None
+
+def get_redis_connection():
+    global cache
+    if cache is None:
+        cache = redis.Redis(host=os.environ['REDIS_HOST'], port=os.environ['REDIS_PORT'], decode_responses=True, db=0, password=os.environ['REDIS_PASS'])
+
+def check_cache(key):
+    global cache
+    if cache is None:
+        get_redis_connection()
+    return cache.get(key)
 
 def get_geospatial_endpoint():
     return os.environ['dual_carriageway_endpoint']
@@ -24,20 +38,29 @@ def measure_at_point(lat, lon, routeId) -> int:
 
     Returns:
         measure (int): Measure of point on route'''
-    r = requests.get(
-        f'{get_geospatial_endpoint()}/MeasureAtPoint?x={lon}&y={lat}&inSR=4326&routeId={routeId}&tolerance=&outSR=4326&f=pjson', verify=False)
-    if (r.status_code != 200):
-        logging.warning(r.text)
-        return -1
+    global cache
+    key = f'measure_at_point:{lat}:{lon}:{routeId}'
 
-    data = r.json()
-    schema = geospatial_schemas.MeasureAtPointReturnSchema()
-    errors = schema.validate(data)
-    if errors:
-        logging.warning(str(errors))
-        return -1
+    cache_val = check_cache(key)
+    if cache_val != None:
+        return int(cache_val)
+    else:
+        r = requests.get(
+            f'{get_geospatial_endpoint()}/MeasureAtPoint?x={lon}&y={lat}&inSR=4326&routeId={routeId}&tolerance=&outSR=4326&f=pjson', verify=False)
+        if (r.status_code != 200):
+            logging.warning(r.text)
+            return -1
+
+        data = r.json()
+        schema = geospatial_schemas.MeasureAtPointReturnSchema()
+        errors = schema.validate(data)
+        if errors:
+            logging.warning(str(errors))
+            return -1
         
-    return int(data["features"][0]["attributes"]["Measure"])
+        cache.set(key, str(int(data["features"][0]["attributes"]["Measure"])))
+
+        return int(data["features"][0]["attributes"]["Measure"])
 
 
 def point_at_measure(measure, routeId):
@@ -49,16 +72,25 @@ def point_at_measure(measure, routeId):
 
     Returns:
         point (dict): Coordinate of point on route'''
-    r = requests.get(
-        f'{get_geospatial_endpoint()}/PointAtMeasure?routeId={routeId}&measure={measure}&inSR=4326&outSR=4326&f=pjson', verify=False)
-    data = r.json()
-    if 'error' in data:
-        print(data)
-        return None
-    return {
-        "longitude": data['features'][0]['geometry']['x'],
-        "latitude": data['features'][0]['geometry']['y']
-    }
+    global cache
+    key = f'point_at_measure:{measure}:{routeId}'
+
+    cache_val = check_cache(key)
+    if cache_val != None:
+        return json.loads(cache_val)
+    else:
+        r = requests.get(
+            f'{get_geospatial_endpoint()}/PointAtMeasure?routeId={routeId}&measure={measure}&inSR=4326&outSR=4326&f=pjson', verify=False)
+        data = r.json()
+        if 'error' in data:
+            print(data)
+            return None
+        res = {
+            "longitude": data['features'][0]['geometry']['x'],
+            "latitude": data['features'][0]['geometry']['y']
+        }
+        cache.set(key, json.dumps(res))
+        return res
 
 
 def get_ten_meter_extent(lon, lat):
@@ -88,16 +120,23 @@ def point_to_route_id(lon, lat):
         route (str): Route ID'''
     # colorado_extent = "-109.081667,37.002220,-102.028444,40.979583"
     # NOTE: currently failing to find proper routes on occasion...
-    r = requests.get(
-        f'{get_map_server_endpoint()}/identify?geometry={lon},{lat}&geometryType=esriGeometryPoint&sr=4326&tolerance=50&mapExtent={get_ten_meter_extent(lon,lat)}&imageDisplay=600,550,96&returnGeometry=false&returnZ=false&returnM=false&returnUnformattedValues=false&returnFieldName=false&f=json', verify=False)
-    data = r.json()
-    if (len(data['results']) > 1):
-        str_results = [*map(lambda x: x['attributes']
-                            ['RouteId_Legacy'], data['results'])]
-        print('Multiple routes found: ' + ', '.join(str_results))
-    if data["results"] == []:
-        return None
-    return data["results"][0]["attributes"]["RouteId_Legacy"]
+    global cache
+    key = f'point_to_route_id:{lon}:{lat}'
+    cache_val = check_cache(key)
+    if cache_val != None:
+        return cache_val
+    else:
+        r = requests.get(
+            f'{get_map_server_endpoint()}/identify?geometry={lon},{lat}&geometryType=esriGeometryPoint&sr=4326&tolerance=50&mapExtent={get_ten_meter_extent(lon,lat)}&imageDisplay=600,550,96&returnGeometry=false&returnZ=false&returnM=false&returnUnformattedValues=false&returnFieldName=false&f=json', verify=False)
+        data = r.json()
+        if (len(data['results']) > 1):
+            str_results = [*map(lambda x: x['attributes']
+                                ['RouteId_Legacy'], data['results'])]
+            print('Multiple routes found: ' + ', '.join(str_results))
+        if data["results"] == []:
+            return None
+        cache.set(key, data["results"][0]["attributes"]["RouteId_Legacy"])
+        return data["results"][0]["attributes"]["RouteId_Legacy"]
 
 
 def get_direction_of_travel(coords, routeId):
