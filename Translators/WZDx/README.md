@@ -34,6 +34,14 @@ In addition to the environment variables for accessing the CDOT Postgres databas
     <li>ODE_ENDPOINT - the ODE URL where translated TIMs will be submitted </li>
 </ol>
 
+The WZDx to TIM translator also utilizes a redis cache to reduce the number of times the geospatial endpoint is hit. This cache is currently hosted using the free tier of redis enterprise cloud and does not need to be larger than 30GB. More information on redis enterprise cloud can be found here: https://redis.com/redis-enterprise-cloud/overview/. The following environment variables are necessary to access the redis cache:
+
+<ol>
+    <li>REDIS_HOST - the hostname of the redis server</li>
+    <li>REDIS_PORT - the redis server port</li>
+    <li>REDIS_PASS - the password used to connect to the redis server</li>
+</ol>
+
 ### Testing
 Unit tests are ran with the python pytest module. To run the tests, run the following command from the root of the project:
 

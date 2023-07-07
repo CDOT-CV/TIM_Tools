@@ -9,7 +9,7 @@ import json
 
 cache = None
 
-def get_redis_connection():
+def initialize_redis_connection():
     global cache
     if cache is None:
         cache = redis.Redis(host=os.environ['REDIS_HOST'], port=os.environ['REDIS_PORT'], decode_responses=True, db=0, password=os.environ['REDIS_PASS'])
@@ -17,7 +17,7 @@ def get_redis_connection():
 def check_cache(key):
     global cache
     if cache is None:
-        get_redis_connection()
+        initialize_redis_connection()
     return cache.get(key)
 
 def get_geospatial_endpoint():
@@ -83,7 +83,7 @@ def point_at_measure(measure, routeId):
             f'{get_geospatial_endpoint()}/PointAtMeasure?routeId={routeId}&measure={measure}&inSR=4326&outSR=4326&f=pjson', verify=False)
         data = r.json()
         if 'error' in data:
-            print(data)
+            logging.info(data)
             return None
         res = {
             "longitude": data['features'][0]['geometry']['x'],
