@@ -27,11 +27,12 @@ Alternatively, if you are running VSCode there is a task available to run this o
 
 The scripts also require access to the CDOT Postgres database. This can be accessed by setting the environment variables in the .env file. The .env file is not included in the repository for security reasons, however a sample.env file has been provided to show structure required. 
 
-In addition to the environment variables for accessing the CDOT Postgres database, the scripts also require the following environment variables to scrape the WZDx endpoint:
+In addition to the environment variables for accessing the CDOT Postgres database, the scripts also require the following environment variables to scrape the WZDx endpoint and deposit the resulting TIMs:
 <ol>
     <li>WZDX_ENDPOINT - the CDOT WZDx URL</li>
     <li>WZDX_API_KEY - the API key for accessing the WZDx data</li>
     <li>ODE_ENDPOINT - the ODE URL where translated TIMs will be submitted </li>
+    <li>DURATION_TIME - the duration time in seconds of the TIMs </li>
 </ol>
 
 ### Testing
