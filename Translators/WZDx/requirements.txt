@@ -7,3 +7,4 @@ shapely==1.8.5
 sqlalchemy==1.4.22
 pg8000==1.29.6
 marshmallow
+redis==4.6.0
