@@ -27,11 +27,12 @@ Alternatively, if you are running VSCode there is a task available to run this o
 
 The scripts also require access to the CDOT Postgres database. This can be accessed by setting the environment variables in the .env file. The .env file is not included in the repository for security reasons, however a sample.env file has been provided to show structure required. 
 
-In addition to the environment variables for accessing the CDOT Postgres database, the scripts also require the following environment variables to scrape the WZDx endpoint:
+In addition to the environment variables for accessing the CDOT Postgres database, the scripts also require the following environment variables to scrape the WZDx endpoint and deposit the resulting TIMs:
 <ol>
     <li>WZDX_ENDPOINT - the CDOT WZDx URL</li>
     <li>WZDX_API_KEY - the API key for accessing the WZDx data</li>
     <li>ODE_ENDPOINT - the ODE URL where translated TIMs will be submitted </li>
+    <li>DURATION_TIME - the duration time in seconds of the TIMs </li>
 </ol>
 
 The WZDx to TIM translator also utilizes a redis cache to reduce the number of times the geospatial endpoint is hit. This cache is currently hosted using the free tier of redis enterprise cloud and does not need to be larger than 30GB. More information on redis enterprise cloud can be found here: https://redis.com/redis-enterprise-cloud/overview/. The following environment variables are necessary to access the redis cache:
