@@ -2,7 +2,6 @@ version: '1.0'
 
 services:
   redis:
-    platform: linux/amd64
     image: redis-cache:latest
     build: ./redis
     ports:
@@ -14,7 +13,6 @@ services:
     volumes:
       - redis-data:/data
   WZDx_tim_translator:
-    platform: linux/amd64
     build: ./Translators/WZDx
     image: translator:latest
     environment:
