@@ -60,6 +60,10 @@ Again, if you are running VSCode there is a task available to run this on your b
 Using VSCode, a simple launch.json file has been provided to allow debugging the application. This can be accessed under the Run & Debug tab. The default configuration will run the translator using the functions framework. This runs the translator as a REST service accessed on http://localhost:8080. The translator can be tested by sending a POST request to this endpoint with a WZDx message in the body. The translator will respond with a series of TIM messages in the body of the response.
 
 
+### Running the Translator via Docker
+The WZDx/TIM translator can also be run locally using Docker. The translator Dockerfile can be found under Translators/WZDx/ and the redis cache Dockerfile can be found under redis/. Additionally, there is a docker-compose file which builds and runs both the translator and the redis cache. The translator REST service is then able to be accessed on http://localhost:8081. 
+
+
 ### Current Known Limitations
 - Public GIS endpoint is in the process of being deployed and is currently inaccessible.
 - Translator currently supports only WZDx v4.1 messages
