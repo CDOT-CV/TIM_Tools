@@ -1,4 +1,3 @@
-import functions_framework
 import json
 import requests
 import copy
@@ -6,10 +5,15 @@ import logging
 import os
 from request_wrapper import get_sdw_request, get_rsu_request
 from tim_generator import generate_tim
+from flask import request, Flask
+
+app = Flask(__name__)
 
 log_level = os.environ.get('LOGGING_LEVEL', 'INFO')
 logging.basicConfig(format='%(levelname)s:%(message)s', level=log_level)
 
+if __name__ == '__main__':
+    app.run()
 
 def update_sat_region_name(request, tim_body):
     new_tim = copy.deepcopy(tim_body)
@@ -62,8 +66,8 @@ def translate(wzdx_geojson):
     return tims
 
 
-@functions_framework.http
-def translateWzdxTIM(request):
+@app.route('/translate', methods=['POST'])
+def translateWzdxTIM():
     """HTTP Cloud Function.
     Args:
         request (flask.Request): The request object.
@@ -94,7 +98,8 @@ def translateWzdxTIM(request):
     tims = translate(request.get_json())
     return (json.dumps(tims), 200, headers)
 
-def entry(request):
+@app.route('/', methods=['POST'])
+def entry():
     logging.info('TIM Translator Timer Called...')
     if request.method == 'OPTIONS':
         headers = {
