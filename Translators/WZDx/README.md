@@ -65,7 +65,7 @@ The WZDx/TIM translator can also be run locally using Docker. The translator Doc
 
 
 ### Current Known Limitations
-- Public GIS endpoint is in the process of being deployed and is currently inaccessible.
+- Public GIS endpoint is currently unable to traverse across multiple named routes.
 - Translator currently supports only WZDx v4.1 messages
 - Only 'CLOSED' ITIS code is supported. Further support is planned
     -  "all-lanes-closed" is only supported type at this time
