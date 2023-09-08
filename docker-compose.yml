@@ -29,6 +29,7 @@ services:
       - REDIS_PASS=${REDIS_PASS}
       - DURATION_TIME=${DURATION_TIME}
       - ODE_ENDPOINT=${ODE_ENDPOINT}
+      - RUN_LOCAL=${RUN_LOCAL}
     ports: 
       - '8081:8081'
     logging:

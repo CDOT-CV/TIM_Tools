@@ -12,9 +12,6 @@ app = Flask(__name__)
 log_level = os.environ.get('LOGGING_LEVEL', 'INFO')
 logging.basicConfig(format='%(levelname)s:%(message)s', level=log_level)
 
-if __name__ == '__main__':
-    app.run()
-
 def update_sat_region_name(request, tim_body):
     new_tim = copy.deepcopy(tim_body)
     region_name = new_tim['dataframes'][0]['regions'][0]['name']
@@ -133,3 +130,34 @@ def entry():
     logging.info(f'Successfully pushed {len(tim_list) - errNo} TIMs to ODE')
 
     return (f'Successfully pushed {len(tim_list) - errNo} TIMs to ODE', 200, headers)
+
+
+def WZDx_tim_translator():
+    logging.info('TIM Translator Timer Called...')
+
+    # Scrape the CDOT endpoint to get current list of WZDX features
+    geoJSON =  json.loads(requests.get(f'https://{os.getenv("WZDX_ENDPOINT")}/api/v1/wzdx?apiKey={os.getenv("WZDX_API_KEY")}').content.decode('utf-8'))
+
+    tim_list = translate(geoJSON)
+
+    logging.info('Pushing TIMs to ODE...')
+
+    errNo = 0
+    for tim in tim_list:
+        return_value = requests.post(f'{os.getenv("ODE_ENDPOINT")}/tim', json=tim)
+        if return_value.status_code != 200:
+            errNo += 1
+            logging.info(f'Error pushing TIM to ODE: {return_value.content.decode("utf-8")}')
+    if errNo > 1:
+        logging.info(f'Failed to push {errNo} TIMs to ODE')
+    logging.info(f'Successfully pushed {len(tim_list) - errNo} TIMs to ODE')
+
+    logging.info(f'Successfully pushed {len(tim_list) - errNo} TIMs to ODE')
+
+
+# Run via flask app if running locally else just run translator directly
+if (os.getenv("RUN_LOCAL") == "true"):
+    if __name__ == '__main__':
+        app.run()
+else:
+    WZDx_tim_translator()
