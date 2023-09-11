@@ -97,7 +97,6 @@ def translateWzdxTIM():
 
 @app.route('/', methods=['POST'])
 def entry():
-    logging.info('TIM Translator Timer Called...')
     if request.method == 'OPTIONS':
         headers = {
             'Access-Control-Allow-Origin': '*',
@@ -112,24 +111,10 @@ def entry():
         'Access-Control-Allow-Origin': '*'
     }
 
-    # Scrape the CDOT endpoint to get current list of WZDX features
-    geoJSON =  json.loads(requests.get(f'https://{os.getenv("WZDX_ENDPOINT")}/api/v1/wzdx?apiKey={os.getenv("WZDX_API_KEY")}').content.decode('utf-8'))
-    
-    tim_list = translate(geoJSON)
+    result = WZDx_tim_translator()
+    logging.info(result)
 
-    logging.info('Pushing TIMs to ODE...')
-
-    errNo = 0
-    for tim in tim_list:
-        return_value = requests.post(f'{os.getenv("ODE_ENDPOINT")}/tim', json=tim)
-        if return_value.status_code != 200:
-            errNo += 1
-            logging.info(f'Error pushing TIM to ODE: {return_value.content.decode("utf-8")}')
-    if errNo > 1:
-        logging.info(f'Failed to push {errNo} TIMs to ODE')
-    logging.info(f'Successfully pushed {len(tim_list) - errNo} TIMs to ODE')
-
-    return (f'Successfully pushed {len(tim_list) - errNo} TIMs to ODE', 200, headers)
+    return (result, 200, headers)
 
 
 def WZDx_tim_translator():
@@ -150,9 +135,8 @@ def WZDx_tim_translator():
             logging.info(f'Error pushing TIM to ODE: {return_value.content.decode("utf-8")}')
     if errNo > 1:
         logging.info(f'Failed to push {errNo} TIMs to ODE')
-    logging.info(f'Successfully pushed {len(tim_list) - errNo} TIMs to ODE')
 
-    logging.info(f'Successfully pushed {len(tim_list) - errNo} TIMs to ODE')
+    return f'Successfully pushed {len(tim_list) - errNo} TIMs to ODE'
 
 
 # Run via flask app if running locally else just run translator directly
@@ -160,4 +144,5 @@ if (os.getenv("RUN_LOCAL") == "true"):
     if __name__ == '__main__':
         app.run()
 else:
-    WZDx_tim_translator()
+    res_str = WZDx_tim_translator()
+    logging.info(res_str)
