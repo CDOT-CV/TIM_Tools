@@ -2,6 +2,7 @@ import secrets
 from shapely.geometry import LineString
 import rsu_service
 import geospatial_service
+from pgquery import query_db
 
 
 def get_bounding_box(geometry):
@@ -99,19 +100,31 @@ def get_snmp_settings(feature):
         "rsuid": "83",
         "msgid": 31,
         "mode": 1,
-        "channel": 178,
-        "interval": 2,
+        "channel": 183,
+        "interval": 1000,
         "deliverystart": feature["properties"]["start_date"],
         "deliverystop": feature["properties"]["end_date"],
         "enable": 1,
         "status": 4
     }
 
+def get_snmp_info(rsuTarget):
+    query = f"SELECT nickname, username, password FROM snmp_credentials WHERE snmp_credential_id = (SELECT snmp_credential_id FROM rsus WHERE ipv4_address = '{rsuTarget}')"
+    return query_db(query)
+
 
 def get_rsu_request(feature):
     rsus = get_rsus_for_message(feature['geometry'])
     if rsus is None:
         return None
+    
+    for rsu in rsus:
+        # get snmp protocol, username, password for each rsu
+        snmp_info = get_snmp_info(rsu["rsuTarget"])
+        if snmp_info is not None:
+            rsu["snmpProtocol"] = "NTCIP1218" if snmp_info[0]["nickname"] == "Yunex BUILD" else "FOURDOT1"
+            rsu["rsuUsername"] = snmp_info[0]["username"]
+            rsu["rsuPassword"] = snmp_info[0]["password"]
 
     tim_req = {
         "rsus": rsus,

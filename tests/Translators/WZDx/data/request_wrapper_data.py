@@ -98,8 +98,8 @@ expected_snmp_settings = {
     "rsuid": "83",
     "msgid": 31,
     "mode": 1,
-    "channel": 178,
-    "interval": 2,
+    "channel": 183,
+    "interval": 1000,
     "deliverystart": "2022-11-11T14:00:00Z",
     "deliverystop": "2022-11-12T00:30:00Z",
     "enable": 1,
@@ -110,3 +110,9 @@ expected_rsu_request = {
     "rsus": rsu_intersect_result,
     "snmp": expected_snmp_settings
 }
+
+expected_snmp_info = [{
+    "nickname": "nickname",
+    "username": "username",
+    "password": "password"
+}]
