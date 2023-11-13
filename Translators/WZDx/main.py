@@ -6,6 +6,10 @@ import logging
 import os
 from request_wrapper import get_sdw_request, get_rsu_request
 from tim_generator import generate_tim
+from flask import request, Flask
+from snmp_operations import clear_index
+
+app = Flask(__name__)
 
 log_level = os.environ.get('LOGGING_LEVEL', 'INFO')
 logging.basicConfig(format='%(levelname)s:%(message)s', level=log_level)
@@ -116,6 +120,13 @@ def entry(request):
     tim_list = translate(geoJSON)
 
     logging.info('Pushing TIMs to ODE...')
+
+    # Clear index for each RSU before pushing to ODE
+    for tim in tim_list:
+        if tim["request"].get("rsus") is not None:
+            rsus = tim["request"].get("rsus")
+            for rsu in rsus:
+                clear_index(rsu)
 
     errNo = 0
     for tim in tim_list:
