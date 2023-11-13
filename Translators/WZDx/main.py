@@ -6,10 +6,7 @@ import logging
 import os
 from request_wrapper import get_sdw_request, get_rsu_request
 from tim_generator import generate_tim
-from flask import request, Flask
 from snmp_operations import clear_index
-
-app = Flask(__name__)
 
 log_level = os.environ.get('LOGGING_LEVEL', 'INFO')
 logging.basicConfig(format='%(levelname)s:%(message)s', level=log_level)
