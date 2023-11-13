@@ -110,3 +110,9 @@ expected_rsu_request = {
     "rsus": rsu_intersect_result,
     "snmp": expected_snmp_settings
 }
+
+expected_snmp_info = [{
+    "nickname": "nickname",
+    "username": "username",
+    "password": "password"
+}]
