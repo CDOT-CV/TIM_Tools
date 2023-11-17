@@ -21,7 +21,7 @@ expected_rsu_data_single_result = [
         "rsuTarget": "10.10.10.10",
         "rsuRetries": 3,
         "rsuTimeout": 5000,
-        "rsuIndex": 2
+        "rsuIndex": 1
     }
 ]
 
@@ -54,7 +54,7 @@ expected_rsu_data_multiple_results = [
         "rsuTarget": "10.10.10.10",
         "rsuRetries": 3,
         "rsuTimeout": 5000,
-        "rsuIndex": 2
+        "rsuIndex": 1
     },
     {
         "latitude": 39.7027,
@@ -65,6 +65,6 @@ expected_rsu_data_multiple_results = [
         "rsuTarget": "10.10.10.9",
         "rsuRetries": 3,
         "rsuTimeout": 5000,
-        "rsuIndex": 2
+        "rsuIndex": 1
     }
 ]

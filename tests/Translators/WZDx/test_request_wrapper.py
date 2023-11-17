@@ -88,13 +88,17 @@ def test_get_snmp_settings():
 
 ############################ get_rsu_request ############################
 @patch('Translators.WZDx.request_wrapper.get_rsus_for_message')
-def test_get_rsu_request_no_rsus(mock_get_rsus_for_message):
+@patch('Translators.WZDx.request_wrapper.get_snmp_info')
+def test_get_rsu_request_no_rsus(mock_get_snmp_info, mock_get_rsus_for_message):
+    mock_get_snmp_info.return_value = None
     mock_get_rsus_for_message.return_value = None
     assert request_wrapper.get_rsu_request(data.example_feature) == None
 
 @patch('Translators.WZDx.request_wrapper.get_rsus_for_message')
 @patch('Translators.WZDx.request_wrapper.get_snmp_settings')
-def test_get_rsu_request_rsus(mock_get_snmp_settings, mock_get_rsus_for_message):
+@patch('Translators.WZDx.request_wrapper.get_snmp_info')
+def test_get_rsu_request_rsus(mock_get_snmp_info, mock_get_snmp_settings, mock_get_rsus_for_message):
     mock_get_rsus_for_message.return_value = data.rsu_intersect_result
     mock_get_snmp_settings.return_value = data.expected_snmp_settings
+    mock_get_snmp_info.return_value = data.expected_snmp_info
     assert request_wrapper.get_rsu_request(data.example_feature) == data.expected_rsu_request
