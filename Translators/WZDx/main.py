@@ -1,4 +1,3 @@
-import functions_framework
 import json
 import requests
 import copy
@@ -6,10 +5,12 @@ import logging
 import os
 from request_wrapper import get_sdw_request, get_rsu_request
 from tim_generator import generate_tim
+from flask import request, Flask
+
+app = Flask(__name__)
 
 log_level = os.environ.get('LOGGING_LEVEL', 'INFO')
 logging.basicConfig(format='%(levelname)s:%(message)s', level=log_level)
-
 
 def update_sat_region_name(request, tim_body):
     new_tim = copy.deepcopy(tim_body)
@@ -62,8 +63,8 @@ def translate(wzdx_geojson):
     return tims
 
 
-@functions_framework.http
-def translateWzdxTIM(request):
+@app.route('/translate', methods=['POST'])
+def translateWzdxTIM():
     """HTTP Cloud Function.
     Args:
         request (flask.Request): The request object.
@@ -94,8 +95,8 @@ def translateWzdxTIM(request):
     tims = translate(request.get_json())
     return (json.dumps(tims), 200, headers)
 
-def entry(request):
-    logging.info('TIM Translator Timer Called...')
+@app.route('/', methods=['POST'])
+def entry():
     if request.method == 'OPTIONS':
         headers = {
             'Access-Control-Allow-Origin': '*',
@@ -110,9 +111,18 @@ def entry(request):
         'Access-Control-Allow-Origin': '*'
     }
 
+    result = WZDx_tim_translator()
+    logging.info(result)
+
+    return (result, 200, headers)
+
+
+def WZDx_tim_translator():
+    logging.info('TIM Translator Timer Called...')
+
     # Scrape the CDOT endpoint to get current list of WZDX features
     geoJSON =  json.loads(requests.get(f'https://{os.getenv("WZDX_ENDPOINT")}/api/v1/wzdx?apiKey={os.getenv("WZDX_API_KEY")}').content.decode('utf-8'))
-    
+
     tim_list = translate(geoJSON)
 
     logging.info('Pushing TIMs to ODE...')
@@ -125,6 +135,14 @@ def entry(request):
             logging.info(f'Error pushing TIM to ODE: {return_value.content.decode("utf-8")}')
     if errNo > 1:
         logging.info(f'Failed to push {errNo} TIMs to ODE')
-    logging.info(f'Successfully pushed {len(tim_list) - errNo} TIMs to ODE')
 
-    return (f'Successfully pushed {len(tim_list) - errNo} TIMs to ODE', 200, headers)
+    return f'Successfully pushed {len(tim_list) - errNo} TIMs to ODE'
+
+
+# Run via flask app if running locally else just run translator directly
+if (os.getenv("RUN_LOCAL") == "true"):
+    if __name__ == '__main__':
+        app.run()
+else:
+    res_str = WZDx_tim_translator()
+    logging.info(res_str)
