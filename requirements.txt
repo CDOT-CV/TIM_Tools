@@ -9,3 +9,4 @@ requests
 shapely==1.8.5
 sqlalchemy
 marshmallow
+werkzeug==2.2.2

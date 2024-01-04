@@ -60,8 +60,12 @@ Again, if you are running VSCode there is a task available to run this on your b
 Using VSCode, a simple launch.json file has been provided to allow debugging the application. This can be accessed under the Run & Debug tab. The default configuration will run the translator using the functions framework. This runs the translator as a REST service accessed on http://localhost:8080. The translator can be tested by sending a POST request to this endpoint with a WZDx message in the body. The translator will respond with a series of TIM messages in the body of the response.
 
 
+### Running the Translator via Docker
+The WZDx/TIM translator can also be run locally using Docker. The translator Dockerfile can be found under Translators/WZDx/ and the redis cache Dockerfile can be found under redis/. Additionally, there is a docker-compose file which builds and runs both the translator and the redis cache. Setting the environment variable RUN_LOCAL to true will run the translator REST service as a flask application that can be accessed on http://localhost:8081. Alternatively, leaving RUN_LOCAL blank will run the translator one time immediately after the build has finished. 
+
+
 ### Current Known Limitations
-- Public GIS endpoint is in the process of being deployed and is currently inaccessible.
+- Public GIS endpoint is currently unable to traverse across multiple named routes.
 - Translator currently supports only WZDx v4.1 messages
 - Only 'CLOSED' ITIS code is supported. Further support is planned
     -  "all-lanes-closed" is only supported type at this time

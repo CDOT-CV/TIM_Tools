@@ -5,34 +5,21 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "WZDx TIM Translator",
+            "name": "Translator Flask",
             "type": "python",
             "request": "launch",
-            "module": "functions_framework",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "${workspaceRoot}/Translators/WZDx/main.py",
+            },
             "envFile": "${workspaceRoot}/Translators/WZDx/.env",
+            "cwd": "${workspaceRoot}/Translators/WZDx",
             "args": [
-                "--target",
-                "translateWzdxTIM",
-                "--source",
-                "Translators/WZDx/main.py",
-                "--debug"
-            ],
-            "preLaunchTask": "build-wzdx-translator",
-        },
-        {
-            "name": "TIM Translator Timer",
-            "type": "python",
-            "request": "launch",
-            "module": "functions_framework",
-            "envFile": "${workspaceRoot}/Translators/WZDx/.env",
-            "args": [
-                "--target",
-                "entry",
-                "--source",
-                "Translators/WZDx/main.py",
+                "run",
+                "--host",
+                "0.0.0.0",
                 "--port",
                 "8081",
-                "--debug"
             ],
             "preLaunchTask": "build-wzdx-translator",
         },
