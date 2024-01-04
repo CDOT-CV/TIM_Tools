@@ -109,8 +109,10 @@ def test_calculateOffsetPath():
 @patch('Translators.WZDx.tim_generator.get_msg_id')
 @patch('Translators.WZDx.tim_generator.vehicle_impact_supported')
 @patch('Translators.WZDx.tim_generator.get_first_road_name')
-def test_getDataFrames(mockRoad, mockSupported, mockMsgId, mockDuration, mockDeepCopy, mockAnchor):
+@patch('Translators.WZDx.tim_generator.get_start_date')
+def test_getDataFrames(mockStart, mockRoad, mockSupported, mockMsgId, mockDuration, mockDeepCopy, mockAnchor):
 
+    mockStart.return_value = "2022-02-13T16:00:00Z"
     mockDeepCopy.return_value = dataframes_data.coords
     mockAnchor.return_value = dataframes_data.anchor
     mockDuration.return_value = 0

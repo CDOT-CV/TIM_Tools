@@ -178,13 +178,21 @@ def vehicle_impact_supported(vehicle_impact):
 def get_first_road_name(feature):
     return feature["properties"]["core_details"]["road_names"][0]
 
+def get_start_date(feature):
+    # if utcnow > start_date, then set time to be utcnow
+    # else if utcnow < start_date, then set time to be start_date
+    if (datetime.utcnow() - datetime.strptime(feature["properties"]["start_date"], "%Y-%m-%dT%H:%M:%SZ")).total_seconds() >= 0:
+        return (datetime.utcnow()).isoformat()[:-3] + "Z"
+    else:
+        return feature["properties"]["start_date"]
+
 
 def get_data_frames(feature):
     coords = copy.deepcopy(feature["geometry"]["coordinates"])
     anchor = get_anchor(feature)
     if anchor is None:
         return None
-    start_date = feature["properties"]["start_date"]
+    start_date = get_start_date(feature)
     duration = get_duration_time_minutes(feature)
     msgId = get_msg_id(anchor)
 
