@@ -1,15 +1,6 @@
 from unittest.mock import patch, MagicMock
 import Translators.WZDx.rsu_service as rsu_service
 import tests.Translators.WZDx.data.rsu_service_data as rsu_service_data
-from pytest import fixture
-
-# This fixture is used to reset the rsu_index_dict after each test
-@fixture(autouse=True)
-def set_rsu_index_dict(request):
-    rsu_service.rsu_index_dict = {}
-    def fin():
-        rsu_service.rsu_index_dict = {}
-    request.addfinalizer(fin)
 
 @patch('Translators.WZDx.rsu_service.pgquery')
 def test_get_rsus_intersecting_geometry_no_data(mock_pgquery):
@@ -38,4 +29,3 @@ def test_get_rsus_intersecting_geometry_multiple_results(mock_pgquery):
     mock_pgquery.query_db.assert_called_once()
 
     assert actual_result == rsu_service_data.expected_rsu_data_multiple_results
-
