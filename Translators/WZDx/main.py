@@ -12,7 +12,6 @@ app = Flask(__name__)
 log_level = os.environ.get('LOGGING_LEVEL', 'INFO')
 logging.basicConfig(format='%(levelname)s:%(message)s', level=log_level)
 
-
 def update_sat_region_name(request, tim_body):
     new_tim = copy.deepcopy(tim_body)
     region_name = new_tim['dataframes'][0]['regions'][0]['name']
@@ -120,10 +119,10 @@ def entry():
 
 def WZDx_tim_translator():
     logging.info('TIM Translator Timer Called...')
+
     # Scrape the CDOT endpoint to get current list of WZDX features
     geoJSON =  json.loads(requests.get(f'https://{os.getenv("WZDX_ENDPOINT")}/api/v1/wzdx?apiKey={os.getenv("WZDX_API_KEY")}').content.decode('utf-8'))
 
-    
     tim_list = translate(geoJSON)
 
     logging.info('Pushing TIMs to ODE...')
