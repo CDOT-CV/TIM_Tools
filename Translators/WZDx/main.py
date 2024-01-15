@@ -15,7 +15,8 @@ logging.basicConfig(format='%(levelname)s:%(message)s', level=log_level)
 
 def record_active(feature):
     startDate = datetime.strptime(feature["properties"]["start_date"], "%Y-%m-%dT%H:%M:%SZ")
-    if (datetime.utcnow().replace(tzinfo=None) - startDate.replace(tzinfo=None)).total_seconds() >= -1800:
+    endDate = datetime.strptime(feature["properties"]["end_date"], "%Y-%m-%dT%H:%M:%SZ")
+    if (datetime.utcnow().replace(tzinfo=None) - startDate.replace(tzinfo=None)).total_seconds() >= -1800 and datetime.utcnow() < endDate:
         return True
     else:
         return False
@@ -100,7 +101,7 @@ def translateWzdxTIM():
         'Content-Type': 'application/json'
     }
 
-    tims = translate(request.get_json())
+    tims = translate(request.get_json()["features"])
     return (json.dumps(tims), 200, headers)
 
 @app.route('/', methods=['POST'])
