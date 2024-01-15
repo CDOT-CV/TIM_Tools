@@ -25,6 +25,7 @@ def get_duration_time_minutes(feature):
     duration = (end_date - start_date).total_seconds() / 60
     return int(duration) if duration < 32000 else 32000
 
+# calculate anchor point 15 meters from start of path
 def calculate_anchor(p1, p2):
     # assumes (lat, long) tuples
     if p1 == p2:
@@ -33,16 +34,21 @@ def calculate_anchor(p1, p2):
             "longitude": p1[1]
         }
 
+    # calculate difference between latitude and longitude
     dlat = p1[0] - p2[0]
     dlon = p1[1] - p2[1]
 
+    # convert from degrees of lat/lon to meters
     D0lat = 111195 * dlat
     D0lon = 111195 * math.cos(math.radians(p1[0])) * dlon
 
+    # calculate total distance between two points (in meters)
     D0 = math.sqrt(math.pow(D0lat, 2) + math.pow(D0lon, 2))
 
+    # calculate how far 15 meters is (given total distance between two points above)
     md = 15/D0
 
+    # convert back to lat/lon (uses difference calculated above to determine anchor point)
     palat = p1[0] + (md * dlat)
     palon = p1[1] + (md * dlon)
 
