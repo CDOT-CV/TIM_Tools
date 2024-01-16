@@ -6,11 +6,20 @@ import os
 from request_wrapper import get_sdw_request, get_rsu_request
 from tim_generator import generate_tim
 from flask import request, Flask
+from datetime import datetime
 
 app = Flask(__name__)
 
 log_level = os.environ.get('LOGGING_LEVEL', 'INFO')
 logging.basicConfig(format='%(levelname)s:%(message)s', level=log_level)
+
+def record_active(feature):
+    startDate = datetime.strptime(feature["properties"]["start_date"], "%Y-%m-%dT%H:%M:%SZ")
+    endDate = datetime.strptime(feature["properties"]["end_date"], "%Y-%m-%dT%H:%M:%SZ")
+    if (datetime.utcnow().replace(tzinfo=None) - startDate.replace(tzinfo=None)).total_seconds() >= -1800 and datetime.utcnow() < endDate:
+        return True
+    else:
+        return False
 
 def update_sat_region_name(request, tim_body):
     new_tim = copy.deepcopy(tim_body)
@@ -32,9 +41,9 @@ def update_rsu_region_name(request, tim_body):
 
 def translate(wzdx_geojson):
     tims = []
-    duration = os.getenv("DURATION_TIME", 1800)
+    duration = os.getenv("DURATION_TIME", 30)
     # if no RSUs found, drop that one
-    for feature in wzdx_geojson["features"]:
+    for feature in wzdx_geojson:
         tim_body = generate_tim(feature)
         if tim_body is not None:
             for msg in tim_body["dataframes"]:
@@ -92,7 +101,7 @@ def translateWzdxTIM():
         'Content-Type': 'application/json'
     }
 
-    tims = translate(request.get_json())
+    tims = translate(request.get_json()["features"])
     return (json.dumps(tims), 200, headers)
 
 @app.route('/', methods=['POST'])
@@ -122,6 +131,9 @@ def WZDx_tim_translator():
 
     # Scrape the CDOT endpoint to get current list of WZDX features
     geoJSON =  json.loads(requests.get(f'https://{os.getenv("WZDX_ENDPOINT")}/api/v1/wzdx?apiKey={os.getenv("WZDX_API_KEY")}').content.decode('utf-8'))
+
+    # Filter out future records
+    geoJSON = [feature for feature in geoJSON["features"] if record_active(feature) == True]
 
     tim_list = translate(geoJSON)
 
