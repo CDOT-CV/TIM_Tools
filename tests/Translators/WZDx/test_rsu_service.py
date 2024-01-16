@@ -29,4 +29,3 @@ def test_get_rsus_intersecting_geometry_multiple_results(mock_pgquery):
     mock_pgquery.query_db.assert_called_once()
 
     assert actual_result == rsu_service_data.expected_rsu_data_multiple_results
-
