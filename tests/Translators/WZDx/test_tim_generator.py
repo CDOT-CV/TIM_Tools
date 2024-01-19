@@ -29,6 +29,7 @@ def test_getDurationTimeMinutes_withLargeTime():
 def test_getAnchor(mock_geospacial_service):
     mock_geospacial_service.point_to_route_id.return_value = 'route'
     mock_geospacial_service.get_upstream_point.return_value = {'latitude': 37.795, 'longitude': -122.403}
+    # get_anchor assumes that the tuples are in (long, lat) tuples as are given in the WZDx feed data
     feature = {
         'geometry': {
             'coordinates': [
@@ -38,7 +39,7 @@ def test_getAnchor(mock_geospacial_service):
                 ],
                 [
                     -122.403,
-                    37.795
+                    37.800
                 ]
             ]
         },
@@ -52,7 +53,7 @@ def test_getAnchor(mock_geospacial_service):
     }
     anchor = tim_generator.get_anchor(feature)
     assert anchor == {
-        'latitude': 37.795,
+        'latitude': 37.7948651018481,
         'longitude': -122.403
     }
 
@@ -109,8 +110,10 @@ def test_calculateOffsetPath():
 @patch('Translators.WZDx.tim_generator.get_msg_id')
 @patch('Translators.WZDx.tim_generator.vehicle_impact_supported')
 @patch('Translators.WZDx.tim_generator.get_first_road_name')
-def test_getDataFrames(mockRoad, mockSupported, mockMsgId, mockDuration, mockDeepCopy, mockAnchor):
+@patch('Translators.WZDx.tim_generator.get_start_date')
+def test_getDataFrames(mockStart, mockRoad, mockSupported, mockMsgId, mockDuration, mockDeepCopy, mockAnchor):
 
+    mockStart.return_value = "2022-02-13T16:00:00Z"
     mockDeepCopy.return_value = dataframes_data.coords
     mockAnchor.return_value = dataframes_data.anchor
     mockDuration.return_value = 0

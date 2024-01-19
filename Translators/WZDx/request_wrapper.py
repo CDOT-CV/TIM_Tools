@@ -4,6 +4,7 @@ import rsu_service
 import geospatial_service
 from pgquery import query_db
 import re
+import os
 
 
 def get_bounding_box(geometry):
@@ -70,20 +71,15 @@ def buffer_geometry(coords):
     Returns:
         bufferedPolygon (dict): A GeoJSON polygon object'''
     line_string = LineString(coords)
-    # ~ 10m buffer. 0.0001 degrees = 11.1m at equator
-    return line_string.buffer(0.0001)
+
+    # 1 degree is approximately 69 miles at 38 degrees North
+    buffer_distance = os.getenv("BUFFER_DISTANCE_MILES", 1) / 69
+    return line_string.buffer(buffer_distance)
 
 
 def get_rsus_for_message(geometry):
-    route_id = geospatial_service.point_to_route_id(
-        geometry["coordinates"][0][0], geometry["coordinates"][0][1])
-    measures = geospatial_service.get_upstream_measures(geometry["coordinates"], route_id, 20)
-    extendedGeometry = geospatial_service.get_route_between_measures(
-        route_id, measures["upstream_measure"], measures["first_point_measure"])
-    extendedGeometry.extend(geometry["coordinates"])
-
     # create buffer around geometry so we get a "fat" line
-    bufferedPolygon = buffer_geometry(extendedGeometry)
+    bufferedPolygon = buffer_geometry(geometry["coordinates"])
     rsus = rsu_service.get_rsus_intersecting_geometry(bufferedPolygon)
     return rsus
 
