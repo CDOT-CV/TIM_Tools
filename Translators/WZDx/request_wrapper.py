@@ -73,7 +73,10 @@ def buffer_geometry(coords):
     line_string = LineString(coords)
 
     # 1 degree is approximately 69 miles at 38 degrees North
-    buffer_distance = os.getenv("BUFFER_DISTANCE_MILES", 1) / 69
+    buffer = os.getenv("BUFFER_DISTANCE_MILES", 1)
+    if (type(buffer) == str):
+        buffer = float(buffer)
+    buffer_distance = buffer / 69
     return line_string.buffer(buffer_distance)
 
 
