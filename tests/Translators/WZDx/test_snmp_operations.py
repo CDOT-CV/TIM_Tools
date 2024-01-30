@@ -3,7 +3,8 @@ from unittest.mock import patch, Mock
 import Translators.WZDx.snmp_operations as snmp_operations
 
 @patch('Translators.WZDx.snmp_operations.requests.delete')
-def test_clear_index_1218(mock_delete):
+@patch('Translators.WZDx.snmp_operations.os.getenv')
+def test_clear_index_1218(mock_env, mock_delete):
     rsu = {
         "rsuIndex": "1",
         "snmpProtocol": "NTCIP1218",
@@ -15,6 +16,8 @@ def test_clear_index_1218(mock_delete):
     }
     mock_delete.return_value.status_code = 200
 
+    mock_env.return_value = 'http://localhost:8080'
+
     snmp_operations.clear_index(rsu)
 
     mock_delete.assert_called_once_with(
@@ -25,7 +28,8 @@ def test_clear_index_1218(mock_delete):
     )
 
 @patch('Translators.WZDx.snmp_operations.requests.delete')
-def test_clear_index_FOURDOT1(mock_delete):
+@patch('Translators.WZDx.snmp_operations.os.getenv')
+def test_clear_index_FOURDOT1(mock_env, mock_delete):
     rsu = {
         "rsuIndex": "1",
         "snmpProtocol": "FOURDOT1",
@@ -36,6 +40,8 @@ def test_clear_index_FOURDOT1(mock_delete):
         "rsuTimeout": 10
     }
     mock_delete.return_value.status_code = 200
+
+    mock_env.return_value = 'http://localhost:8080'
 
     res = snmp_operations.clear_index(rsu)
 

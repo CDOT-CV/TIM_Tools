@@ -1,8 +1,8 @@
 import requests
 import json
+import os
 
 def clear_index(rsu):
-    deleteUrl = 'http://localhost:8080/tim'
     headers = {'Content-Type': 'application/json'}
     payload = json.dumps({
         'rsuTarget': rsu['rsuTarget'],
@@ -15,7 +15,7 @@ def clear_index(rsu):
     })
     params = {'index': str(rsu['rsuIndex'])}
     
-    response = requests.delete(deleteUrl, data=payload, headers=headers, params=params)
+    response = requests.delete(f'{os.getenv("ODE_ENDPOINT")}/tim', data=payload, headers=headers, params=params)
     
     if response.status_code == 200:
         print(f'Index {rsu["rsuIndex"]} cleared for RSU {rsu["rsuTarget"]}')
