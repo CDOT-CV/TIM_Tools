@@ -2,6 +2,7 @@ import logging
 import pgquery as pgquery
 import shapely.wkt
 
+rsu_index_dict = {} # Used to store the current index of each RSU
 
 def get_rsus_intersecting_geometry(geometry):
     query = f"SELECT rsu_id, primary_route, milepost, ipv4_address,  ST_AsText(geography) point FROM rsus WHERE ST_Intersects('{str(geometry)}', geography)"
@@ -24,6 +25,15 @@ def get_rsus_intersecting_geometry(geometry):
             "rsuTarget": str(row["ipv4_address"]),
             "rsuRetries": 3,
             "rsuTimeout": 5000,
-            "rsuIndex": 2
+            "rsuIndex": get_rsu_index(str(row["ipv4_address"]))
         })
     return return_value
+
+
+def get_rsu_index(rsu_target):
+    global rsu_index_dict
+    if rsu_target not in rsu_index_dict:
+        rsu_index_dict[rsu_target] = 1
+    else:
+        rsu_index_dict[rsu_target] += 1
+    return rsu_index_dict[rsu_target]

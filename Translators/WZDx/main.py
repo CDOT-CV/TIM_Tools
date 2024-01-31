@@ -5,6 +5,7 @@ import logging
 import os
 from request_wrapper import get_sdw_request, get_rsu_request
 from tim_generator import generate_tim
+from snmp_operations import clear_index
 from flask import request, Flask
 from datetime import datetime
 
@@ -138,6 +139,13 @@ def WZDx_tim_translator():
     tim_list = translate(geoJSON)
 
     logging.info('Pushing TIMs to ODE...')
+
+    # Clear index for each RSU before pushing to ODE
+    for tim in tim_list:
+        if tim["request"].get("rsus") is not None:
+            rsus = tim["request"].get("rsus")
+            for rsu in rsus:
+                clear_index(rsu)
 
     errNo = 0
     for tim in tim_list:
