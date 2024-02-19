@@ -27,6 +27,8 @@ def update_sat_region_name(request, tim_body):
     region_name = new_tim['dataframes'][0]['regions'][0]['name']
     region_name = region_name.replace(
         'IDENTIFIER', f"SAT_{request['sdw']['recordId']}")
+    if len(region_name) > 63:
+        region_name = region_name[:60] + '...'
     new_tim['dataframes'][0]['regions'][0]['name'] = region_name
     return new_tim
 
@@ -36,6 +38,8 @@ def update_rsu_region_name(request, tim_body):
     region_name = new_tim['dataframes'][0]['regions'][0]['name']
     region_name = region_name.replace(
         'IDENTIFIER', f"RSU_{request['rsus'][0]['rsuTarget']}")
+    if len(region_name) > 63:
+        region_name = region_name[:60] + '...'
     new_tim['dataframes'][0]['regions'][0]['name'] = region_name
     return new_tim
 
