@@ -133,7 +133,6 @@ def get_rsu_request(feature):
         snmp_info = get_snmp_info(rsu["rsuTarget"])
         snmp_protocol = get_snmp_protocol(rsu["rsuTarget"])
         if snmp_info is not None:
-            print("version_code: ", snmp_protocol[0]["version_code"])
             rsu["snmpProtocol"] = "NTCIP1218" if snmp_protocol[0]["version_code"] == "1218" else "FOURDOT1"
             rsu["rsuUsername"] = snmp_info[0]["username"]
             rsu["rsuPassword"] = snmp_info[0]["password"]
