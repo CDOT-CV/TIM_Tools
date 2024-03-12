@@ -112,6 +112,14 @@ def get_snmp_info(rsuTarget):
     query = f"SELECT nickname, username, password FROM snmp_credentials WHERE snmp_credential_id = (SELECT snmp_credential_id FROM rsus WHERE ipv4_address = '{rsuTarget}')"
     return query_db(query)
 
+def get_snmp_protocol(rsuTarget):
+    query = (
+        f"SELECT snmp.version_code from public.snmp_versions as snmp "
+        f"JOIN public.rsus as rsu ON rsu.snmp_version_id = snmp.snmp_version_id "
+        f"WHERE rsu.ipv4_address = '{rsuTarget}'"
+    )
+    return query_db(query)
+
 def get_rsu_request(feature):
     rsus = get_rsus_for_message(feature['geometry'])
     if rsus is None:
@@ -123,8 +131,9 @@ def get_rsu_request(feature):
     for rsu in rsus:
     # get snmp protocol, username, password for each rsu
         snmp_info = get_snmp_info(rsu["rsuTarget"])
+        snmp_protocol = get_snmp_protocol(rsu["rsuTarget"])
         if snmp_info is not None:
-            rsu["snmpProtocol"] = "NTCIP1218" if snmp_info[0]["nickname"] == "Yunex BUILD" else "FOURDOT1"
+            rsu["snmpProtocol"] = "NTCIP1218" if snmp_protocol[0]["version_code"] == "1218" else "FOURDOT1"
             rsu["rsuUsername"] = snmp_info[0]["username"]
             rsu["rsuPassword"] = snmp_info[0]["password"]
 

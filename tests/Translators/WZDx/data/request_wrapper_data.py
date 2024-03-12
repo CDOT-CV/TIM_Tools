@@ -112,7 +112,33 @@ expected_snmp_settings = {
 }
 
 expected_rsu_request = {
-    "rsus": rsu_intersect_result,
+    "rsus": [{
+    "latitude": 0,
+    "longitude": 0,
+    "rsuId": "rsu1",
+    "route": "route1",
+    "milepost": 0,
+    "rsuTarget": "10.10.10.10",
+    "rsuRetries": 3,
+    "rsuTimeout": 5000,
+    "rsuIndex": 2,
+    "rsuUsername": "username",
+    "rsuPassword": "password",
+    "snmpProtocol": "NTCIP1218"
+}, {
+    "latitude": 1,
+    "longitude": 1,
+    "rsuId": "rsu2",
+    "route": "route2",
+    "milepost": 0,
+    "rsuTarget": "10.10.10.11",
+    "rsuRetries": 3,
+    "rsuTimeout": 5000,
+    "rsuIndex": 2,
+    "rsuUsername": "username",
+    "rsuPassword": "password",
+    "snmpProtocol": "NTCIP1218",
+}],
     "snmp": expected_snmp_settings
 }
 
@@ -120,4 +146,8 @@ expected_snmp_info = [{
     "nickname": "nickname",
     "username": "username",
     "password": "password"
+}]
+
+expected_snmp_protocol = [{
+    "version_code": "1218"
 }]
