@@ -151,3 +151,19 @@ expected_snmp_info = [{
 expected_snmp_protocol = [{
     "version_code": "1218"
 }]
+
+check_rsu_online_no_result = [
+    { "result": 0 },
+    { "result": 0 },
+    { "result": 0 },
+    { "result": 0 },
+    { "result": 0 },
+]
+
+check_rsu_online_result = [
+    { "result": 1 },
+    { "result": 1 },
+    { "result": 1 },
+    { "result": 1 },
+    { "result": 1 }
+]

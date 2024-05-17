@@ -1,3 +1,4 @@
+import logging
 import secrets
 from shapely.geometry import LineString
 import rsu_service
@@ -120,6 +121,21 @@ def get_snmp_protocol(rsuTarget):
     )
     return query_db(query)
 
+def check_rsu_online(rsu):
+    query = f"SELECT result FROM public.ping WHERE rsu_id = {rsu['rsuId']} ORDER BY timestamp DESC limit 5"
+    try:
+        result = query_db(query)
+    except Exception as e:
+        logging.info(f'Error retrieving ping results for RSU: {rsu["rsuId"]}')
+        return  None
+    if result is None:
+        return False
+    errCount = 0
+    for row in result:
+        if row["result"] == 0:
+            errCount += 1
+    return True if errCount < 5 else False
+
 def get_rsu_request(feature):
     rsus = get_rsus_for_message(feature['geometry'])
     if rsus is None:
@@ -127,6 +143,9 @@ def get_rsu_request(feature):
     
     # remove any region 1 RSUs from the list for the time being
     rsus = [rsu for rsu in rsus if re.match(r"^10\.11\.81", rsu["rsuTarget"]) == None]
+
+    # remove any RSUs that are not currently online (based on last 5 pings)
+    rsus = [rsu for rsu in rsus if check_rsu_online(rsu)]
     
     for rsu in rsus:
     # get snmp protocol, username, password for each rsu
