@@ -132,7 +132,7 @@ def check_rsu_online(rsu):
         return False
     errCount = 0
     for row in result:
-        if row["result"] == 0:
+        if row[0] == '0':
             errCount += 1
     return True if errCount < 5 else False
 
