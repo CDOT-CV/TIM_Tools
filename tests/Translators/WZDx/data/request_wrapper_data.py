@@ -153,17 +153,17 @@ expected_snmp_protocol = [{
 }]
 
 check_rsu_online_no_result = [
-    { "result": 0 },
-    { "result": 0 },
-    { "result": 0 },
-    { "result": 0 },
-    { "result": 0 },
+    [ '0' ],
+    [ '0' ],
+    [ '0' ],
+    [ '0' ],
+    [ '0' ]
 ]
 
 check_rsu_online_result = [
-    { "result": 1 },
-    { "result": 1 },
-    { "result": 1 },
-    { "result": 1 },
-    { "result": 1 }
+    [ '1' ],
+    [ '1' ],
+    [ '1' ],
+    [ '1' ],
+    [ '1' ]
 ]
