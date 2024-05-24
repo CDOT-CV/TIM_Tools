@@ -89,7 +89,8 @@ def test_get_snmp_settings():
 ############################ get_rsu_request ############################
 @patch('Translators.WZDx.request_wrapper.get_rsus_for_message')
 @patch('Translators.WZDx.request_wrapper.get_snmp_info')
-def test_get_rsu_request_no_rsus(mock_get_snmp_info, mock_get_rsus_for_message):
+@patch('Translators.WZDx.request_wrapper.check_rsu_online', return_value=False)
+def test_get_rsu_request_no_rsus(mock_check_online, mock_get_snmp_info, mock_get_rsus_for_message):
     mock_get_snmp_info.return_value = None
     mock_get_rsus_for_message.return_value = None
     assert request_wrapper.get_rsu_request(data.example_feature) == None
@@ -98,9 +99,23 @@ def test_get_rsu_request_no_rsus(mock_get_snmp_info, mock_get_rsus_for_message):
 @patch('Translators.WZDx.request_wrapper.get_snmp_settings')
 @patch('Translators.WZDx.request_wrapper.get_snmp_info')
 @patch('Translators.WZDx.request_wrapper.get_snmp_protocol')
-def test_get_rsu_request_rsus(mock_get_snmp_protocol, mock_get_snmp_info, mock_get_snmp_settings, mock_get_rsus_for_message):
+@patch('Translators.WZDx.request_wrapper.check_rsu_online', return_value=True)
+def test_get_rsu_request_rsus(mock_check_online, mock_get_snmp_protocol, mock_get_snmp_info, mock_get_snmp_settings, mock_get_rsus_for_message):
     mock_get_rsus_for_message.return_value = data.rsu_intersect_result
     mock_get_snmp_settings.return_value = data.expected_snmp_settings
     mock_get_snmp_info.return_value = data.expected_snmp_info
     mock_get_snmp_protocol.return_value = data.expected_snmp_protocol
     assert request_wrapper.get_rsu_request(data.example_feature) == data.expected_rsu_request
+
+############################ check_rsu_online ############################
+@patch('Translators.WZDx.request_wrapper.query_db')
+def test_check_rsu_online_rsu_offline(mock_pgquery):
+    mock_pgquery.return_value = data.check_rsu_online_no_result
+    rsu = {'rsuId': 1}
+    assert request_wrapper.check_rsu_online(rsu) == False
+
+@patch('Translators.WZDx.request_wrapper.query_db')
+def test_check_rsu_online_rsu_online(mock_pgquery):
+    mock_pgquery.return_value = data.check_rsu_online_result
+    rsu = {'rsuId': 1}
+    assert request_wrapper.check_rsu_online(rsu) == True
