@@ -98,7 +98,9 @@ def test_get_rsu_request_no_rsus(mock_get_snmp_info, mock_get_rsus_for_message):
 @patch('Translators.WZDx.request_wrapper.get_snmp_settings')
 @patch('Translators.WZDx.request_wrapper.get_snmp_info')
 @patch('Translators.WZDx.request_wrapper.get_snmp_protocol')
-def test_get_rsu_request_rsus(mock_get_snmp_protocol, mock_get_snmp_info, mock_get_snmp_settings, mock_get_rsus_for_message):
+@patch('Translators.WZDx.request_wrapper.clear_index')
+def test_get_rsu_request_rsus(mock_clear_index, mock_get_snmp_protocol, mock_get_snmp_info, mock_get_snmp_settings, mock_get_rsus_for_message):
+    mock_clear_index.return_value = True
     mock_get_rsus_for_message.return_value = data.rsu_intersect_result
     mock_get_snmp_settings.return_value = data.expected_snmp_settings
     mock_get_snmp_info.return_value = data.expected_snmp_info
