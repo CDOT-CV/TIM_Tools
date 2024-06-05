@@ -1,6 +1,7 @@
 import logging
 import secrets
 from shapely.geometry import LineString
+from snmp_operations import clear_index
 import rsu_service
 import geospatial_service
 from pgquery import query_db
@@ -155,6 +156,9 @@ def get_rsu_request(feature):
             rsu["snmpProtocol"] = "NTCIP1218" if snmp_protocol[0]["version_code"] == "1218" else "FOURDOT1"
             rsu["rsuUsername"] = snmp_info[0]["username"]
             rsu["rsuPassword"] = snmp_info[0]["password"]
+
+    # remove any RSUs that fail to clear the index
+    rsus = [rsu for rsu in rsus if clear_index(rsu)]
 
     if rsus != []:
         tim_req = {

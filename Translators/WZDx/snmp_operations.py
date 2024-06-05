@@ -1,3 +1,4 @@
+import re
 import requests
 import json
 import os
@@ -19,5 +20,12 @@ def clear_index(rsu):
     
     if response.status_code == 200:
         print(f'Index {rsu["rsuIndex"]} cleared for RSU {rsu["rsuTarget"]}')
+        return True
     else:
-        print(f'Failed to clear index {rsu["rsuIndex"]} for RSU {rsu["rsuTarget"]}: {response.content.decode("utf-8")}')
+        err = response.content.decode("utf-8")
+        if (re.search(r'Invalid index', err) is not None):
+            return False
+        if (re.search(r'Timeout', err) is not None):
+            return False
+        print(f'Failed to clear index {rsu["rsuIndex"]} for RSU {rsu["rsuTarget"]}: {err}')
+        return True
