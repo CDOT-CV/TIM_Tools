@@ -55,3 +55,16 @@ class ItisCodes(Enum):
     STOP_AT_NEXT_SAFE_PLACE = '7188'
     ONLY_TRAVEL_IF_NECESSARY = '7189'
     FALLING_ROCKS = '1203'
+
+ItisCodeExtraKeywords = {
+    "herd of animals on roadway": "herd of animals on the roadway",
+    "rockfall": "rock fall",
+    "wildfire": "wild fire",
+    "keep to right": "keep right",
+    "keep to left": "keep left",
+    "reduce your speed": "reduce speed",
+    "drive careful": "drive carefully",
+    "stop at next safe place": "stop at the next safe place",
+    "only travel if necessary": "only necessary travel",
+    "falling rocks": "falling rock"
+}

@@ -3,7 +3,7 @@ import copy
 import secrets
 from datetime import datetime
 import geospatial_service
-from itis_codes import ItisCodes
+from itis_codes import ItisCodes, ItisCodeExtraKeywords
 from utils import calculate_direction
 import logging
 
@@ -63,15 +63,31 @@ def get_anchor(feature):
 
 
 def get_itis_codes(feature):
-    # TODO: calculate itis codes
     itisCodes = []
 
+    # Check for vehicle_impact ITIS code
     vehicleImpact = feature["properties"]["vehicle_impact"]
     if vehicleImpact == "all-lanes-closed":
         itisCodes.append(ItisCodes.CLOSED.value)
 
-    return itisCodes
+    # Check for types_of_work ITIS codes
+    properties = feature["properties"]
+    if "types_of_work" in properties:
+        for entry in properties["types_of_work"]:
+            if entry == {"type_name": "roadway-creation", "is_architectural_change": True}:
+                itisCodes.append(ItisCodes.ROAD_CONSTRUCTION.value)
 
+    # Check for ITIS codes present in description
+    description = feature["properties"]["core_details"]["description"]
+    for key in ItisCodes:
+        searchKey = key.name.replace("_", " ").lower()
+        if searchKey in description.lower() and key.value not in itisCodes:
+            itisCodes.append(key.value)
+        elif searchKey in ItisCodeExtraKeywords:
+            if ItisCodeExtraKeywords[searchKey] in description.lower() and key.value not in itisCodes:
+                itisCodes.append(key.value)
+
+    return itisCodes
 
 def calculate_offset_path(coords, anchor):
     '''Creates an offset path from passed in coordinates and anchor point
