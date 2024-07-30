@@ -61,11 +61,39 @@ def test_getAnchor(mock_geospacial_service):
 def test_getItisCodes_allLanesClosed():
     feature = {
         'properties': {
-            'vehicle_impact': 'all-lanes-closed'
+            'vehicle_impact': 'all-lanes-closed',
+            'core_details': {
+                'description': ''
+            }
         }
     }
     itisCodes = tim_generator.get_itis_codes(feature)
     assert itisCodes == ['770']  # ItisCodes.CLOSED.value
+
+def test_getItisCodes_typesOfWork():
+    feature = {
+        'properties': {
+            'vehicle_impact': '',
+            'core_details': {
+                'description': 'description'
+            },
+            'types_of_work': [{'type_name': 'roadway-creation', 'is_architectural_change': True}]
+        }
+    }
+    itisCodes = tim_generator.get_itis_codes(feature)
+    assert itisCodes == ['1025']  # ItisCodes.ROAD_CONSTRUCTION.value
+
+def test_getItisCodes_multipleCodes():
+    feature = {
+        'properties': {
+            'vehicle_impact': '',
+            'core_details': {
+                'description': 'Width limit in effect, accident on right portion of road. Keep to right.'
+            }
+        }
+    }
+    itisCodes = tim_generator.get_itis_codes(feature)
+    assert itisCodes == ['513', '2573', '7425']  # ItisCodes.WIDTH_LIMIT.value, ItisCodes.ACCIDENT.value, ItisCodes.KEEP_RIGHT.value
 
 ############################ calculateOffsetPath ############################
 def test_calculateOffsetPath():
