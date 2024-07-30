@@ -7,6 +7,7 @@ import geospatial_service
 from pgquery import query_db
 import re
 import os
+from datetime import datetime, timedelta
 
 
 def get_bounding_box(geometry):
@@ -97,6 +98,10 @@ def get_snmp_settings(feature):
 
     Returns:
         snmpSettings (dict): SNMP settings object'''
+    
+    utc_now = datetime.utcnow()
+    delivery_start = utc_now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    delivery_end = (utc_now + timedelta(minutes=30)).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     return {
         "rsuid": "83",
@@ -104,8 +109,8 @@ def get_snmp_settings(feature):
         "mode": 1,
         "channel": 183,
         "interval": 1000,
-        "deliverystart": feature["properties"]["start_date"],
-        "deliverystop": feature["properties"]["end_date"],
+        "deliverystart": delivery_start,
+        "deliverystop": delivery_end,
         "enable": 1,
         "status": 4
     }

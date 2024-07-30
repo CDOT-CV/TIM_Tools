@@ -1,29 +1,11 @@
 import math
 import copy
+import os
 import secrets
 from datetime import datetime
 import geospatial_service
 from itis_codes import ItisCodes
 from utils import calculate_direction
-import logging
-
-
-def get_duration_time_minutes(feature):
-    '''Get duration in minutes from a GeoJSON feature object with start_date and end_date properties
-
-    Parameters:
-        feature (dict): A GeoJSON feature object. Assumed to have properties 'start_date' and 'end_date'
-
-    Returns:
-        duration (int): Duration in minutes. Note 32000 represents infinity'''
-    # "start_date": "2022-02-13T16:00:00Z",
-    # "end_date": "2022-02-13T16:55:00Z",
-    start_date = datetime.strptime(feature[
-        "properties"]["start_date"], "%Y-%m-%dT%H:%M:%SZ")
-    end_date = datetime.strptime(feature[
-        "properties"]["end_date"], "%Y-%m-%dT%H:%M:%SZ")
-    duration = (end_date - start_date).total_seconds() / 60
-    return int(duration) if duration < 32000 else 32000
 
 # calculate anchor point 15 meters from start of path
 def calculate_anchor(p1, p2):
@@ -218,7 +200,7 @@ def get_data_frames(feature):
     if anchor is None:
         return None
     start_date = get_start_date(feature)
-    duration = get_duration_time_minutes(feature)
+    duration = os.getenv("DURATION_TIME", 30)
     msgId = get_msg_id(anchor)
 
     # In here need to calculate if size of path is greater than 63
