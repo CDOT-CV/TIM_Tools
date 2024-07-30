@@ -1,3 +1,4 @@
+from datetime import datetime
 from unittest.mock import patch
 from Translators.WZDx import request_wrapper
 import tests.Translators.WZDx.data.request_wrapper_data as data
@@ -82,7 +83,9 @@ def test_get_rsus_for_message_found_rsus(mock_rsu_service, mock_geospatial_servi
     assert request_wrapper.get_rsus_for_message(geometry) == data.rsu_intersect_result
 
 ############################ get_snmp_settings ############################
-def test_get_snmp_settings():
+@patch('Translators.WZDx.request_wrapper.datetime')
+def test_get_snmp_settings(mock_datetime):
+    mock_datetime.utcnow.return_value = datetime(2022, 11, 11, 14, 0, 0)
     assert request_wrapper.get_snmp_settings(data.example_feature) == data.expected_snmp_settings
 
 
