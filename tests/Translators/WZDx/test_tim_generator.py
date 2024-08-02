@@ -3,27 +3,6 @@ from Translators.WZDx import tim_generator
 import tests.Translators.WZDx.data.dataframes_data as dataframes_data
 
 
-############################ getDurationTimeMinutes ############################
-def test_getDurationTimeMinutes():
-    feature = {
-        'properties': {
-            'start_date': '2022-02-13T16:00:00Z',
-            'end_date': '2022-02-13T16:55:00Z'
-        }
-    }
-    duration = tim_generator.get_duration_time_minutes(feature)
-    assert duration == 55
-
-def test_getDurationTimeMinutes_withLargeTime():
-    feature = {
-        'properties': {
-            'start_date': '2022-02-13T16:00:00Z',
-            'end_date': '2022-07-13T16:55:00Z'
-        }
-    }
-    duration = tim_generator.get_duration_time_minutes(feature)
-    assert duration == 32000
-
 ############################ getAnchor ############################    
 @patch('Translators.WZDx.tim_generator.geospatial_service')
 def test_getAnchor(mock_geospacial_service):
@@ -134,17 +113,15 @@ def test_calculateOffsetPath():
 # create a pytest for the get_data_frames function
 @patch('Translators.WZDx.tim_generator.get_anchor')
 @patch('Translators.WZDx.tim_generator.copy.deepcopy')
-@patch('Translators.WZDx.tim_generator.get_duration_time_minutes')
 @patch('Translators.WZDx.tim_generator.get_msg_id')
 @patch('Translators.WZDx.tim_generator.vehicle_impact_supported')
 @patch('Translators.WZDx.tim_generator.get_first_road_name')
 @patch('Translators.WZDx.tim_generator.get_start_date')
-def test_getDataFrames(mockStart, mockRoad, mockSupported, mockMsgId, mockDuration, mockDeepCopy, mockAnchor):
+def test_getDataFrames(mockStart, mockRoad, mockSupported, mockMsgId, mockDeepCopy, mockAnchor):
 
     mockStart.return_value = "2022-02-13T16:00:00Z"
     mockDeepCopy.return_value = dataframes_data.coords
     mockAnchor.return_value = dataframes_data.anchor
-    mockDuration.return_value = 0
     mockMsgId.return_value = "some-id"
     mockSupported.return_value = False
     mockRoad.return_value = "some-road"

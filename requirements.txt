@@ -4,9 +4,9 @@ mock
 functions-framework==3.0.0
 flask==2.0.2
 google-cloud-error-reporting==1.4.1
-pyproj==3.3.1
+pyproj==3.6.1
 requests
-shapely==1.8.5
+shapely==2.0.5
 sqlalchemy
 marshmallow
 werkzeug==2.2.2

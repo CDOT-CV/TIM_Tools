@@ -106,7 +106,7 @@ expected_snmp_settings = {
     "channel": 183,
     "interval": 1000,
     "deliverystart": "2022-11-11T14:00:00Z",
-    "deliverystop": "2022-11-12T00:30:00Z",
+    "deliverystop": "2022-11-11T14:30:00Z",
     "enable": 1,
     "status": 4
 }

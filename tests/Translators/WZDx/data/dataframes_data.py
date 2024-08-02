@@ -78,7 +78,7 @@ anchor = {
 
 expected_dataframes = [
     {'startDateTime': '2022-02-13T16:00:00Z',
-     'durationTime': 0,
+     'durationTime': 30,
      'sspTimRights': '1',
      'frameType': 'advisory',
      'msgId': 'some-id',
