@@ -5,7 +5,7 @@ import shapely.wkt
 rsu_index_dict = {} # Used to store the current index of each RSU
 
 def get_rsus_intersecting_geometry(geometry):
-    query = f"SELECT rsu_id, primary_route, milepost, ipv4_address,  ST_AsText(geography) point FROM rsus WHERE rsu_id not in (SELECT rsu_id FROM rsu_organization as ro JOIN organizations as o on ro.organization_id = o.organization_id WHERE ro.organization_id IN (SELECT organization_id FROM organizations WHERE name = 'Region 1')) AND ST_Intersects('{str(geometry)}', geography)"
+    query = f"SELECT rsu_id, primary_route, milepost, ipv4_address,  ST_AsText(geography) point FROM rsus WHERE rsu_id not in (SELECT rsu_id FROM rsu_organization as ro JOIN organizations as o on ro.organization_id = o.organization_id WHERE o.name = 'Region 1') AND ST_Intersects('{str(geometry)}', geography)"
     try:
         result = pgquery.query_db(query)
     except Exception as e:
