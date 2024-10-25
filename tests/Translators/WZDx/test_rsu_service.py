@@ -15,7 +15,7 @@ def set_rsu_index_dict(request):
 def test_get_rsus_intersecting_geometry_no_data(mock_pgquery):
     mock_pgquery.query_db.return_value = {}
     expected_rsu_data = None
-    expected_query = "SELECT rsu_id, primary_route, milepost, ipv4_address,  ST_AsText(geography) point FROM rsus WHERE primary_route != 'Region 1' AND rsu_id in (SELECT rsu_id FROM rsu_organization AS ro JOIN organizations AS o on ro.organization_id = o.organization_id WHERE ro.organization_id IN (SELECT organization_id FROM organizations WHERE name != 'Region 1')) AND ST_Intersects('TEST', geography)"
+    expected_query = "SELECT rsu_id, primary_route, milepost, ipv4_address,  ST_AsText(geography) point FROM rsus WHERE rsu_id not in (SELECT rsu_id FROM rsu_organization as ro JOIN organizations as o on ro.organization_id = o.organization_id WHERE ro.organization_id IN (SELECT organization_id FROM organizations WHERE name = 'Region 1')) AND ST_Intersects('TEST', geography)"
     actual_result = rsu_service.get_rsus_intersecting_geometry('TEST')
     mock_pgquery.query_db.assert_called_with(expected_query)
 
