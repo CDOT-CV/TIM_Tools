@@ -13,19 +13,15 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-  - task: ArchiveFiles@2
-    name: zip_wzdxTranslator
+  - task: CopyFiles@2
     inputs:
-      rootFolderOrFile: "Translators/WZDx"
-      includeRootFolder: false
-      archiveType: "zip"
-      archiveFile: "$(Build.ArtifactStagingDirectory)/WZDx.zip"
-      replaceExistingArchive: true
-      verbose: true
+      SourceFolder: 'Translators/WZDx'
+      Contents: '**'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
   # Publish the artifacts directory for consumption in publish pipeline
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: "$(Build.ArtifactStagingDirectory)"
-      ArtifactName: "zipped_functions"
-      publishLocation: "Container"
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'tim-tools'
+      publishLocation: 'Container'
