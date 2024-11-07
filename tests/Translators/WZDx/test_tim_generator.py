@@ -139,3 +139,34 @@ def test_getDataFrames(mockStart, mockRoad, mockSupported, mockMsgId, mockDeepCo
     dataFrames = tim_generator.get_data_frames(feature)
     assert dataFrames == dataframes_data.expected_dataframes
 
+def test_getDataFrames_notEnoughNodes():
+    feature = {
+        'geometry': {
+            'coordinates': [
+                [
+                    -122.403,
+                    37.795
+                ]
+            ]
+        }
+    }
+    dataFrames = tim_generator.get_data_frames(feature)
+    assert dataFrames == None
+
+def test_getDataFrames_edgeCase():
+    feature = {
+        'geometry': {
+            'coordinates': [
+                [
+                    -122.403,
+                    37.795
+                ],
+                [
+                    -122.403,
+                    37.800
+                ]
+            ]
+        }
+    }
+    dataFrames = tim_generator.get_data_frames(feature)
+    assert dataFrames == None
