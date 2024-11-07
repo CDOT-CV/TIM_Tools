@@ -15,7 +15,7 @@ pool:
 steps:
   - task: CopyFiles@2
     inputs:
-      SourceFolder: 'services'
+      SourceFolder: 'Translators/WZDx'
       Contents: '**'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
