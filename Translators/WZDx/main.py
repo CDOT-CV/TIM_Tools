@@ -16,7 +16,8 @@ logging.basicConfig(format='%(levelname)s:%(message)s', level=log_level)
 def record_active(feature):
     startDate = datetime.strptime(feature["properties"]["start_date"], "%Y-%m-%dT%H:%M:%SZ")
     endDate = datetime.strptime(feature["properties"]["end_date"], "%Y-%m-%dT%H:%M:%SZ")
-    if (datetime.utcnow().replace(tzinfo=None) - startDate.replace(tzinfo=None)).total_seconds() >= -1800 and datetime.utcnow() < endDate:
+    now = datetime.now(datetime.timezone.utc)
+    if (now.replace(tzinfo=None) - startDate.replace(tzinfo=None)).total_seconds() >= -1800 and now < endDate:
         return True
     else:
         return False
