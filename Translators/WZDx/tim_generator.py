@@ -207,8 +207,8 @@ def get_start_date(feature):
 
 def get_data_frames(feature):
     coords = copy.deepcopy(feature["geometry"]["coordinates"])
-    # ensure we have the minimum 2 nodes to create a path
-    # 2 is valid, however in the WZDx case if we have only two points it is just the start/end point and may not be on the same road
+    # ensure we have the minimum 3 nodes to create a path
+    # 2 is valid per spec and may be accepted later, however in the WZDx case if we have only two points it is just the start/end point and may not be on the same road
     # for now, skip these cases
     if len(coords) <= 2:
         return None
