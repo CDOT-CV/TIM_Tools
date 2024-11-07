@@ -153,7 +153,23 @@ def test_getDataFrames_notEnoughNodes():
     dataFrames = tim_generator.get_data_frames(feature)
     assert dataFrames == None
 
-def test_getDataFrames_edgeCase():
+
+def test_getDataFrames_edgeCase_twoNode():
+    """
+    Test case for the `get_data_frames` function in the `tim_generator` module.
+
+    This test checks the edge case where the feature has exactly two nodes.
+    It verifies that the function returns None when given this input.
+
+    The feature dictionary contains:
+    - 'geometry': A dictionary with:
+        - 'coordinates': A list of two coordinate pairs (longitude, latitude).
+
+    The test asserts that the `get_data_frames` function returns None for this input.
+
+    Returns:
+            None
+    """
     feature = {
         'geometry': {
             'coordinates': [
