@@ -121,8 +121,8 @@ def get_snmp_info(rsuTarget):
 
 def get_snmp_protocol(rsuTarget):
     query = (
-        f"SELECT snmp.version_code from public.snmp_versions as snmp "
-        f"JOIN public.rsus as rsu ON rsu.snmp_version_id = snmp.snmp_version_id "
+        f"SELECT snmp.protocol_code from public.snmp_protocols as snmp "
+        f"JOIN public.rsus as rsu ON rsu.snmp_protocol_id = snmp.snmp_protocol_id "
         f"WHERE rsu.ipv4_address = '{rsuTarget}'"
     )
     return query_db(query)
@@ -155,7 +155,7 @@ def get_rsu_request(feature):
         snmp_info = get_snmp_info(rsu["rsuTarget"])
         snmp_protocol = get_snmp_protocol(rsu["rsuTarget"])
         if snmp_info is not None:
-            rsu["snmpProtocol"] = "NTCIP1218" if snmp_protocol[0]["version_code"] == "1218" else "FOURDOT1"
+            rsu["snmpProtocol"] = "NTCIP1218" if snmp_protocol[0]["protocol_code"] == "1218" else "FOURDOT1"
             rsu["rsuUsername"] = snmp_info[0]["username"]
             rsu["rsuPassword"] = snmp_info[0]["password"]
 
