@@ -7,7 +7,6 @@ def get_itis_codes(feature):
     # need to iterate over entries & split to check for keywords
     for entry in feature["properties"]["currentConditions"]:
         itis_codes = entry["conditionDescription"].split(",")
-        # itis_codes[0] = itis_codes[0].split(" ")[-1]
         for code in itis_codes:
             code = code.translate({ord(k): None for k in digits}).replace("-", "").strip()
             if code == "forecast text included":
