@@ -88,7 +88,7 @@ def entry():
 def incident_tim_translator():
     logging.info('Incident Feed TIM Translator Timer Called...')
 
-    # Scrape the CDOT endpoint to get current list of road condition features
+    # Scrape the CDOT endpoint to get current list of incident features
     geoJSON =  json.loads(requests.get(f'https://{os.getenv("CDOT_FEED_ENDPOINT")}/api/v1/incidents?apiKey={os.getenv("CDOT_FEED_API_KEY")}').content.decode('utf-8'))
 
     tim_list = translate(geoJSON)
