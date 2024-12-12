@@ -119,7 +119,6 @@ def RC_tim_translator():
 
     errNo = 0
     return_value = requests.put(f'{os.getenv("ODE_ENDPOINT")}/submit-rc-ac', json=tim_all_clear_list)
-    print(f"All Clear Return: {return_value.status_code}")
     if (return_value.status_code == 200):
         logging.info(f'Successfully submitted {len(tim_list["timRcList"])} All Clear TIMs to ODE')
 
