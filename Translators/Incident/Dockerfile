@@ -6,12 +6,14 @@ ENV WORKDIR /app
 
 WORKDIR $WORKDIR
 
-COPY . .
-
-ENV FLASK_APP app/main.py
+COPY ./requirements.txt .
 
 RUN apt-get update && apt-get install -y libgeos-dev
 
 RUN pip install -r requirements.txt
+
+COPY . .
+
+ENV FLASK_APP app/main.py
 
 CMD ["python3", "-m", "flask", "run", "--host", "0.0.0.0", "--port", "8083"]
