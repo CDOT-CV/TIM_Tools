@@ -1,4 +1,5 @@
 from Translators.RoadConditions import tim_generator
+from Translators.RoadConditions import itis_codes
 
 ############################ getItisCodes ############################
 def test_get_itis_codes_no_conditions():
@@ -19,7 +20,7 @@ def test_get_itis_codes_single_condition():
         }
     }
     itisCodes = tim_generator.get_itis_codes(feature)
-    assert itisCodes == ['513']  # ItisCodes.ACCIDENT.value
+    assert itisCodes == [itis_codes.ItisCodes.ACCIDENT.value]
 
 def test_get_itis_codes_multiple_conditions():
     feature = {
@@ -31,7 +32,11 @@ def test_get_itis_codes_multiple_conditions():
     }
     itisCodes = tim_generator.get_itis_codes(feature)
     for code in itisCodes:
-        assert code in ['513', '2573', '7425']
+        assert code in [ 
+            itis_codes.ItisCodes.ACCIDENT.value, 
+            itis_codes.ItisCodes.WIDTH_LIMIT.value, 
+            itis_codes.ItisCodes.KEEP_TO_RIGHT.value
+            ]
 
 def test_get_itis_codes_forecast_text_included():
     feature = {
@@ -42,7 +47,7 @@ def test_get_itis_codes_forecast_text_included():
         }
     }
     itisCodes = tim_generator.get_itis_codes(feature)
-    assert itisCodes == ['513']  # ItisCodes.ACCIDENT.value
+    assert itisCodes == [itis_codes.ItisCodes.ACCIDENT.value]
 
 ############################ getGeometry ############################
 def test_get_geometry_empty():
