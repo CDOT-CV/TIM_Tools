@@ -40,7 +40,7 @@ def RC_tim_translator():
 
     tim_list = translate(geoJSON)
 
-    logging.info('Pushing TIMs to ODE...')
+    logging.info('Pushing TIMs to TIM Manager...')
 
     tim_list_copy = copy.deepcopy(tim_list)
     tim_all_clear_list = {"timRcList": [tim for tim in tim_list_copy["timRcList"] if len(tim["itisCodes"]) == 0]}
@@ -49,14 +49,14 @@ def RC_tim_translator():
     errNo = 0
     return_value = requests.put(f'{os.getenv("TIM_MANAGER_ENDPOINT")}/submit-rc-ac', json=tim_all_clear_list)
     if (return_value.status_code == 200):
-        logging.info(f'Successfully submitted {len(tim_list["timRcList"])} All Clear TIMs to ODE')
+        logging.info(f'Successfully submitted {len(tim_list["timRcList"])} All Clear TIMs to TIM Manager')
 
     errNo = 0
     return_value = requests.post(f'{os.getenv("TIM_MANAGER_ENDPOINT")}/create-update-rc-tim', json=tim_list)
     if (return_value.status_code == 200):
-        return f'Successfully pushed {len(tim_list["timRcList"])} TIMs to ODE'
+        return f'Successfully pushed {len(tim_list["timRcList"])} TIMs to TIM Manager'
 
-    return f'Error pushing TIMs to ODE: {return_value.content}'
+    return f'Error pushing TIMs to TIM Manager: {return_value.content}'
 
 # Run via flask app if running locally else just run translator directly
 if (os.getenv("RUN_LOCAL") == "true"):
