@@ -99,14 +99,14 @@ def WZDx_tim_translator():
 
     delete_tims(tim_list)
 
-    logging.info('Pushing TIMs to ODE...')
+    logging.info('Pushing TIMs to the TIM Manager...')
 
     errNo = 0
     return_value = requests.post(f'{os.getenv("TIM_MANAGER_ENDPOINT")}/rw-tim', json=tim_list)
     if (return_value.status_code == 200):
-        return f'Successfully pushed {len(tim_list["timRwList"])} TIMs to ODE'
+        return f'Successfully pushed {len(tim_list["timRwList"])} TIMs to the TIM Manager'
 
-    return f'Error pushing TIMs to ODE: {return_value.content}'
+    return f'Error pushing TIMs to the TIM Manager: {return_value.content}'
 
 
 # Run via flask app if running locally else just run translator directly
