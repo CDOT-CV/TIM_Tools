@@ -41,7 +41,6 @@ def incident_tim_translator():
 
     logging.info('Pushing TIMs to Tim Manager...')
 
-    errNo = 0
     return_value = requests.post(f'{os.getenv("TIM_MANAGER_ENDPOINT")}/incident-tim', json=tim_list)
     if (return_value.status_code == 200):
         return f'Successfully pushed {len(tim_list["timIncidentList"])} TIMs to Tim Manager'
