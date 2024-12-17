@@ -28,7 +28,7 @@ def delete_tims(feature_list):
         if tim["id"] in active_tims:
             active_tims.remove(tim["id"])
     for tim in active_tims:
-        return_value = requests.delete(f'{os.getenv("ODE_ENDPOINT")}/rw-tim/{tim}', headers={"Accept": "application/json"})
+        return_value = requests.delete(f'{os.getenv("TIM_MANAGER_ENDPOINT")}/rw-tim/{tim}', headers={"Accept": "application/json"})
         if (return_value.status_code != 200):
             logging.error(f'Error deleting TIM {tim["id"]}: {return_value.content}')
 
@@ -102,7 +102,7 @@ def WZDx_tim_translator():
     logging.info('Pushing TIMs to ODE...')
 
     errNo = 0
-    return_value = requests.post(f'{os.getenv("ODE_ENDPOINT")}/rw-tim', json=tim_list)
+    return_value = requests.post(f'{os.getenv("TIM_MANAGER_ENDPOINT")}/rw-tim', json=tim_list)
     if (return_value.status_code == 200):
         return f'Successfully pushed {len(tim_list["timRwList"])} TIMs to ODE'
 
