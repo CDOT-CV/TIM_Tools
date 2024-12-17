@@ -31,7 +31,7 @@ In addition to the environment variables for accessing the CDOT Postgres databas
 <ol>
     <li>CDOT_FEED_ENDPOINT - the CDOT Incident URL</li>
     <li>CDOT_FEED_API_KEY - the API key for accessing the Incident data</li>
-    <li>ODE_ENDPOINT - the ODE URL where translated TIMs will be submitted </li>
+    <li>TIM_MANAGER_ENDPOINT - the TIM Manager URL where translated TIMs will be submitted </li>
 </ol>
 
 ### Testing
