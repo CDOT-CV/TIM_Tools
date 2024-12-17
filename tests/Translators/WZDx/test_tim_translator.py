@@ -71,7 +71,6 @@ class TestTimTranslator(unittest.TestCase):
         wzdx_geojson = [self.feature]
         result = translate(wzdx_geojson)
         self.assertEqual(len(result["timRwList"]), 1)
-        print(result["timRwList"][0])
         self.assertEqual(result["timRwList"][0], test_data.expected_translate_result)
 
     @patch('Translators.WZDx.tim_translator.query_db')
