@@ -55,7 +55,7 @@ class TestTimTranslator(unittest.TestCase):
             "direction": "I",
             "geometry": [{"latitude": 40.0, "longitude": -105.0}, {"latitude": 40.1, "longitude": -105.1}]
         }
-        result = active_tim(self.feature, tim_body)
+        result = active_tim(tim_body)
         self.assertFalse(result)
 
     @patch('Translators.WZDx.tim_translator.get_bearing')
@@ -90,7 +90,7 @@ class TestTimTranslator(unittest.TestCase):
             "direction": "I",
             "geometry": [{"latitude": 40.0, "longitude": -105.0}, {"latitude": 40.1, "longitude": -105.1}]
         }
-        result = active_tim(self.feature, tim_body)
+        result = active_tim(tim_body)
         self.assertTrue(result)
 
 

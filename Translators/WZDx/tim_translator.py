@@ -27,7 +27,7 @@ def update_rsu_region_name(request, tim_body):
     new_tim['dataframes'][0]['regions'][0]['name'] = region_name
     return new_tim
 
-def active_tim(feature, tim_body):
+def active_tim(tim_body):
     tim_id = tim_body["id"]
     # if TIM has an active TIM holding record that is current & info is the same as the current TIM record, then do not update
     active_tim_holding = query_db(f"SELECT * FROM active_tim_holding WHERE client_id LIKE '%{tim_id}%'")
@@ -102,7 +102,7 @@ def translate(wzdx_geojson):
         tim_body["id"] = feature["properties"]["core_details"]["name"].replace("_", "-")
         tim_body["projectKey"] = 1
         tim_body["buffers"] = []
-        active_tim_record = active_tim(feature, tim_body)
+        active_tim_record = active_tim(tim_body)
         if active_tim_record:
             logging.info(f"TIM already active for record: {tim_body['id']}")
             continue
