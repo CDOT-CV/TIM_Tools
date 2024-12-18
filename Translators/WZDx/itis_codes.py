@@ -66,5 +66,7 @@ ItisCodeExtraKeywords = {
     "drive careful": "drive carefully",
     "stop at next safe place": "stop at the next safe place",
     "only travel if necessary": "only necessary travel",
-    "falling rocks": "falling rock"
+    "falling rocks": "falling rock",
+    "icy spots": "icy patches",
+    "snow packed spots": "snow"
 }

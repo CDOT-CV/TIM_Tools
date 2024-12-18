@@ -266,3 +266,20 @@ def generate_tim(feature):
         "dataframes": data_frames,
     }
     return tim_body
+
+def get_bearing(feature):
+    direction = feature["properties"]["core_details"]["direction"].lower()
+    if direction == "northbound":
+        return 0
+    elif direction == "eastbound":
+        return 270
+    elif direction == "southbound":
+        return 180
+    elif direction == "westbound":
+        return 90
+    
+def get_geometry(geometry):
+    annotated_geometry = []
+    for coord in geometry:
+        annotated_geometry.append({"latitude": coord[1], "longitude": coord[0]})
+    return annotated_geometry
