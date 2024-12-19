@@ -6,7 +6,9 @@ ENV WORKDIR /app
 
 WORKDIR $WORKDIR
 
-COPY . .
+COPY Translators/WZDx/ .
+
+COPY Translators/Shared/ .
 
 ENV FLASK_APP /app/main.py
 

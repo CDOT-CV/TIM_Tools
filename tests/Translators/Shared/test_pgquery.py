@@ -1,10 +1,10 @@
 from unittest.mock import MagicMock, patch, Mock
-from Translators.WZDx import pgquery
+from Translators.Shared import pgquery
 import sqlalchemy
 import os
 
 # test that init_tcp_connection_engine is calling sqlalchemy.create_engine with expected arguments
-@patch('Translators.WZDx.pgquery.db_config', new={'pool_size': 5, 'max_overflow': 2, 'pool_timeout': 30, 'pool_recycle': 1800})
+@patch('Translators.Shared.pgquery.db_config', new={'pool_size': 5, 'max_overflow': 2, 'pool_timeout': 30, 'pool_recycle': 1800})
 def test_init_tcp_connection_engine():
     # mock return values for function dependencies
     sqlalchemy.create_engine = MagicMock(
@@ -40,7 +40,7 @@ def test_init_tcp_connection_engine():
     sqlalchemy.create_engine.assert_called_once_with("myurl", **my_db_config)
 
 # test that init_socket_connection_engine is calling sqlalchemy.create_engine with expected arguments
-@patch('Translators.WZDx.pgquery.db_config', new={'pool_size': 5, 'max_overflow': 2, 'pool_timeout': 30, 'pool_recycle': 1800})
+@patch('Translators.Shared.pgquery.db_config', new={'pool_size': 5, 'max_overflow': 2, 'pool_timeout': 30, 'pool_recycle': 1800})
 def test_init_socket_connection_engine():
     # mock return values for function dependencies
     sqlalchemy.create_engine = MagicMock(
@@ -74,7 +74,7 @@ def test_init_socket_connection_engine():
     sqlalchemy.create_engine.assert_called_once_with("myurl", **my_db_config)
 
 # test initializing tcp connection engine based on environment variables
-@patch('Translators.WZDx.pgquery.db_config', new={'pool_size': 5, 'max_overflow': 2, 'pool_timeout': 30, 'pool_recycle': 1800})
+@patch('Translators.Shared.pgquery.db_config', new={'pool_size': 5, 'max_overflow': 2, 'pool_timeout': 30, 'pool_recycle': 1800})
 def test_init_connection_engine_target_tcp():
     # mock return values for function dependencies
     pgquery.init_tcp_connection_engine = MagicMock(
@@ -111,8 +111,8 @@ def test_init_connection_engine_target_tcp():
     pgquery.init_socket_connection_engine.assert_not_called()
 
 # test initializing socket connection engine based on environment variables
-@patch('Translators.WZDx.pgquery.db_config', new={'pool_size': 5, 'max_overflow': 2, 'pool_timeout': 30, 'pool_recycle': 1800})
-@patch('Translators.WZDx.pgquery.db', new=None)
+@patch('Translators.Shared.pgquery.db_config', new={'pool_size': 5, 'max_overflow': 2, 'pool_timeout': 30, 'pool_recycle': 1800})
+@patch('Translators.Shared.pgquery.db', new=None)
 def test_init_connection_engine_target_socket():
     # mock return values for function dependencies
     pgquery.init_tcp_connection_engine = MagicMock(
@@ -149,8 +149,8 @@ def test_init_connection_engine_target_socket():
     pgquery.init_tcp_connection_engine.assert_not_called()
 
 # test that query_db is calling engine.connect and connection.execute with expected arguments
-@patch('Translators.WZDx.pgquery.db_config', new={'pool_size': 5, 'max_overflow': 2, 'pool_timeout': 30, 'pool_recycle': 1800})
-@patch('Translators.WZDx.pgquery.db', new=None)
+@patch('Translators.Shared.pgquery.db_config', new={'pool_size': 5, 'max_overflow': 2, 'pool_timeout': 30, 'pool_recycle': 1800})
+@patch('Translators.Shared.pgquery.db', new=None)
 def test_query_db():
     pgquery.init_connection_engine = MagicMock(
         return_value = Mock( # return a mock engine

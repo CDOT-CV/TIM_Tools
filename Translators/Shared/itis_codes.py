@@ -2,6 +2,9 @@ from enum import Enum
 
 
 class ItisCodes(Enum):
+    """
+    Enum class representing various ITIS (International Traveler Information Systems) codes.
+    """
     SPEED_LIMIT = '368'
     ACCIDENT = '513'
     INCIDENT = '531'
@@ -67,6 +70,10 @@ ItisCodeExtraKeywords = {
     "stop at next safe place": "stop at the next safe place",
     "only travel if necessary": "only necessary travel",
     "falling rocks": "falling rock",
+    "icy patches": "icy spots",
+    "snow": "snow packed spots",
+    "closed for season": "seasonal closure",
+    "ice": "icy",
     "icy spots": "icy patches",
     "snow packed spots": "snow"
 }
