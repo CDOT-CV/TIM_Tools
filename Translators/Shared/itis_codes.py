@@ -71,4 +71,6 @@ ItisCodeExtraKeywords = {
     "snow": "snow packed spots",
     "closed for season": "seasonal closure",
     "ice": "icy",
+    "icy spots": "icy patches",
+    "snow packed spots": "snow"
 }
