@@ -3,7 +3,7 @@ from unittest.mock import patch, MagicMock
 import Translators.Incident.tim_translator as tim_translator
 
 @pytest.fixture
-def sample_geojson():
+def feature_geojson():
     return {
         "features": [
             {
@@ -12,7 +12,8 @@ def sample_geojson():
                     "routeName": "route_1",
                     "type": "accident",
                     "laneImpacts": ["lane1"],
-                    "additionalImpacts": ["impact1"]
+                    "additionalImpacts": ["impact1"],
+                    "travelerInformationMessage": "",
                 },
                 "geometry": {
                     "type": "Point",
@@ -25,7 +26,8 @@ def sample_geojson():
                     "routeName": "route_2",
                     "type": "construction",
                     "laneImpacts": ["lane2"],
-                    "additionalImpacts": None
+                    "additionalImpacts": None,
+                    "travelerInformationMessage": "",
                 },
                 "geometry": {
                     "type": "LineString",
@@ -41,7 +43,7 @@ def sample_geojson():
 @patch('Translators.Incident.tim_translator.get_point')
 @patch('Translators.Incident.tim_translator.get_itis_codes')
 @patch('Translators.Incident.tim_translator.calculate_direction')
-def test_translate(mock_calculate_direction, mock_get_itis_codes, mock_get_point, mock_get_effect, mock_get_action, mock_query_db, sample_geojson):
+def test_translate(mock_calculate_direction, mock_get_itis_codes, mock_get_point, mock_get_effect, mock_get_action, mock_query_db, feature_geojson):
     mock_get_point.side_effect = lambda x: {"latitude": x[1], "longitude": x[0]}
     mock_get_effect.return_value = "effect"
     mock_get_action.return_value = "action"
@@ -49,7 +51,7 @@ def test_translate(mock_calculate_direction, mock_get_itis_codes, mock_get_point
     mock_calculate_direction.return_value = "N"
     mock_query_db.return_value = []
 
-    result = tim_translator.translate(sample_geojson)
+    result = tim_translator.translate(feature_geojson)
 
     assert len(result["timIncidentList"]) == 2
     assert result["timIncidentList"][0]["clientId"] == "incident-1"

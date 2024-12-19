@@ -1,4 +1,5 @@
 from Translators.Incident import tim_generator
+from Translators.Incident.tim_translator import IncidentFeature
 import Translators.Incident.itis_codes as itis_codes
 
 ############################ get_itis_codes ############################
@@ -64,7 +65,21 @@ def test_get_action_speed_reduce():
         "action": "",
         "problem": ""
     }
-    feature = {
+    properties = {
+        "travelerInformationMessage": "Speeds reduced",
+        "id": "1",
+        "routeName": "I-70",
+        "type": "Incident",
+        "laneImpacts": [],
+        "additionalImpacts": []
+    }
+    geometry = {
+        "coordinates": [-122.403, 37.795],
+        "type": "Point"
+    }
+    feature = IncidentFeature(properties, geometry)
+    
+    {
         "properties": {
             "travelerInformationMessage": ""
         }
@@ -78,11 +93,19 @@ def test_get_action_chains_required():
         "action": "",
         "problem": "Traction Law Code 15"
     }
-    feature = {
-        "properties": {
-            "travelerInformationMessage": ""
-        }
+    properties = {
+        "travelerInformationMessage": "",
+        "id": "1",
+        "routeName": "I-70",
+        "type": "Incident",
+        "laneImpacts": [],
+        "additionalImpacts": []
     }
+    geometry = {
+        "coordinates": [-122.403, 37.795],
+        "type": "Point"
+    }
+    feature = IncidentFeature(properties, geometry)
     action = tim_generator.get_action(tim_body, feature)
     assert action == "Chains Required."
 
