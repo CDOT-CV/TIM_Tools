@@ -1,6 +1,16 @@
 from pgquery import query_db
 
 def active_tim(tim_type, tim_body):
+    """
+    Checks if a TIM (Traveler Information Message) already exists in either the active_tim table or the active_tim_holding table based on passed in data.
+
+    Args:
+        tim_type (str): The type of the TIM.
+        tim_body (dict): The body of the TIM containing details such as clientId, direction, and geometry.
+
+    Returns:
+        bool: True if there is an active TIM holding record or an active TIM record that matches the current TIM information, False otherwise.
+    """
     tim_id = tim_body["clientId"]
     # if TIM has an active TIM holding record that is current & info is the same as the current TIM record, then do not update
     active_tim_holding = query_db(f"SELECT * FROM active_tim_holding WHERE client_id LIKE '%{tim_id}%'")

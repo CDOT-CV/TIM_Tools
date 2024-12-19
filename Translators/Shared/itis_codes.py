@@ -2,6 +2,9 @@ from enum import Enum
 
 
 class ItisCodes(Enum):
+    """
+    Enum class representing various ITIS (International Traveler Information Systems) codes.
+    """
     SPEED_LIMIT = '368'
     ACCIDENT = '513'
     INCIDENT = '531'

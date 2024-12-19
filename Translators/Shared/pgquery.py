@@ -20,6 +20,19 @@ db_config = {
 db = None
 
 def init_tcp_connection_engine(db_user, db_pass, db_name, db_hostname, db_port):
+    """
+    Initializes a TCP connection engine to a PostgreSQL database using the pg8000 driver.
+
+    Args:
+        db_user (str): The username for the database.
+        db_pass (str): The password for the database.
+        db_name (str): The name of the database.
+        db_hostname (str): The hostname of the database server.
+        db_port (int): The port number on which the database server is listening.
+
+    Returns:
+        sqlalchemy.engine.Engine: A SQLAlchemy engine instance connected to the specified database.
+    """
     logging.info(f"Creating DB pool")
     pool = sqlalchemy.create_engine(
         # Equivalent URL:
@@ -57,6 +70,24 @@ def init_socket_connection_engine(db_user, db_pass, db_name, unix_query):
 
 
 def init_connection_engine():
+    """
+    Initializes a connection engine to a PostgreSQL database.
+
+    This function reads database connection parameters from environment variables
+    and determines whether to connect via a Unix socket or TCP. If the environment
+    variable "INSTANCE_CONNECTION_NAME" is set, it will attempt to connect using
+    a Unix socket. Otherwise, it will connect using TCP.
+
+    Environment Variables:
+        DB_USER (str): The database user.
+        DB_PASS (str): The database password.
+        DB_NAME (str): The database name.
+        INSTANCE_CONNECTION_NAME (str, optional): The instance connection name for Unix socket connection.
+        DB_HOST (str, optional): The database host and port in the format "hostname:port" for TCP connection.
+
+    Returns:
+        sqlalchemy.engine.Engine: A SQLAlchemy engine instance connected to the specified database.
+    """
     db_user = os.environ["DB_USER"]
     db_pass = os.environ["DB_PASS"]
     db_name = os.environ["DB_NAME"]
@@ -75,6 +106,18 @@ def init_connection_engine():
 
 
 def query_db(query):
+    """
+    Executes a given SQL query on the database and returns the result.
+
+    Args:
+        query (str): The SQL query to be executed.
+
+    Returns:
+        list: A list of rows returned by the query.
+
+    Raises:
+        Exception: If there is an issue with the database connection or query execution.
+    """
     global db
     if db is None:
         db = init_connection_engine()
