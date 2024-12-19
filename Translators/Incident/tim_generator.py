@@ -34,9 +34,9 @@ def get_action(tim_body, feature):
     speed_reduce_pattern = r"(?i)(Speeds? reduced|Reduce speed|Speed is reduced|Speed limit reduced|Slower speeds?|Slower speeds? are advised)"
     tires_chains_required_pattern = r"(?i)(Chains required|Snow tires required|Snow chains required|Tires required|Chains or snow tires required|Snow tires or chains required)"
     type_tires_chains_required_pattern = r"(?i)(Traction|Chain)(/Chain)? Law Code (15|18)(\s+and\s+18)?"
-    if re.search(speed_reduce_pattern, feature["properties"]["travelerInformationMessage"]) or re.search(speed_reduce_pattern, tim_body["effect"]):
+    if re.search(speed_reduce_pattern, feature.get_traveler_information_message()) or re.search(speed_reduce_pattern, tim_body["effect"]):
         action += "Reduce Speeds. "
-    if re.search(tires_chains_required_pattern, feature["properties"]["travelerInformationMessage"]) or re.search(type_tires_chains_required_pattern, tim_body["problem"]):
+    if re.search(tires_chains_required_pattern, feature.get_traveler_information_message()) or re.search(type_tires_chains_required_pattern, tim_body["problem"]):
         action += "Chains Required."
 
     return action
