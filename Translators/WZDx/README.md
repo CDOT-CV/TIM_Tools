@@ -61,7 +61,11 @@ Using VSCode, a simple launch.json file has been provided to allow debugging the
 
 
 ### Running the Translator via Docker
-The WZDx/TIM translator can also be run locally using Docker. The translator Dockerfile can be found under Translators/WZDx/ and the redis cache Dockerfile can be found under redis/. Additionally, there is a docker-compose file which builds and runs both the translator and the redis cache. Setting the environment variable RUN_LOCAL to true will run the translator REST service as a flask application that can be accessed on http://localhost:8081. Alternatively, leaving RUN_LOCAL blank will run the translator one time immediately after the build has finished. 
+The WZDx/TIM translator can also be run locally using Docker. The translator Dockerfile can be found under Translators/WZDx/ and the redis cache Dockerfile can be found under redis/. To build the translator you can run the following command from the Translators/WZDx directory:
+```bash
+docker build ../../ -f Dockerfile
+```
+Additionally, there is a docker-compose file which builds and runs both the translator and the redis cache. Setting the environment variable RUN_LOCAL to true will run the translator REST service as a flask application that can be accessed on http://localhost:8081. Alternatively, leaving RUN_LOCAL blank will run the translator one time immediately after the build has finished. 
 
 
 ### Current Known Limitations
