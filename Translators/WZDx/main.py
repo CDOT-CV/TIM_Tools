@@ -1,10 +1,9 @@
 import json
 import requests
-import copy
 import logging
 import os
-from request_wrapper import get_sdw_request, get_rsu_request
-from tim_generator import generate_tim
+from pgquery import query_db
+from tim_translator import translate_old, translate
 from flask import request, Flask
 from datetime import datetime
 
@@ -21,60 +20,17 @@ def record_active(feature):
     else:
         return False
 
-def update_sat_region_name(request, tim_body):
-    new_tim = copy.deepcopy(tim_body)
-    region_name = new_tim['dataframes'][0]['regions'][0]['name']
-    region_name = region_name.replace(
-        'IDENTIFIER', f"SAT_{request['sdw']['recordId']}")
-    if len(region_name) > 63:
-        region_name = region_name[:60] + '...'
-    new_tim['dataframes'][0]['regions'][0]['name'] = region_name
-    return new_tim
-
-
-def update_rsu_region_name(request, tim_body):
-    new_tim = copy.deepcopy(tim_body)
-    region_name = new_tim['dataframes'][0]['regions'][0]['name']
-    region_name = region_name.replace(
-        'IDENTIFIER', f"RSU_{request['rsus'][0]['rsuTarget']}")
-    if len(region_name) > 63:
-        region_name = region_name[:60] + '...'
-    new_tim['dataframes'][0]['regions'][0]['name'] = region_name
-    return new_tim
-
-
-def translate(wzdx_geojson):
-    tims = []
-    duration = os.getenv("DURATION_TIME", 30)
-    # if no RSUs found, drop that one
-    for feature in wzdx_geojson:
-        tim_body = generate_tim(feature)
-        if tim_body is not None:
-            for msg in tim_body["dataframes"]:
-                # update start date to include milliseconds if missing
-                if msg["startDateTime"][-5] != ".":
-                    msg["startDateTime"] = msg["startDateTime"][:-1] + ".000Z"
-                # set duration time
-                msg["durationTime"] = duration
-
-            sdx_request = get_sdw_request(feature["geometry"])
-            sdx_tim = {
-                "request": sdx_request,
-                "tim": update_sat_region_name(sdx_request, tim_body)
-            }
-            tims.append(sdx_tim)
-
-            rsu_request = get_rsu_request(feature)
-            if rsu_request is not None:
-                rsu_tim = {
-                    "request": rsu_request,
-                    "tim": update_rsu_region_name(rsu_request, tim_body)
-                }
-                tims.append(rsu_tim)
-        else:
-            logging.info(f'Failed to generate TIM for feature: {feature["id"]}')
-    return tims
-
+def delete_tims(feature_list):
+    # delete all active TIMs that are not in the current WZDx feed
+    active_tims = query_db("SELECT client_id FROM active_tim WHERE tim_type_id = (SELECT tim_type_id FROM tim_type WHERE type = 'RW') AND marked_for_deletion = false")
+    active_tims = [tim["client_id"] for tim in active_tims]
+    for tim in feature_list["timRwList"]:
+        if tim["id"] in active_tims:
+            active_tims.remove(tim["id"])
+    for tim in active_tims:
+        return_value = requests.delete(f'{os.getenv("TIM_MANAGER_ENDPOINT")}/rw-tim/{tim}', headers={"Accept": "application/json"})
+        if (return_value.status_code != 200):
+            logging.error(f'Error deleting TIM {tim["id"]}: {return_value.content}')
 
 @app.route('/translate', methods=['POST'])
 def translateWzdxTIM():
@@ -105,7 +61,7 @@ def translateWzdxTIM():
         'Content-Type': 'application/json'
     }
 
-    tims = translate(request.get_json()["features"])
+    tims = translate_old(request.get_json()["features"])
     return (json.dumps(tims), 200, headers)
 
 @app.route('/', methods=['POST'])
@@ -141,18 +97,15 @@ def WZDx_tim_translator():
 
     tim_list = translate(geoJSON)
 
-    logging.info('Pushing TIMs to ODE...')
+    delete_tims(tim_list)
 
-    errNo = 0
-    for tim in tim_list:
-        return_value = requests.post(f'{os.getenv("ODE_ENDPOINT")}/tim', json=tim)
-        if return_value.status_code != 200:
-            errNo += 1
-            logging.info(f'Error pushing TIM to ODE: {return_value.content.decode("utf-8")}')
-    if errNo > 1:
-        logging.info(f'Failed to push {errNo} TIMs to ODE')
+    logging.info('Pushing TIMs to the TIM Manager...')
 
-    return f'Successfully pushed {len(tim_list) - errNo} TIMs to ODE'
+    return_value = requests.post(f'{os.getenv("TIM_MANAGER_ENDPOINT")}/rw-tim', json=tim_list)
+    if (return_value.status_code == 200):
+        return f'Successfully pushed {len(tim_list["timRwList"])} TIMs to the TIM Manager'
+
+    return f'Error pushing TIMs to the TIM Manager: {return_value.content}'
 
 
 # Run via flask app if running locally else just run translator directly

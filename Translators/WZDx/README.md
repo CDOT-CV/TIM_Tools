@@ -31,7 +31,7 @@ In addition to the environment variables for accessing the CDOT Postgres databas
 <ol>
     <li>WZDX_ENDPOINT - the CDOT WZDx URL</li>
     <li>WZDX_API_KEY - the API key for accessing the WZDx data</li>
-    <li>ODE_ENDPOINT - the ODE URL where translated TIMs will be submitted </li>
+    <li>TIM_MANAGER_ENDPOINT - the TIM Manager URL where translated TIMs will be submitted </li>
     <li>DURATION_TIME - the duration time in seconds of the TIMs </li>
 </ol>
 

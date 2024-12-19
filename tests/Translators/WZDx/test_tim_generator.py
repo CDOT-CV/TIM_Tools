@@ -186,3 +186,58 @@ def test_getDataFrames_edgeCase_twoNode():
     }
     dataFrames = tim_generator.get_data_frames(feature)
     assert dataFrames == None
+
+def test_get_bearing_northbound():
+    feature = {
+        'properties': {
+            'core_details': {
+                'direction': 'northbound'
+            }
+        }
+    }
+    bearing = tim_generator.get_bearing(feature)
+    assert bearing == 0
+
+def test_get_bearing_eastbound():
+    feature = {
+        'properties': {
+            'core_details': {
+                'direction': 'eastbound'
+            }
+        }
+    }
+    bearing = tim_generator.get_bearing(feature)
+    assert bearing == 270
+
+def test_get_bearing_southbound():
+    feature = {
+        'properties': {
+            'core_details': {
+                'direction': 'southbound'
+            }
+        }
+    }
+    bearing = tim_generator.get_bearing(feature)
+    assert bearing == 180
+
+def test_get_bearing_westbound():
+    feature = {
+        'properties': {
+            'core_details': {
+                'direction': 'westbound'
+            }
+        }
+    }
+    bearing = tim_generator.get_bearing(feature)
+    assert bearing == 90
+
+def test_get_geometry():
+    geometry = [
+        [-122.403, 37.795],
+        [-122.403, 37.800]
+    ]
+    annotated_geometry = tim_generator.get_geometry(geometry)
+    assert annotated_geometry == [
+        {"latitude": 37.795, "longitude": -122.403},
+        {"latitude": 37.800, "longitude": -122.403}
+    ]
