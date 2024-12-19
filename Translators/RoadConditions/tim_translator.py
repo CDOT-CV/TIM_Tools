@@ -1,7 +1,34 @@
+from datetime import datetime
 import logging
 from pgquery import query_db
 from tim_generator import get_geometry, get_itis_codes
 
+class RCFeature:
+    def __init__(self, properties, geometry):
+        self.name_id = properties["nameId"].replace("_", "-")
+        self.route = properties["routeName"].replace("_", "-")
+        self.segment = properties["routeSegmentIndex"]
+        self.current_conditions = properties["currentConditions"]
+        self.geometry = geometry
+
+    def get_name_id(self):
+        return self.name_id
+    
+    def get_client_id(self):
+        return self.name_id.replace("/", "-")
+    
+    def get_route(self):
+        return self.route
+    
+    def get_route_segment(self):
+        return self.segment
+    
+    def get_current_conditions(self):
+        return self.current_conditions
+    
+    def get_geometry(self):
+        return self.geometry
+    
 def calculate_direction(coordinates):
     try:
         long_dif = coordinates[-1][0] - coordinates[0][0]
@@ -30,25 +57,27 @@ def translate(rc_geojson):
     tims = {"timRcList": []}
 
     for feature in rc_geojson["features"]:
-        if (len(feature["geometry"]["coordinates"]) <= 2):
+        feature = RCFeature(feature["properties"], feature["geometry"]["coordinates"])
+        if (len(feature.get_geometry()) <= 2):
             continue
         tim_body = {}
-        tim_body["clientId"] = feature["properties"]["nameId"].replace("_", "-").replace("/", "-")
-        tim_body["direction"] = calculate_direction(feature['geometry']['coordinates'])
-        tim_body["segment"] = feature["properties"]["routeSegmentIndex"]
-        tim_body["route"] = feature["properties"]["routeName"].replace("_", "-")
-        tim_body["roadCode"] = feature["properties"]["nameId"].replace("_", "-")
+        tim_body["clientId"] = feature.get_client_id()
+        tim_body["direction"] = calculate_direction(feature.get_geometry())
+        tim_body["segment"] = feature.get_route_segment()
+        tim_body["route"] = feature.get_route()
+        tim_body["roadCode"] = feature.get_name_id()
         tim_body["itisCodes"] = get_itis_codes(feature)
-        tim_body["geometry"] = get_geometry(feature["geometry"]["coordinates"])
+        tim_body["geometry"] = get_geometry(feature.get_geometry())
         tim_body["advisory"] = ["3"]
-        active_tim_record = active_tim(feature, tim_body)
+        active_tim_record = active_tim(tim_body)
         if active_tim_record:
             logging.info(f"TIM already active for record: {tim_body['clientId']}")
             continue
         tims["timRcList"].append(tim_body)
+    print(tims)
     return tims
 
-def active_tim(feature, tim_body):
+def active_tim(tim_body):
     tim_id = tim_body["clientId"]
     # if TIM has an active TIM holding record that is current & info is the same as the current TIM record, then do not update
     active_tim_holding = query_db(f"SELECT * FROM active_tim_holding WHERE client_id LIKE '%{tim_id}%'")
