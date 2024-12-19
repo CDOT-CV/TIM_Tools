@@ -29,7 +29,8 @@ def test_translate(mock_query_db, mock_get_itis_codes):
                 "properties": {
                     "nameId": "test_name",
                     "routeSegmentIndex": 1,
-                    "routeName": "test_route"
+                    "routeName": "test_route",
+                    "currentConditions": []
                 }
             }
         ]
