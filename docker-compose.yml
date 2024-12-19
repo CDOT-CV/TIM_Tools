@@ -13,7 +13,9 @@ services:
     volumes:
       - redis-data:/data
   WZDx_tim_translator:
-    build: ./Translators/WZDx
+    build: 
+      context: .
+      dockerfile: ./Translators/WZDx/Dockerfile
     image: translator:latest
     environment:
       - dual_carriageway_endpoint=${dual_carriageway_endpoint}
