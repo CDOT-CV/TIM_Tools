@@ -57,3 +57,25 @@ def test_active_tim_active(mock_query_db):
 
     result = active_tim.active_tim('rc', tim_body)
     assert result is True
+
+@patch('Translators.Shared.active_tim.query_db')
+def test_active_tim_inactive(mock_query_db):
+    tim_body = {
+        "clientId": "incident-2",
+        "direction": "N",
+        "geometry": [
+            {"latitude": 0.0, "longitude": 100.0},
+            {"latitude": 1.0, "longitude": 101.0}
+        ]
+    }
+
+    mock_query_db.return_value = [{
+        "direction": "N",
+        "start_latitude": 0.0,
+        "start_longitude": 102.0,
+        "end_latitude": 1.0,
+        "end_longitude": 104.0
+    }]
+
+    result = active_tim.active_tim('rc', tim_body)
+    assert result is False
