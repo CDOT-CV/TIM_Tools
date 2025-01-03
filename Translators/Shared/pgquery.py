@@ -51,38 +51,18 @@ def init_tcp_connection_engine(db_user, db_pass, db_name, db_hostname, db_port):
     logging.info("DB pool created!")
     return pool
 
-def init_socket_connection_engine(db_user, db_pass, db_name, unix_query):
-  logging.info(f"Creating DB pool")
-  pool = sqlalchemy.create_engine(
-    # Equivalent URL:
-    # postgresql+pg8000://<db_user>:<db_pass>@/<db_name>?unix_sock=/cloudsql/<cloud_sql_instance_name>
-    sqlalchemy.engine.url.URL.create(
-      drivername="postgresql+pg8000",
-      username=db_user,  # e.g. "my-database-user"
-      password=db_pass,  # e.g. "my-database-password"
-      database=db_name,  # e.g. "my-database-name"
-      query=unix_query
-    ),
-    **db_config
-  )
-  logging.info("DB pool created!")
-  return pool
-
 
 def init_connection_engine():
     """
     Initializes a connection engine to a PostgreSQL database.
 
     This function reads database connection parameters from environment variables
-    and determines whether to connect via a Unix socket or TCP. If the environment
-    variable "INSTANCE_CONNECTION_NAME" is set, it will attempt to connect using
-    a Unix socket. Otherwise, it will connect using TCP.
+    and connects to a database using TCP.
 
     Environment Variables:
         DB_USER (str): The database user.
         DB_PASS (str): The database password.
         DB_NAME (str): The database name.
-        INSTANCE_CONNECTION_NAME (str, optional): The instance connection name for Unix socket connection.
         DB_HOST (str, optional): The database host and port in the format "hostname:port" for TCP connection.
 
     Returns:
@@ -91,18 +71,11 @@ def init_connection_engine():
     db_user = os.environ["DB_USER"]
     db_pass = os.environ["DB_PASS"]
     db_name = os.environ["DB_NAME"]
-    if("INSTANCE_CONNECTION_NAME" in os.environ):
-        instance_connection_name = os.environ["INSTANCE_CONNECTION_NAME"]
-        unix_query = {
-            "unix_sock": f"/cloudsql/{instance_connection_name}/.s.PGSQL.5432"
-        }
-        return init_socket_connection_engine(db_user, db_pass, db_name, unix_query)
-    else:
-        db_host = os.environ["DB_HOST"]
-        # Extract host and port from db_host
-        host_args = db_host.split(":")
-        db_hostname, db_port = host_args[0], int(host_args[1])
-        return init_tcp_connection_engine(db_user, db_pass, db_name, db_hostname, db_port)
+    db_host = os.environ["DB_HOST"]
+    # Extract host and port from db_host
+    host_args = db_host.split(":")
+    db_hostname, db_port = host_args[0], int(host_args[1])
+    return init_tcp_connection_engine(db_user, db_pass, db_name, db_hostname, db_port)
 
 
 def query_db(query):
