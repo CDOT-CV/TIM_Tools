@@ -74,7 +74,6 @@ def translate(rc_geojson):
             logging.info(f"TIM already active for record: {tim_body['clientId']}")
             continue
         tims["timRcList"].append(tim_body)
-    print(tims)
     return tims
 
 def active_tim(tim_body):
