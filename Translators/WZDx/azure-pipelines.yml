@@ -7,7 +7,6 @@ trigger:
   paths:
     include:
     - "Translators/WZDx/*"
-    - "Translators/Shared/*"
 
 
 pool:
