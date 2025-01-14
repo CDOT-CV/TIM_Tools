@@ -17,6 +17,12 @@ steps:
   - task: CopyFiles@2
     inputs:
       SourceFolder: 'Translators/WZDx'
+      Contents: 'Dockerfile'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: 'Translators/WZDx'
       Contents: '**'
       TargetFolder: '$(Build.ArtifactStagingDirectory)/Translators/WZDx'
 
@@ -29,6 +35,6 @@ steps:
   # Publish the artifacts directory for consumption in publish pipeline
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/Translators/WZDx/'
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'tim-tools'
       publishLocation: 'Container'
