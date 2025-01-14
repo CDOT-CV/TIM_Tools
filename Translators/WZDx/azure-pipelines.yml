@@ -29,6 +29,6 @@ steps:
   # Publish the artifacts directory for consumption in publish pipeline
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/Translators/WZDx/'
       ArtifactName: 'tim-tools'
       publishLocation: 'Container'
