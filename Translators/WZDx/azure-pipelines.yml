@@ -3,10 +3,11 @@
 trigger:
   branches:
     include:
-    - master
+    - Bug/Azure-Pipeline-Fix
   paths:
     include:
     - "Translators/WZDx/*"
+    - "Translators/Shared/*"
 
 
 pool:
@@ -15,7 +16,7 @@ pool:
 steps:
   - task: CopyFiles@2
     inputs:
-      SourceFolder: 'Translators/WZDx'
+      SourceFolder: 'Translators'
       Contents: '**'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
