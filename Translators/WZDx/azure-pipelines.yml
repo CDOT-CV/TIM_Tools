@@ -3,7 +3,7 @@
 trigger:
   branches:
     include:
-    - Bug/Azure-Pipeline-Fix
+    - master
   paths:
     include:
     - "Translators/WZDx/*"
