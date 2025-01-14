@@ -18,13 +18,13 @@ steps:
     inputs:
       SourceFolder: 'Translators/WZDx'
       Contents: '**'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/Translators/WZDx'
 
   - task: CopyFiles@2
     inputs:
       SourceFolder: 'Translators/Shared'
       Contents: '**'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/Translators/Shared'
 
   # Publish the artifacts directory for consumption in publish pipeline
   - task: PublishBuildArtifacts@1
