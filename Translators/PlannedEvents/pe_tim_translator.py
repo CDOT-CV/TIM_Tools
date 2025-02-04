@@ -1,7 +1,7 @@
 from datetime import datetime
 import logging
 from pgquery import query_db
-from Translators.PlannedEvents.pe_tim_generator import get_geometry, get_itis_codes
+from pe_tim_generator import get_geometry, get_itis_codes
 
 class PlannedEventsFeature:
     def __init__(self, properties, geometry):
