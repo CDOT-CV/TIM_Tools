@@ -38,6 +38,29 @@ services:
       options:
         max-size: '10m'
         max-file: '5'
+  Planned_Events_translator:
+    build:
+      context: .
+      dockerfile: ./Translators/PlannedEvents/Dockerfile
+    image: pe_translator:latest
+    environment:
+      - dual_carriageway_endpoint=${dual_carriageway_endpoint}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_PASS=${DB_PASS}
+      - DB_USER=${DB_USER}
+      - LOGGING_LEVEL=${LOGGING_LEVEL}
+      - CDOT_FEED_ENDPOINT=${CDOT_FEED_ENDPOINT}
+      - CDOT_FEED_API_KEY=${CDOT_FEED_API_KEY}
+      - DURATION_TIME=${DURATION_TIME}
+      - TIM_MANAGER_ENDPOINT=${TIM_MANAGER_ENDPOINT}
+      - RUN_LOCAL=${RUN_LOCAL}
+    ports: 
+      - '8085:8085'
+    logging:
+      options:
+        max-size: '10m'
+        max-file: '5'
 
 volumes:
   redis-data:
