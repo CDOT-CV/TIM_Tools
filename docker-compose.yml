@@ -44,7 +44,6 @@ services:
       dockerfile: ./Translators/PlannedEvents/Dockerfile
     image: pe_translator:latest
     environment:
-      - dual_carriageway_endpoint=${dual_carriageway_endpoint}
       - DB_HOST=${DB_HOST}
       - DB_NAME=${DB_NAME}
       - DB_PASS=${DB_PASS}
@@ -52,7 +51,6 @@ services:
       - LOGGING_LEVEL=${LOGGING_LEVEL}
       - CDOT_FEED_ENDPOINT=${CDOT_FEED_ENDPOINT}
       - CDOT_FEED_API_KEY=${CDOT_FEED_API_KEY}
-      - DURATION_TIME=${DURATION_TIME}
       - TIM_MANAGER_ENDPOINT=${TIM_MANAGER_ENDPOINT}
       - RUN_LOCAL=${RUN_LOCAL}
     ports: 
