@@ -4,6 +4,8 @@ def get_itis_codes():
     return [ItisCodes.SPEED_LIMIT.value]
 
 def get_geometry(geometry):
+    if len(geometry) == 0:
+        return []
     annotated_geometry = []
     # Check if the geometry is a single point
     if type(geometry[0]) == float:
