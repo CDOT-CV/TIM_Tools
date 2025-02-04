@@ -42,17 +42,6 @@ def PE_tim_translator():
 
     logging.info('Pushing TIMs to TIM Manager...')
 
-    tim_list_copy = copy.deepcopy(tim_list)
-    tim_all_clear_list = {"timRcList": [tim for tim in tim_list_copy["timRcList"] if len(tim["itisCodes"]) == 0]}
-    tim_list["timRcList"] = [tim for tim in tim_list["timRcList"] if len(tim["itisCodes"]) > 0]
-
-    print('tim all clear list: ', tim_all_clear_list)
-    print('tim list: ', tim_list)
-
-    return_value = requests.put(f'{os.getenv("TIM_MANAGER_ENDPOINT")}/submit-rc-ac', json=tim_all_clear_list)
-    if (return_value.status_code == 200):
-        logging.info(f'Successfully submitted {len(tim_all_clear_list["timRcList"])} All Clear TIMs to TIM Manager')
-
     return_value = requests.post(f'{os.getenv("TIM_MANAGER_ENDPOINT")}/create-update-rc-tim', json=tim_list)
     if (return_value.status_code == 200):
         return f'Successfully pushed {len(tim_list["timRcList"])} TIMs to TIM Manager'
