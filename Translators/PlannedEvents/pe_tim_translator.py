@@ -1,7 +1,7 @@
 from datetime import datetime
 import logging
 from pgquery import query_db
-from tim_generator import get_geometry, get_itis_codes
+from Translators.PlannedEvents.pe_tim_generator import get_geometry, get_itis_codes
 
 class PlannedEventsFeature:
     def __init__(self, properties, geometry):
@@ -61,7 +61,7 @@ def translate(rc_geojson):
     tims = {"timRcList": []}
 
     for feature in rc_geojson["features"]:
-        if feature["properties"]["type"] != "Closed for the Season":
+        if feature["properties"]["type"].lower() != "closed for the season":
             continue
         feature = PlannedEventsFeature(feature["properties"], feature["geometry"]["coordinates"])
         tim_body = {}
