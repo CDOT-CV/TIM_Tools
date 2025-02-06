@@ -1,5 +1,3 @@
-version: '1.0'
-
 services:
   redis:
     image: redis-cache:latest
@@ -34,6 +32,27 @@ services:
       - RUN_LOCAL=${RUN_LOCAL}
     ports: 
       - '8081:8081'
+    logging:
+      options:
+        max-size: '10m'
+        max-file: '5'
+  Road_conditions_translator:
+    build: ./Translators/RoadConditions
+    image: rc_translator:latest
+    environment:
+      - dual_carriageway_endpoint=${dual_carriageway_endpoint}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_PASS=${DB_PASS}
+      - DB_USER=${DB_USER}
+      - LOGGING_LEVEL=${LOGGING_LEVEL}
+      - CDOT_FEED_ENDPOINT=${CDOT_FEED_ENDPOINT}
+      - CDOT_FEED_API_KEY=${CDOT_FEED_API_KEY}
+      - DURATION_TIME=${DURATION_TIME}
+      - TIM_MANAGER_ENDPOINT=${TIM_MANAGER_ENDPOINT}
+      - RUN_LOCAL=${RUN_LOCAL}
+    ports: 
+      - '8082:8082'
     logging:
       options:
         max-size: '10m'
