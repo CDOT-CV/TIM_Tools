@@ -7,6 +7,7 @@ trigger:
   paths:
     include:
     - "Translators/WZDx/*"
+    - "Translators/Shared/*"
 
 
 pool:
@@ -16,8 +17,20 @@ steps:
   - task: CopyFiles@2
     inputs:
       SourceFolder: 'Translators/WZDx'
-      Contents: '**'
+      Contents: 'Dockerfile'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: 'Translators/WZDx'
+      Contents: '**'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/Translators/WZDx'
+
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: 'Translators/Shared'
+      Contents: '**'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/Translators/Shared'
 
   # Publish the artifacts directory for consumption in publish pipeline
   - task: PublishBuildArtifacts@1

@@ -31,7 +31,7 @@ In addition to the environment variables for accessing the CDOT Postgres databas
 <ol>
     <li>WZDX_ENDPOINT - the CDOT WZDx URL</li>
     <li>WZDX_API_KEY - the API key for accessing the WZDx data</li>
-    <li>ODE_ENDPOINT - the ODE URL where translated TIMs will be submitted </li>
+    <li>TIM_MANAGER_ENDPOINT - the TIM Manager URL where translated TIMs will be submitted </li>
     <li>DURATION_TIME - the duration time in seconds of the TIMs </li>
 </ol>
 
@@ -61,7 +61,11 @@ Using VSCode, a simple launch.json file has been provided to allow debugging the
 
 
 ### Running the Translator via Docker
-The WZDx/TIM translator can also be run locally using Docker. The translator Dockerfile can be found under Translators/WZDx/ and the redis cache Dockerfile can be found under redis/. Additionally, there is a docker-compose file which builds and runs both the translator and the redis cache. Setting the environment variable RUN_LOCAL to true will run the translator REST service as a flask application that can be accessed on http://localhost:8081. Alternatively, leaving RUN_LOCAL blank will run the translator one time immediately after the build has finished. 
+The WZDx/TIM translator can also be run locally using Docker. The translator Dockerfile can be found under Translators/WZDx/ and the redis cache Dockerfile can be found under redis/. To build the translator you can run the following command from the Translators/WZDx directory:
+```bash
+docker build ../../ -f Dockerfile
+```
+Additionally, there is a docker-compose file which builds and runs both the translator and the redis cache. Setting the environment variable RUN_LOCAL to true will run the translator REST service as a flask application that can be accessed on http://localhost:8081. Alternatively, leaving RUN_LOCAL blank will run the translator one time immediately after the build has finished. 
 
 
 ### Current Known Limitations

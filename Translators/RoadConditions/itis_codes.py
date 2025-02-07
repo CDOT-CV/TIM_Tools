@@ -66,5 +66,9 @@ ItisCodeExtraKeywords = {
     "drive careful": "drive carefully",
     "stop at next safe place": "stop at the next safe place",
     "only travel if necessary": "only necessary travel",
-    "falling rocks": "falling rock"
+    "falling rocks": "falling rock",
+    "icy patches": "icy spots",
+    "snow": "snow packed spots",
+    "closed for season": "seasonal closure",
+    "ice": "icy",
 }
