@@ -3,7 +3,7 @@ import requests
 import logging
 import os
 from flask import request, Flask
-from tim_translator import translate
+from incident_tim_translator import translate
 
 app = Flask(__name__)
 

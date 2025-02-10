@@ -1,6 +1,6 @@
 import logging
 from pgquery import query_db
-from tim_generator import get_action, get_effect, get_point, get_itis_codes, calculate_direction
+from incident_tim_generator import get_action, get_effect, get_point, get_itis_codes, calculate_direction
 
 class IncidentFeature:
     def __init__(self, properties, geometry):
