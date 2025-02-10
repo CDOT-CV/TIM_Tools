@@ -1,7 +1,7 @@
 from datetime import datetime
 import logging
 from pgquery import query_db
-from tim_generator import get_geometry, get_itis_codes
+from rc_tim_generator import get_geometry, get_itis_codes
 
 class RCFeature:
     def __init__(self, properties, geometry):
