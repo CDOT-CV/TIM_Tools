@@ -1,5 +1,5 @@
 from unittest.mock import patch
-import Translators.RoadConditions.tim_translator as tim_translator
+import Translators.RoadConditions.rc_tim_translator as tim_translator
 
 def test_calculate_direction_eastbound():
     coordinates = [(0, 0), (1, 0)]
@@ -17,8 +17,8 @@ def test_calculate_direction_southbound():
     coordinates = [(0, 1), (0, 0)]
     assert tim_translator.calculate_direction(coordinates) == "D"
 
-@patch('Translators.RoadConditions.tim_translator.get_itis_codes', return_value=[1, 2, 3])
-@patch('Translators.RoadConditions.tim_translator.query_db', return_value=[])
+@patch('Translators.RoadConditions.rc_tim_translator.get_itis_codes', return_value=[1, 2, 3])
+@patch('Translators.RoadConditions.rc_tim_translator.query_db', return_value=[])
 def test_translate(mock_query_db, mock_get_itis_codes):
     rc_geojson = {
         "features": [
