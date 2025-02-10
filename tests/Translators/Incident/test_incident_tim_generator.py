@@ -1,6 +1,6 @@
-from Translators.Incident import tim_generator
-from Translators.Incident.tim_translator import IncidentFeature
-import Translators.Incident.itis_codes as itis_codes
+from Translators.Incident import incident_tim_generator as tim_generator
+from Translators.Incident.incident_tim_translator import IncidentFeature
+import Translators.Shared.itis_codes as itis_codes
 
 ############################ get_itis_codes ############################
 def test_get_itis_codes_speed_reduce():

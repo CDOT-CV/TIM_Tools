@@ -1,6 +1,6 @@
 import pytest
-from unittest.mock import patch, MagicMock
-import Translators.Incident.tim_translator as tim_translator
+from unittest.mock import patch
+import Translators.Incident.incident_tim_translator as tim_translator
 
 @pytest.fixture
 def feature_geojson():
@@ -37,12 +37,12 @@ def feature_geojson():
         ]
     }
 
-@patch('Translators.Incident.tim_translator.query_db')
-@patch('Translators.Incident.tim_translator.get_action')
-@patch('Translators.Incident.tim_translator.get_effect')
-@patch('Translators.Incident.tim_translator.get_point')
-@patch('Translators.Incident.tim_translator.get_itis_codes')
-@patch('Translators.Incident.tim_translator.calculate_direction')
+@patch('Translators.Incident.incident_tim_translator.query_db')
+@patch('Translators.Incident.incident_tim_translator.get_action')
+@patch('Translators.Incident.incident_tim_translator.get_effect')
+@patch('Translators.Incident.incident_tim_translator.get_point')
+@patch('Translators.Incident.incident_tim_translator.get_itis_codes')
+@patch('Translators.Incident.incident_tim_translator.calculate_direction')
 def test_translate(mock_calculate_direction, mock_get_itis_codes, mock_get_point, mock_get_effect, mock_get_action, mock_query_db, feature_geojson):
     mock_get_point.side_effect = lambda x: {"latitude": x[1], "longitude": x[0]}
     mock_get_effect.return_value = "effect"
@@ -63,7 +63,7 @@ def test_translate(mock_calculate_direction, mock_get_itis_codes, mock_get_point
     assert result["timIncidentList"][1]["endPoint"] == {"latitude": 1.0, "longitude": 101.0}
     assert result["timIncidentList"][1]["direction"] == "N"
 
-@patch('Translators.Incident.tim_translator.query_db')
+@patch('Translators.Incident.incident_tim_translator.query_db')
 def test_active_tim_active(mock_query_db):
     tim_body = {
         "clientId": "incident-1",
