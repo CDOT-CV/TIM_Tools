@@ -11,8 +11,6 @@ class PlannedEventsFeature:
         self.geometry = geometry
         self.additional_impacts = properties["additionalImpacts"]
 
-    # need additional impacts for direction
-
     def get_id(self):
         return self.id
     
