@@ -1,0 +1,5 @@
+flask==2.0.2
+requests
+sqlalchemy==1.4.22
+pg8000==1.29.6
+werkzeug==2.2.2
