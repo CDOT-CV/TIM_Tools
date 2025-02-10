@@ -4,7 +4,7 @@ import copy
 import logging
 import os
 from flask import request, Flask
-from tim_translator import translate
+from rc_tim_translator import translate
 
 app = Flask(__name__)
 
