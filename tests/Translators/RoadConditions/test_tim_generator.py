@@ -1,5 +1,6 @@
-from Translators.RoadConditions import tim_generator, itis_codes
-from Translators.RoadConditions.tim_translator import RCFeature
+from Translators.RoadConditions import itis_codes
+import Translators.RoadConditions.rc_tim_generator as tim_generator
+from Translators.RoadConditions.rc_tim_translator import RCFeature
 
 ############################ getItisCodes ############################
 def test_get_itis_codes_no_conditions():
