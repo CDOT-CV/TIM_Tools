@@ -17,7 +17,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-This project supports Python >= 3.5. Packages required to run the translator can be installed via [pip](https://pip.pypa.io/en/stable/)
+This project supports Python >= 3.10. Packages required to run the translator can be installed via [pip](https://pip.pypa.io/en/stable/)
 
 ```bash
 pip install -r requirements.txt
