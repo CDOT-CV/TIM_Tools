@@ -11,13 +11,13 @@ def test_calculate_direction_decreasing():
     assert vsl_tim_translator.calculate_direction("west") == "D"
     assert vsl_tim_translator.calculate_direction("south") == "D"
 
-@patch('Translators.Signs.vsl_tim_translator.query_db', return_value=[])
-def test_translate(mock_query_db):
+@patch('Translators.Signs.vsl_tim_translator.active_tim', return_value=False)
+def test_translate_feature(mock_active_tim):
     vsl_geojson = {
         "features": [
             {
                 "geometry": {
-                    "coordinates": [1, 2]
+                    "coordinates": [[1, 2]]
                 },
                 "properties": {
                     "id": "test_id",
@@ -41,8 +41,8 @@ def test_translate(mock_query_db):
                 "roadCode": "test-id",
                 "itisCodes":[ItisCodes.SPEED_LIMIT.value],
                 "geometry": [{
-                    "latitude": 1,
-                    "longitude": 2
+                    "latitude": 2,
+                    "longitude": 1
                 }],
                 "advisory": [],
                 "speed": 65,
@@ -54,7 +54,7 @@ def test_translate(mock_query_db):
     assert vsl_tim_translator.translate(vsl_geojson) == expected_output
 
 @patch('Translators.Signs.vsl_tim_translator.query_db', return_value=[])
-def test_translate(mock_query_db):
+def test_translate_no_feature(mock_query_db):
     vsl_geojson = {
         "features": [
             {
