@@ -46,6 +46,14 @@ def test_get_itis_codes_no_value():
     assert itisCodes == []
 
 
+def test_get_itis_codes_unexpected_value():
+    road_surface_sensor = [{"currentReading": "99"}]
+    wind_gust_sensor = [{"currentReading": 0}]
+    avg_wind_speed_sensor = [{"currentReading": 0}]
+    itisCodes = ws_tim_generator.get_itis_codes(road_surface_sensor, wind_gust_sensor, avg_wind_speed_sensor)
+    assert itisCodes == []
+
+
 ############################ getGeometry ############################
 
 def test_get_geometry_single_coordinate():

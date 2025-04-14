@@ -8,7 +8,7 @@ def get_itis_codes(road_surface_sensor, wind_gust_sensor, avg_wind_speed_sensor)
 
     # Only set ITIS codes if the road surface sensor is present
     if len(road_surface_sensor) > 0:
-        rs_value = sensor_values.get(road_surface_sensor[0]["currentReading"], None)
+        rs_value = sensor_values.get(road_surface_sensor[0]["currentReading"], "None")
         if re.search(r"snow", rs_value, re.IGNORECASE):
             itis_codes.append(ItisCodes.SNOW.value)
         elif re.search(r"rain", rs_value, re.IGNORECASE):
