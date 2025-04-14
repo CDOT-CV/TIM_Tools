@@ -66,7 +66,7 @@ def translate(ws_geojson):
     tims = {"timRcList": []}
 
     for feature in ws_geojson["features"]:
-        feature = WeatherStationFeature(feature["properties"], feature["geometry"]["coordinates"])
+        feature = WeatherStationFeature(feature["properties"], feature["geometry"])
         tim_body = {}
         tim_body["clientId"] = feature.get_client_id()
         tim_body["direction"] = calculate_direction(feature.get_direction())

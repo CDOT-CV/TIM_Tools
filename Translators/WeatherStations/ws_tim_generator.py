@@ -37,11 +37,12 @@ def get_itis_codes(road_surface_sensor, wind_gust_sensor, avg_wind_speed_sensor)
 
 def get_geometry(geometry):
     annotated_geometry = []
+    coords = geometry["coordinates"]
     # handle point geometry
-    if type(geometry[0]) == float:
-        annotated_geometry.append({"latitude": geometry[1], "longitude": geometry[0]})
+    if geometry["type"] == "Point":
+        annotated_geometry.append({"latitude": coords[1], "longitude": coords[0]})
         return annotated_geometry
     
-    for coord in geometry:
+    for coord in coords:
         annotated_geometry.append({"latitude": coord[1], "longitude": coord[0]})
     return annotated_geometry
