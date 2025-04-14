@@ -57,6 +57,6 @@ def test_get_itis_codes_unexpected_value():
 ############################ getGeometry ############################
 
 def test_get_geometry_single_coordinate():
-    geometry = [[-122.403, 37.795]]
+    geometry = {"type": "Point", "coordinates": [-122.403, 37.795]}
     annotated_geometry = ws_tim_generator.get_geometry(geometry)
     assert annotated_geometry == [{'latitude': 37.795, 'longitude': -122.403}]

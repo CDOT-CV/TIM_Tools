@@ -15,6 +15,7 @@ def test_translate(mock_active_tim, mock_query_db):
         "features": [
             {
                 "geometry": {
+                    "type": "Point",
                     "coordinates": [1.0, 0.0]
                 },
                 "properties": {
