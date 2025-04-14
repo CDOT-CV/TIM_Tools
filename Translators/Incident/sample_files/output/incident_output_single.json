@@ -1,0 +1,27 @@
+{
+    "timIncidentList": [
+        {
+            "clientId": "OpenTMS-Incident24085963313",
+            "incidentId": "OpenTMS-Incident24085963313",
+            "startPoint": {
+                "latitude": 38.125128,
+                "longitude": -103.976531,
+                "valid": true
+            },
+            "endPoint": {
+                "latitude": 38.124651,
+                "longitude": -103.973249,
+                "valid": true
+            },
+            "direction": "I",
+            "route": "US-50E",
+            "highway": "US-50E",
+            "problem": "Maintenance Operations",
+            "effect": "",
+            "action": "",
+            "itisCodes": [
+                "6952"
+            ]
+        }
+    ]
+}
