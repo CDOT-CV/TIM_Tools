@@ -47,6 +47,22 @@ def calculate_direction(direction):
         return "D"
 
 def translate(ws_geojson):
+    """Translates weather station GeoJSON data into a TIM-Manager compatible format.
+
+    This function iterates through the features in the input GeoJSON, extracts relevant
+    properties and geometry, and transforms them into a TIM record. It calculates
+    direction, retrieves route and road codes, determines ITIS codes based on sensor data,
+    and formats the geometry. It also checks for active TIM records to avoid duplicates.
+
+    Args:
+        ws_geojson (dict): A dictionary representing the weather station data in GeoJSON format.
+                            It should contain a "features" key, where each feature is a
+                            dictionary with "properties" and "geometry" keys.
+
+    Returns:
+        dict: A dictionary containing a list of TIM records under the "timRcList" key.
+    """
+
     tims = {"timRcList": []}
 
     for feature in ws_geojson["features"]:
