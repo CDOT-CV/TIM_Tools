@@ -11,6 +11,10 @@
 
 Python Weather Stations to TIM message translator that is designed to pull messages from the CDOT Weather Stations feed and translate to TIM messages.
 
+Information on the CDOT Data Feeds, including how to generate an API key for access, can be found [here](https://maps.cotrip.org/help/117/Traveler-Information-Data-Feed-Access)
+
+Documentation for the CDOT Weather Stations feed can be found [here](https://docs.google.com/document/d/1pVDW5iRiRsAWcixw5Z9umPFRspuOUJUdH2YLpYfltP4/edit?tab=t.0#heading=h.p519ok63noko)
+
 ## Getting Started <a name = "getting_started"></a>
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
