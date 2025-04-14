@@ -60,7 +60,9 @@ services:
         max-file: '5'
 
   Incident_translator:
-    build: ./Translators/Incident
+    build: 
+      context: .
+      dockerfile: ./Translators/Incident/Dockerfile
     image: incident_translator:latest
     environment:
       - dual_carriageway_endpoint=${dual_carriageway_endpoint}
