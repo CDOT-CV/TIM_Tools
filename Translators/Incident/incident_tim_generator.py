@@ -2,6 +2,16 @@ import re
 from itis_codes import ItisCodes
 
 def get_itis_codes(tim_body):
+    """Extracts relevant ITIS codes based on keywords found in the incident's description.
+        
+    Args:
+        tim_body (dict): A dictionary containing incident details, including 'effect', 'action', and 'problem' fields.
+        
+    Returns:
+        list: A list of ITIS codes (strings) that match the keywords found in the incident details.
+                Returns an empty list if no matching keywords are found.
+    """
+
     itisCodes = []
 
     speed_reduce_pattern = r"(?i)(reduce speeds?)"
@@ -42,6 +52,17 @@ def get_action(tim_body, feature):
     return action
 
 def calculate_direction(coordinates):
+    """Calculates the general direction of travel based on a list of coordinates.
+    
+    Args:
+        coordinates (list of tuples): A list of (longitude, latitude) tuples representing the path of travel.
+    Returns:
+        str: A string representing the direction of travel.  "I" for increasing, "D" for decreasing, 
+            or "unknown" if the direction cannot be determined.
+            Direction is determined based on the greatest difference between the first and last coordinates.
+            If only one coordinate is provided, returns "unknown".
+            If a ValueError or IndexError occurs during calculation, returns "unknown".
+    """
     
     if (len(coordinates) == 1):
         return "unknown"
