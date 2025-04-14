@@ -1,0 +1,74 @@
+{
+    "timIncidentList": [
+        {
+            "clientId": "OpenTMS-Incident24085963313",
+            "incidentId": "OpenTMS-Incident24085963313",
+            "startPoint": {
+                "latitude": 38.125128,
+                "longitude": -103.976531,
+                "valid": true
+            },
+            "endPoint": {
+                "latitude": 38.124651,
+                "longitude": -103.973249,
+                "valid": true
+            },
+            "direction": "I",
+            "route": "US-50E",
+            "highway": "US-50E",
+            "problem": "Maintenance Operations",
+            "effect": "",
+            "action": "",
+            "itisCodes": [
+                "6952"
+            ]
+        },
+        {
+            "clientId": "OpenTMS-Incident24086243274",
+            "incidentId": "OpenTMS-Incident24086243274",
+            "startPoint": {
+                "latitude": 38.775348,
+                "longitude": -108.000952,
+                "valid": true
+            },
+            "endPoint": {
+                "latitude": 38.787065,
+                "longitude": -107.992094,
+                "valid": true
+            },
+            "direction": "I",
+            "route": "CO-65N",
+            "highway": "CO-65N",
+            "problem": "Maintenance Operations",
+            "effect": "Slower speeds advised. Alternating Traffic. Impacts both directions.",
+            "action": "Reduce Speeds. ",
+            "itisCodes": [
+                "7443",
+                "6952"
+            ]
+        },
+        {
+            "clientId": "OpenTMS-Incident24086690460",
+            "incidentId": "OpenTMS-Incident24086690460",
+            "startPoint": {
+                "latitude": 37.929866,
+                "longitude": -108.930296,
+                "valid": true
+            },
+            "endPoint": {
+                "latitude": 37.943669,
+                "longitude": -108.933178,
+                "valid": true
+            },
+            "direction": "I",
+            "route": "CO-141N",
+            "highway": "CO-141N",
+            "problem": "Maintenance Operations",
+            "effect": "Impacts both directions. Alternating Traffic.",
+            "action": "",
+            "itisCodes": [
+                "6952"
+            ]
+        }
+    ]
+}
