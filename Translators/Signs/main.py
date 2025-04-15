@@ -42,8 +42,6 @@ def VSL_tim_translator():
 
     logging.info('Pushing TIMs to TIM Manager...')
 
-    print(tim_list)
-
     return_value = requests.post(f'{os.getenv("TIM_MANAGER_ENDPOINT")}/vsl-tim', json=tim_list)
     if (return_value.status_code == 200):
         return f'Successfully pushed {len(tim_list["timVslList"])} VSL TIMs to TIM Manager'
