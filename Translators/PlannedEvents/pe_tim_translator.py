@@ -1,6 +1,4 @@
-from datetime import datetime
 import logging
-from pgquery import query_db
 from active_tim import active_tim
 from pe_tim_generator import get_geometry, get_itis_codes
 
