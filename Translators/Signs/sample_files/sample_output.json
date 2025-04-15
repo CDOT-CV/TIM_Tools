@@ -1,0 +1,67 @@
+{
+    "timVslList": [
+        {
+            "clientId": "OpenTMS-Sign475104",
+            "deviceId": "OpenTMS-Sign475104",
+            "direction": "I",
+            "route": "I-70E",
+            "roadCode": "OpenTMS-Sign475104",
+            "itisCodes": [
+                "368"
+            ],
+            "geometry": [
+                {
+                    "latitude": 39.641176,
+                    "longitude": -106.042332
+                }
+            ],
+            "advisory": [],
+            "speed": 60,
+            "buffers": [
+                1
+            ]
+        },
+        {
+            "clientId": "OpenTMS-Sign465504",
+            "deviceId": "OpenTMS-Sign465504",
+            "direction": "D",
+            "route": "I-70W",
+            "roadCode": "OpenTMS-Sign465504",
+            "itisCodes": [
+                "368"
+            ],
+            "geometry": [
+                {
+                    "latitude": 39.744232,
+                    "longitude": -105.478874
+                }
+            ],
+            "advisory": [],
+            "speed": 55,
+            "buffers": [
+                1
+            ]
+        },
+        {
+            "clientId": "OpenTMS-Sign475299",
+            "deviceId": "OpenTMS-Sign475299",
+            "direction": "I",
+            "route": "I-70E",
+            "roadCode": "OpenTMS-Sign475299",
+            "itisCodes": [
+                "368"
+            ],
+            "geometry": [
+                {
+                    "latitude": 39.762115,
+                    "longitude": -105.64452
+                }
+            ],
+            "advisory": [],
+            "speed": 65,
+            "buffers": [
+                1
+            ]
+        }
+    ]
+}
