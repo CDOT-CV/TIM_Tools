@@ -53,7 +53,7 @@ def test_translate_feature(mock_active_tim):
 
     assert vsl_tim_translator.translate(vsl_geojson) == expected_output
 
-@patch('Translators.Signs.vsl_tim_translator.query_db', return_value=[])
+@patch('Translators.Signs.vsl_tim_translator.active_tim', return_value=False)
 def test_translate_no_feature(mock_query_db):
     vsl_geojson = {
         "features": [
