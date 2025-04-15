@@ -11,6 +11,10 @@
 
 Python Signs to TIM message translator that is designed to pull variable speed limit messages from the CDOT Signs feed and translate to TIM messages.
 
+Documentation for the CDOT Signs feed can be found [here](https://docs.google.com/document/d/1pVDW5iRiRsAWcixw5Z9umPFRspuOUJUdH2YLpYfltP4/edit?tab=t.0#heading=h.g945189ynx53)
+
+More information on the CDOT Traveler Information Feeds, including how to generate an API key for access, can be found [here](https://maps.cotrip.org/help/117/Traveler-Information-Data-Feed-Access)
+
 ## Getting Started <a name = "getting_started"></a>
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
