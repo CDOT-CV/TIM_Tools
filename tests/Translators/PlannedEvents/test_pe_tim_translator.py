@@ -19,7 +19,30 @@ def test_calculate_direction_southbound():
     assert pe_tim_translator.calculate_direction(coordinates) == "D"
 
 @patch('Translators.PlannedEvents.pe_tim_translator.query_db', return_value=[])
-def test_translate(mock_query_db):
+def test_translate_no_result(mock_query_db):
+    pe_geojson = {
+        "features": [
+            {
+                "geometry": {
+                    "coordinates": [(0, 0), (1, 0), (2, 0)]
+                },
+                "properties": {
+                    "id": "test_id",
+                    "type": "Road Work",
+                    "additionalImpacts": ["Impacts Both Directions"],
+                    "routeName": "test_route",
+                }
+            }
+        ]
+    }
+    expected_output = {
+        "timRcList": []
+    }
+    assert pe_tim_translator.translate(pe_geojson) == expected_output
+
+
+@patch('Translators.PlannedEvents.pe_tim_translator.active_tim', return_value=False)
+def test_translate_result(mock_active_tim):
     pe_geojson = {
         "features": [
             {
@@ -38,10 +61,10 @@ def test_translate(mock_query_db):
     expected_output = {
         "timRcList": [
             {
-                "clientId": "test-name",
+                "clientId": "test-id",
                 "direction": "B",
                 "route": "test-route",
-                "roadCode": "test-name",
+                "roadCode": "test-id",
                 "itisCodes":[ItisCodes.CLOSED_FOR_SEASON.value],
                 "geometry": [{
                     "latitude": 0,
@@ -56,28 +79,6 @@ def test_translate(mock_query_db):
                 "advisory": []
             }
         ]
-    }
-    assert pe_tim_translator.translate(pe_geojson) == expected_output
-
-@patch('Translators.PlannedEvents.pe_tim_translator.query_db', return_value=[])
-def test_translate(mock_query_db):
-    pe_geojson = {
-        "features": [
-            {
-                "geometry": {
-                    "coordinates": [(0, 0), (1, 0), (2, 0)]
-                },
-                "properties": {
-                    "id": "test_id",
-                    "type": "Road Work",
-                    "additionalImpacts": ["Impacts Both Directions"],
-                    "routeName": "test_route",
-                }
-            }
-        ]
-    }
-    expected_output = {
-        "timRcList": []
     }
     assert pe_tim_translator.translate(pe_geojson) == expected_output
 
