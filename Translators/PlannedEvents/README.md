@@ -11,6 +11,12 @@
 
 Python Planned Events to TIM message translator that is designed to pull messages from the CDOT Planned Events feed and translate to TIM messages.
 
+The Planned Events to TIM translator is only interested in 'Closed for the Season' messages from the Planned Events feed. All other messages from this feed are handled in the WZDx to TIM Translator. More information on that translator can be found [here](../WZDx/README.md)
+
+Documentation for the CDOT Planned Events feed can be found [here](https://docs.google.com/document/d/1pVDW5iRiRsAWcixw5Z9umPFRspuOUJUdH2YLpYfltP4/edit?tab=t.0#heading=h.n9ingkc4v658)
+
+Documentation for the CDOT Traveler Information Feeds, including how to generate an API key for access, can be found [here](https://maps.cotrip.org/help/117/Traveler-Information-Data-Feed-Access)
+
 ## Getting Started <a name = "getting_started"></a>
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
