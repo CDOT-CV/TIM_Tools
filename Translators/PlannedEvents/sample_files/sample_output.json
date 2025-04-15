@@ -1,0 +1,24 @@
+{
+    "timRcList": [
+        {
+            "clientId": "OpenTMS-Event6927152302",
+            "direction": "B",
+            "route": "GUANELLA PASS RD",
+            "roadCode": "OpenTMS-Event6927152302",
+            "itisCodes": [
+                "774"
+            ],
+            "geometry": [
+                {
+                    "latitude": 39.701981,
+                    "longitude": -105.698629
+                },
+                {
+                    "latitude": 39.565228,
+                    "longitude": -105.721795
+                }
+            ],
+            "advisory": []
+        }
+    ]
+}
