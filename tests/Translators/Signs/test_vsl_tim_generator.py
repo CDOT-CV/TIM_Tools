@@ -15,6 +15,6 @@ def test_get_geometry_empty():
     assert annotated_geometry == []
 
 def test_get_geometry_single_coordinate():
-    geometry = [-122.403, 37.795]
+    geometry = {"type": "Point", "coordinates": [-122.403, 37.795]}
     annotated_geometry = vsl_tim_generator.get_geometry(geometry)
     assert annotated_geometry == [{'latitude': 37.795, 'longitude': -122.403}]

@@ -17,7 +17,8 @@ def test_translate_feature(mock_active_tim):
         "features": [
             {
                 "geometry": {
-                    "coordinates": [[1, 2]]
+                    "type": "Point",
+                    "coordinates": [1, 2]
                 },
                 "properties": {
                     "id": "test_id",
@@ -59,6 +60,7 @@ def test_translate_no_feature(mock_query_db):
         "features": [
             {
                 "geometry": {
+                    "type": "Point",
                     "coordinates": [1, 2]
                 },
                 "properties": {

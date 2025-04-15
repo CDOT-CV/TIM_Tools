@@ -41,7 +41,7 @@ def translate(vsl_geojson):
             or feature["properties"]["displayStatus"].lower() != "on" \
             or "speed" not in feature["properties"]:
             continue
-        feature = VariableSpeedLimitFeature(feature["properties"], feature["geometry"]["coordinates"])
+        feature = VariableSpeedLimitFeature(feature["properties"], feature["geometry"])
         tim_body = {}
         tim_body["clientId"] = feature.get_client_id()
         tim_body["deviceId"] = feature.get_client_id()
