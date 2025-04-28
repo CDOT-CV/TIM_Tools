@@ -18,8 +18,8 @@ def test_calculate_direction_southbound():
     coordinates = [(0, 1), (0, 0)]
     assert pe_tim_translator.calculate_direction(coordinates) == "D"
 
-@patch('Translators.PlannedEvents.pe_tim_translator.query_db', return_value=[])
-def test_translate_no_result(mock_query_db):
+@patch('Translators.PlannedEvents.pe_tim_translator.active_tim', return_value=False)
+def test_translate_no_result(mock_active_tim):
     pe_geojson = {
         "features": [
             {
