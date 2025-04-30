@@ -1,4 +1,4 @@
-from itis_codes import ItisCodes
+from Translators.Shared.itis_codes import ItisCodes
 
 def get_itis_codes():
     return [ItisCodes.SPEED_LIMIT.value]

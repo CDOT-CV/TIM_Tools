@@ -1,6 +1,6 @@
 import logging
 from vsl_tim_generator import get_geometry, get_itis_codes
-from active_tim import active_tim
+from Translators.Shared.active_tim import active_tim
 
 class VariableSpeedLimitFeature:
     def __init__(self, properties, geometry):

@@ -1,10 +1,9 @@
 import json
 import requests
-import copy
 import logging
 import os
 from flask import request, Flask
-from vsl_tim_translator import translate
+from Translators.Signs.vsl_tim_translator import translate
 
 app = Flask(__name__)
 
