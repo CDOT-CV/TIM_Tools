@@ -1,0 +1,65 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "srid": 4326,
+                "type": "MultiPoint",
+                "coordinates": [
+                    [
+                        -103.976531,
+                        38.125128
+                    ],
+                    [
+                        -103.973249,
+                        38.124651
+                    ]
+                ]
+            },
+            "properties": {
+                "injuries": 0,
+                "startMarker": 353.5,
+                "type": "Maintenance Operations",
+                "routeName": "US-50E",
+                "isOversizedLoadsProhibited": false,
+                "lastUpdated": "2025-04-14T15:42:02.638Z",
+                "endMarker": 353.8,
+                "startTime": "2025-04-14T15:37:24.339Z",
+                "id": "OpenTMS-Incident24085963313",
+                "travelerInformationMessage": "Between County Road 5.5 and County Road 6 (2 miles east of Fowler) from Mile Point 353.5 to Mile Point 353.8. Road maintenance operations.",
+                "patrolRoute": "P-18, Section 4 Lincoln",
+                "responseLevel": "Intermediate",
+                "owningGroup": "Pueblo",
+                "jurisdictions": [
+                    "OTERO (COUNTY)"
+                ],
+                "direction": "east",
+                "severity": "minor",
+                "lastUpdatedBy": "",
+                "laneImpacts": [
+                    {
+                        "direction": "east",
+                        "laneCount": 1,
+                        "laneClosures": "0",
+                        "closedLaneTypes": []
+                    },
+                    {
+                        "direction": "west",
+                        "laneCount": 1,
+                        "laneClosures": "0",
+                        "closedLaneTypes": []
+                    }
+                ],
+                "vehiclesInvolved": 0,
+                "fatalities": 0,
+                "hasRampRestriction": false,
+                "detectionSource": "CDOT",
+                "region": "REGION 2",
+                "category": "Traffic",
+                "status": "confirmed report"
+            },
+            "attributes": {}
+        }
+    ]
+}
