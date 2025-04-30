@@ -1,5 +1,5 @@
 import logging
-from incident_tim_generator import get_action, get_effect, get_point, get_itis_codes, calculate_direction
+from Translators.Incident.incident_tim_generator import get_action, get_effect, get_point, get_itis_codes, calculate_direction
 from Translators.Shared.active_tim import active_tim
 
 class IncidentFeature:
