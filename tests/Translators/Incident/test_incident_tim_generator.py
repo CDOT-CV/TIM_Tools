@@ -134,3 +134,8 @@ def test_calculate_direction_unknown():
     coordinates = [[-122.403, 37.795]]
     direction = tim_generator.calculate_direction(coordinates)
     assert direction == "unknown"
+
+def test_calculate_direction_duplicate_coordinates():
+    coordinates = [[-122.403, 37.795], [-122.403, 37.795]]
+    direction = tim_generator.calculate_direction(coordinates)
+    assert direction == "unknown"

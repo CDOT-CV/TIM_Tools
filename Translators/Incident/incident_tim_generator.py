@@ -62,10 +62,12 @@ def calculate_direction(coordinates):
             Direction is determined based on the greatest difference between the first and last coordinates.
             If only one coordinate is provided, returns "unknown".
             If a ValueError or IndexError occurs during calculation, returns "unknown".
+            If two identical coordinates are provided, returns "unknown".
     """
     
+    direction = "unknown"
     if (len(coordinates) == 1):
-        return "unknown"
+        return direction
     
     try:
         long_dif = coordinates[-1][0] - coordinates[0][0]
@@ -85,7 +87,7 @@ def calculate_direction(coordinates):
     elif lat_dif > 0:
         # northbound
         direction = "I"
-    else:
+    elif lat_dif < 0:
         # southbound
         direction = "D"
     return direction
