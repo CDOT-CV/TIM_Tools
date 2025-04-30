@@ -1,4 +1,4 @@
-from pgquery import query_db
+from Translators.Shared.pgquery import query_db
 
 def active_tim(tim_type, tim_body):
     """
