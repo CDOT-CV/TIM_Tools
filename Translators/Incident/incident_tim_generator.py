@@ -29,10 +29,10 @@ def get_itis_codes(tim_body):
 def get_point(coordinates):
     return {"latitude": coordinates[1], "longitude": coordinates[0], "valid": True}
 
-def get_effect(impacts, addtl_effects=None):
+def get_effect(impacts, additional_effects=None):
     effect = ""
-    for addtl_effect in addtl_effects:
-        effect += f"{addtl_effect}. "
+    for additional_effect in additional_effects:
+        effect += f"{additional_effect}. "
     for impact in impacts:
         if impact["laneClosures"] != "0":
             for lane in impact["closedLaneTypes"]:
@@ -45,7 +45,7 @@ def get_action(tim_body, feature):
     tires_chains_required_pattern = r"(?i)(Chains required|Snow tires required|Snow chains required|Tires required|Chains or snow tires required|Snow tires or chains required)"
     type_tires_chains_required_pattern = r"(?i)(Traction|Chain)(/Chain)? Law Code (15|18)(\s+and\s+18)?"
     if re.search(speed_reduce_pattern, feature.get_traveler_information_message()) or re.search(speed_reduce_pattern, tim_body["effect"]):
-        action += "Reduce Speeds. "
+        action += "Reduce Speeds."
     if re.search(tires_chains_required_pattern, feature.get_traveler_information_message()) or re.search(type_tires_chains_required_pattern, tim_body["problem"]):
         action += "Chains Required."
 

@@ -85,7 +85,7 @@ def test_get_action_speed_reduce():
         }
     }
     action = tim_generator.get_action(tim_body, feature)
-    assert action == "Reduce Speeds. "
+    assert action == "Reduce Speeds."
 
 def test_get_action_chains_required():
     tim_body = {
