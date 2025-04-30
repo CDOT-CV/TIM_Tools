@@ -1,0 +1,72 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "srid": 4326,
+                "type": "MultiPoint",
+                "coordinates": [
+                    [
+                        -105.698629,
+                        39.701981
+                    ],
+                    [
+                        -105.721795,
+                        39.565228
+                    ]
+                ]
+            },
+            "properties": {
+                "additionalImpacts": [
+                    "Impacts both directions"
+                ],
+                "city": "GEORGETOWN (CITY)",
+                "clearTime": "2025-05-26T06:09:00Z",
+                "startMarker": 0,
+                "type": "Closed for the Season",
+                "laneImpacts": [
+                    {
+                        "direction": "north",
+                        "laneCount": 1,
+                        "laneClosures": "4000",
+                        "closedLaneTypes": [
+                            "through lanes"
+                        ]
+                    },
+                    {
+                        "direction": "south",
+                        "laneCount": 1,
+                        "laneClosures": "4000",
+                        "closedLaneTypes": [
+                            "through lanes"
+                        ]
+                    }
+                ],
+                "routeName": "GUANELLA PASS RD",
+                "isOversizedLoadsProhibited": false,
+                "lastUpdated": "2025-02-16T21:21:14.443Z",
+                "schedule": [
+                    {
+                        "startTime": "2024-12-02T07:01:00.000Z",
+                        "endTime": "2025-05-26T06:09:00.000Z"
+                    }
+                ],
+                "endMarker": 12.44,
+                "hasRampRestriction": false,
+                "name": "Guanella Pass Seasonal Closure",
+                "startTime": "2024-12-02T07:01:00Z",
+                "id": "OpenTMS-Event6927152302",
+                "travelerInformationMessage": "Between I-70 and CR 62 from Mile Point 0 to Mile Point 12.44. Road closed expect delays due to winter conditions. Until May 26, 2025 at about 12:09AM MST. Full schedule below: • December 2, 2024, 12:01AM - May 26, 12:09AM Comment: Closed until Spring 2025.",
+                "region": "REGION 1",
+                "category": "Planned Event",
+                "owningGroup": "Section 9",
+                "jurisdictions": [
+                    "CLEAR CREEK (COUNTY)"
+                ],
+                "direction": "south"
+            },
+            "attributes": {}
+        }
+    ]
+}
