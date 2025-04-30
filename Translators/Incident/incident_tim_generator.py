@@ -1,5 +1,5 @@
 import re
-from itis_codes import ItisCodes
+from Translators.Shared.itis_codes import ItisCodes
 
 def get_itis_codes(tim_body):
     """Extracts relevant ITIS codes based on keywords found in the incident's description.
