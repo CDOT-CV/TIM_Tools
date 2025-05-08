@@ -1,6 +1,5 @@
 from unittest.mock import patch
 import Translators.WeatherStations.ws_tim_translator as ws_tim_translator
-from Translators.Shared.itis_codes import ItisCodes
 
 def test_calculate_direction_increasing():
     assert ws_tim_translator.calculate_direction("e") == "I"
@@ -8,9 +7,8 @@ def test_calculate_direction_increasing():
 def test_calculate_direction_decreasing():
     assert ws_tim_translator.calculate_direction("s") == "D"
 
-@patch('Translators.WeatherStations.ws_tim_translator.query_db', return_value=[])
-@patch('Translators.WeatherStations.ws_tim_translator.active_tim', return_value=[])
-def test_translate(mock_active_tim, mock_query_db):
+@patch('Translators.WeatherStations.ws_tim_translator.active_tim', return_value=False)
+def test_translate(mock_active_tim):
     ws_geojson = {
         "features": [
             {
