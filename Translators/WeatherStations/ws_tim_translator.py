@@ -1,7 +1,6 @@
 import logging
-from pgquery import query_db
-from active_tim import active_tim
-from ws_tim_generator import get_geometry, get_itis_codes
+from Translators.Shared.active_tim import active_tim
+from Translators.WeatherStations.ws_tim_generator import get_geometry, get_itis_codes
 
 class WeatherStationFeature:
     def __init__(self, properties, geometry):

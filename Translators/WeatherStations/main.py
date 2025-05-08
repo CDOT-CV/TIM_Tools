@@ -4,7 +4,7 @@ import copy
 import logging
 import os
 from flask import request, Flask
-from ws_tim_translator import translate
+from Translators.WeatherStations.ws_tim_translator import translate
 
 app = Flask(__name__)
 

@@ -1,5 +1,5 @@
 import os
-from itis_codes import ItisCodes
+from Translators.Shared.itis_codes import ItisCodes
 from sensor_values import sensor_values, WIND_SPEED_CONSTANT
 import re
 
