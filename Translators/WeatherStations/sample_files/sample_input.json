@@ -1,0 +1,747 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "coordinates": [
+                    -106.985183,
+                    39.330905
+                ],
+                "type": "Point",
+                "srid": 4326
+            },
+            "properties": {
+                "name": "082E02670RWS1SWC @ Snowmass Creek Rd/CR-11 CAM",
+                "sensors": [
+                    {
+                        "name": "Sensor-519564",
+                        "id": "Sensor-519564",
+                        "type": "road surface sensor type",
+                        "currentReading": "contact passive"
+                    },
+                    {
+                        "name": "Sensor-519566",
+                        "id": "Sensor-519566",
+                        "type": "road surface type",
+                        "currentReading": "concrete"
+                    },
+                    {
+                        "name": "Sensor-519574",
+                        "id": "Sensor-519574",
+                        "type": "road surface sensor error",
+                        "currentReading": "other"
+                    },
+                    {
+                        "name": "Sensor-519575",
+                        "id": "Sensor-519575",
+                        "type": "road surface sensor type",
+                        "currentReading": "other"
+                    },
+                    {
+                        "name": "Sensor-519576",
+                        "id": "Sensor-519576",
+                        "type": "road surface status",
+                        "currentReading": "1"
+                    },
+                    {
+                        "name": "Sensor-519577",
+                        "id": "Sensor-519577",
+                        "type": "road surface type",
+                        "currentReading": "asphalt"
+                    },
+                    {
+                        "name": "Sensor-519582",
+                        "id": "Sensor-519582",
+                        "type": "road subsurface sensor error",
+                        "currentReading": "cut cable"
+                    },
+                    {
+                        "name": "Sensor-519563",
+                        "id": "Sensor-519563",
+                        "type": "road surface sensor error",
+                        "currentReading": "none"
+                    },
+                    {
+                        "name": "Sensor-519543",
+                        "id": "Sensor-519543",
+                        "type": "precipitation situation",
+                        "currentReading": "no precipitation"
+                    },
+                    {
+                        "name": "Sensor-519549",
+                        "id": "Sensor-519549",
+                        "type": "precipitation present",
+                        "currentReading": "false"
+                    },
+                    {
+                        "name": "Sensor-519558",
+                        "id": "Sensor-519558",
+                        "type": "road surface temperature",
+                        "currentReading": "40.20"
+                    },
+                    {
+                        "name": "Sensor-519536",
+                        "id": "Sensor-519536",
+                        "type": "spot wind speed",
+                        "currentReading": "1.60"
+                    },
+                    {
+                        "name": "Sensor-519529",
+                        "id": "Sensor-519529",
+                        "type": "dew point",
+                        "currentReading": "-11.20"
+                    },
+                    {
+                        "name": "Sensor-519524",
+                        "id": "Sensor-519524",
+                        "type": "temperature",
+                        "currentReading": "16.80"
+                    },
+                    {
+                        "name": "Sensor-519533",
+                        "id": "Sensor-519533",
+                        "type": "average wind direction",
+                        "currentReading": "SE"
+                    },
+                    {
+                        "name": "Sensor-519532",
+                        "id": "Sensor-519532",
+                        "type": "average wind speed",
+                        "currentReading": "2.60"
+                    },
+                    {
+                        "name": "Sensor-519534",
+                        "id": "Sensor-519534",
+                        "type": "gust wind speed",
+                        "currentReading": "5.50"
+                    },
+                    {
+                        "name": "Sensor-519550",
+                        "id": "Sensor-519550",
+                        "type": "wet bulb temperature",
+                        "currentReading": "10.00"
+                    },
+                    {
+                        "name": "Sensor-519537",
+                        "id": "Sensor-519537",
+                        "type": "spot wind direction",
+                        "currentReading": "E"
+                    },
+                    {
+                        "name": "Sensor-519535",
+                        "id": "Sensor-519535",
+                        "type": "gust wind direction",
+                        "currentReading": "S"
+                    },
+                    {
+                        "name": "Sensor-519548",
+                        "id": "Sensor-519548",
+                        "type": "precipitation accumulation 24hr",
+                        "currentReading": "0.00"
+                    },
+                    {
+                        "name": "Sensor-519547",
+                        "id": "Sensor-519547",
+                        "type": "precipitation accumulation 12hr",
+                        "currentReading": "0.00"
+                    },
+                    {
+                        "name": "Sensor-519541",
+                        "id": "Sensor-519541",
+                        "type": "precipitation end time",
+                        "currentReading": "2025-04-14T08:11:04.000Z"
+                    },
+                    {
+                        "name": "Sensor-519540",
+                        "id": "Sensor-519540",
+                        "type": "precipitation start time",
+                        "currentReading": "2025-04-14T08:10:02.000Z"
+                    },
+                    {
+                        "name": "Sensor-519565",
+                        "id": "Sensor-519565",
+                        "type": "road surface status",
+                        "currentReading": "3"
+                    },
+                    {
+                        "name": "Sensor-519545",
+                        "id": "Sensor-519545",
+                        "type": "precipitation accumulation 3hr",
+                        "currentReading": "0.00"
+                    },
+                    {
+                        "name": "Sensor-519525",
+                        "id": "Sensor-519525",
+                        "type": "max temperature",
+                        "currentReading": "20.10"
+                    },
+                    {
+                        "name": "Sensor-519526",
+                        "id": "Sensor-519526",
+                        "type": "min temperature",
+                        "currentReading": "-2.30"
+                    },
+                    {
+                        "name": "Sensor-519528",
+                        "id": "Sensor-519528",
+                        "type": "humidity",
+                        "currentReading": "13"
+                    },
+                    {
+                        "name": "Sensor-519542",
+                        "id": "Sensor-519542",
+                        "type": "precipitation rate",
+                        "currentReading": "0.00"
+                    },
+                    {
+                        "name": "Sensor-519544",
+                        "id": "Sensor-519544",
+                        "type": "precipitation accumulation 1hr",
+                        "currentReading": "0.00"
+                    },
+                    {
+                        "name": "Sensor-519546",
+                        "id": "Sensor-519546",
+                        "type": "precipitation accumulation 6hr",
+                        "currentReading": "0.00"
+                    },
+                    {
+                        "name": "Sensor-519530",
+                        "id": "Sensor-519530",
+                        "type": "visibility",
+                        "currentReading": "3379.60"
+                    }
+                ],
+                "marker": "26.7",
+                "lastUpdated": "2025-04-14T20:20:28.205Z",
+                "nativeId": "50001587",
+                "direction": "e",
+                "publicName": "CO-82 026.70 Eastbound at Snowmass Creek Road/CR-11",
+                "routeName": "CO-82E",
+                "id": "OpenTMS-Weather519520",
+                "communicationStatus": "operational"
+            },
+            "attributes": {}
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "coordinates": [
+                    -106.97501,
+                    38.862523
+                ],
+                "type": "Point",
+                "srid": 4326
+            },
+            "properties": {
+                "name": "135S02685RWS1RHS : 0.5 mi S of Red Lady Ave Crested Butte CAM",
+                "sensors": [
+                    {
+                        "name": "Sensor-520169",
+                        "id": "Sensor-520169",
+                        "type": "road surface sensor error",
+                        "currentReading": "none"
+                    },
+                    {
+                        "name": "Sensor-520170",
+                        "id": "Sensor-520170",
+                        "type": "road surface sensor type",
+                        "currentReading": "infrared"
+                    },
+                    {
+                        "name": "Sensor-520172",
+                        "id": "Sensor-520172",
+                        "type": "road surface type",
+                        "currentReading": "asphalt"
+                    },
+                    {
+                        "name": "Sensor-520140",
+                        "id": "Sensor-520140",
+                        "type": "gust wind speed",
+                        "currentReading": "5.70"
+                    },
+                    {
+                        "name": "Sensor-520139",
+                        "id": "Sensor-520139",
+                        "type": "average wind direction",
+                        "currentReading": "NE"
+                    },
+                    {
+                        "name": "Sensor-520143",
+                        "id": "Sensor-520143",
+                        "type": "spot wind direction",
+                        "currentReading": "NE"
+                    },
+                    {
+                        "name": "Sensor-520141",
+                        "id": "Sensor-520141",
+                        "type": "gust wind direction",
+                        "currentReading": "NE"
+                    },
+                    {
+                        "name": "Sensor-520156",
+                        "id": "Sensor-520156",
+                        "type": "wet bulb temperature",
+                        "currentReading": "3.00"
+                    },
+                    {
+                        "name": "Sensor-520142",
+                        "id": "Sensor-520142",
+                        "type": "spot wind speed",
+                        "currentReading": "4.00"
+                    },
+                    {
+                        "name": "Sensor-520138",
+                        "id": "Sensor-520138",
+                        "type": "average wind speed",
+                        "currentReading": "3.20"
+                    },
+                    {
+                        "name": "Sensor-520164",
+                        "id": "Sensor-520164",
+                        "type": "road surface temperature",
+                        "currentReading": "34.40"
+                    },
+                    {
+                        "name": "Sensor-520130",
+                        "id": "Sensor-520130",
+                        "type": "temperature",
+                        "currentReading": "10.20"
+                    },
+                    {
+                        "name": "Sensor-520134",
+                        "id": "Sensor-520134",
+                        "type": "humidity",
+                        "currentReading": "22"
+                    },
+                    {
+                        "name": "Sensor-520150",
+                        "id": "Sensor-520150",
+                        "type": "precipitation accumulation 1hr",
+                        "currentReading": "0.00"
+                    },
+                    {
+                        "name": "Sensor-520149",
+                        "id": "Sensor-520149",
+                        "type": "precipitation situation",
+                        "currentReading": "no precipitation"
+                    },
+                    {
+                        "name": "Sensor-520147",
+                        "id": "Sensor-520147",
+                        "type": "precipitation end time",
+                        "currentReading": "2025-04-05T07:01:41.000Z"
+                    },
+                    {
+                        "name": "Sensor-520146",
+                        "id": "Sensor-520146",
+                        "type": "precipitation start time",
+                        "currentReading": "2025-04-05T07:00:40.000Z"
+                    },
+                    {
+                        "name": "Sensor-520131",
+                        "id": "Sensor-520131",
+                        "type": "max temperature",
+                        "currentReading": "13.70"
+                    },
+                    {
+                        "name": "Sensor-520154",
+                        "id": "Sensor-520154",
+                        "type": "precipitation accumulation 24hr",
+                        "currentReading": "0.00"
+                    },
+                    {
+                        "name": "Sensor-520135",
+                        "id": "Sensor-520135",
+                        "type": "dew point",
+                        "currentReading": "-10.60"
+                    },
+                    {
+                        "name": "Sensor-520152",
+                        "id": "Sensor-520152",
+                        "type": "precipitation accumulation 6hr",
+                        "currentReading": "0.00"
+                    },
+                    {
+                        "name": "Sensor-520153",
+                        "id": "Sensor-520153",
+                        "type": "precipitation accumulation 12hr",
+                        "currentReading": "0.00"
+                    },
+                    {
+                        "name": "Sensor-520155",
+                        "id": "Sensor-520155",
+                        "type": "precipitation present",
+                        "currentReading": "false"
+                    },
+                    {
+                        "name": "Sensor-520132",
+                        "id": "Sensor-520132",
+                        "type": "min temperature",
+                        "currentReading": "-3.10"
+                    },
+                    {
+                        "name": "Sensor-520136",
+                        "id": "Sensor-520136",
+                        "type": "visibility",
+                        "currentReading": "11426.30"
+                    },
+                    {
+                        "name": "Sensor-520171",
+                        "id": "Sensor-520171",
+                        "type": "road surface status",
+                        "currentReading": "3"
+                    },
+                    {
+                        "name": "Sensor-520167",
+                        "id": "Sensor-520167",
+                        "type": "road surface friction index",
+                        "currentReading": "0.82"
+                    },
+                    {
+                        "name": "Sensor-520148",
+                        "id": "Sensor-520148",
+                        "type": "precipitation rate",
+                        "currentReading": "0.00"
+                    },
+                    {
+                        "name": "Sensor-520151",
+                        "id": "Sensor-520151",
+                        "type": "precipitation accumulation 3hr",
+                        "currentReading": "0.00"
+                    }
+                ],
+                "marker": "26.8",
+                "lastUpdated": "2025-04-14T20:17:50.417Z",
+                "nativeId": "50006811",
+                "direction": "s",
+                "publicName": "CO-135 026.85 Southbound : 0.5 mile South of Red Lady Avenue Crested Butte",
+                "routeName": "CO-135S",
+                "id": "OpenTMS-Weather520126",
+                "communicationStatus": "operational"
+            },
+            "attributes": {}
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "coordinates": [
+                    -104.63169,
+                    37.41726
+                ],
+                "type": "Point",
+                "srid": 4326
+            },
+            "properties": {
+                "name": "025N03330RWS1RHS : 0.8 miles S of I-25BL/CR 60 in Lynn",
+                "sensors": [
+                    {
+                        "name": "Sensor-514488",
+                        "id": "Sensor-514488",
+                        "type": "average wind speed",
+                        "currentReading": "4.20"
+                    },
+                    {
+                        "name": "Sensor-514480",
+                        "id": "Sensor-514480",
+                        "type": "temperature",
+                        "currentReading": "15.30"
+                    },
+                    {
+                        "name": "Sensor-514519",
+                        "id": "Sensor-514519",
+                        "type": "road surface sensor error",
+                        "currentReading": "none"
+                    },
+                    {
+                        "name": "Sensor-514498",
+                        "id": "Sensor-514498",
+                        "type": "precipitation rate",
+                        "currentReading": "0.00"
+                    },
+                    {
+                        "name": "Sensor-514517",
+                        "id": "Sensor-514517",
+                        "type": "road surface friction index",
+                        "currentReading": "0.82"
+                    },
+                    {
+                        "name": "Sensor-514500",
+                        "id": "Sensor-514500",
+                        "type": "precipitation accumulation 1hr",
+                        "currentReading": "0.00"
+                    },
+                    {
+                        "name": "Sensor-514521",
+                        "id": "Sensor-514521",
+                        "type": "road surface status",
+                        "currentReading": "3"
+                    },
+                    {
+                        "name": "Sensor-514514",
+                        "id": "Sensor-514514",
+                        "type": "road surface temperature",
+                        "currentReading": "35.80"
+                    },
+                    {
+                        "name": "Sensor-514490",
+                        "id": "Sensor-514490",
+                        "type": "gust wind speed",
+                        "currentReading": "9.40"
+                    },
+                    {
+                        "name": "Sensor-514506",
+                        "id": "Sensor-514506",
+                        "type": "wet bulb temperature",
+                        "currentReading": "8.20"
+                    },
+                    {
+                        "name": "Sensor-514491",
+                        "id": "Sensor-514491",
+                        "type": "gust wind direction",
+                        "currentReading": "E"
+                    },
+                    {
+                        "name": "Sensor-514492",
+                        "id": "Sensor-514492",
+                        "type": "spot wind speed",
+                        "currentReading": "4.60"
+                    },
+                    {
+                        "name": "Sensor-514485",
+                        "id": "Sensor-514485",
+                        "type": "dew point",
+                        "currentReading": "-0.10"
+                    },
+                    {
+                        "name": "Sensor-514489",
+                        "id": "Sensor-514489",
+                        "type": "average wind direction",
+                        "currentReading": "E"
+                    },
+                    {
+                        "name": "Sensor-514493",
+                        "id": "Sensor-514493",
+                        "type": "spot wind direction",
+                        "currentReading": "E"
+                    },
+                    {
+                        "name": "Sensor-514499",
+                        "id": "Sensor-514499",
+                        "type": "precipitation situation",
+                        "currentReading": "no precipitation"
+                    },
+                    {
+                        "name": "Sensor-514504",
+                        "id": "Sensor-514504",
+                        "type": "precipitation accumulation 24hr",
+                        "currentReading": "0.00"
+                    },
+                    {
+                        "name": "Sensor-514503",
+                        "id": "Sensor-514503",
+                        "type": "precipitation accumulation 12hr",
+                        "currentReading": "0.00"
+                    },
+                    {
+                        "name": "Sensor-514497",
+                        "id": "Sensor-514497",
+                        "type": "precipitation end time",
+                        "currentReading": "2025-04-14T16:13:05.000Z"
+                    },
+                    {
+                        "name": "Sensor-514505",
+                        "id": "Sensor-514505",
+                        "type": "precipitation present",
+                        "currentReading": "false"
+                    },
+                    {
+                        "name": "Sensor-514496",
+                        "id": "Sensor-514496",
+                        "type": "precipitation start time",
+                        "currentReading": "2025-04-14T15:44:05.000Z"
+                    },
+                    {
+                        "name": "Sensor-514501",
+                        "id": "Sensor-514501",
+                        "type": "precipitation accumulation 3hr",
+                        "currentReading": "0.00"
+                    },
+                    {
+                        "name": "Sensor-514481",
+                        "id": "Sensor-514481",
+                        "type": "max temperature",
+                        "currentReading": "24.20"
+                    },
+                    {
+                        "name": "Sensor-514502",
+                        "id": "Sensor-514502",
+                        "type": "precipitation accumulation 6hr",
+                        "currentReading": "0.00"
+                    },
+                    {
+                        "name": "Sensor-514482",
+                        "id": "Sensor-514482",
+                        "type": "min temperature",
+                        "currentReading": "1.10"
+                    },
+                    {
+                        "name": "Sensor-514486",
+                        "id": "Sensor-514486",
+                        "type": "visibility",
+                        "currentReading": "20000.00"
+                    },
+                    {
+                        "name": "Sensor-514484",
+                        "id": "Sensor-514484",
+                        "type": "humidity",
+                        "currentReading": "35"
+                    }
+                ],
+                "marker": "33.3",
+                "lastUpdated": "2025-04-14T20:17:24.121Z",
+                "nativeId": "50002100",
+                "direction": "n",
+                "publicName": "I-25 MP 033.30 NB : 0.8 miles S of I-25BL/CR 60 in Lynn",
+                "routeName": "I-25N",
+                "id": "OpenTMS-Weather514476",
+                "communicationStatus": "operational"
+            },
+            "attributes": {}
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "coordinates": [
+                    -105.496435,
+                    40.082651
+                ],
+                "type": "Point",
+                "srid": 4326
+            },
+            "properties": {
+                "name": "072W04475RWS1RHS : 0.7 mi W of Brainard Lake Rd Ward CAM",
+                "sensors": [
+                    {
+                        "name": "Sensor-519107",
+                        "id": "Sensor-519107",
+                        "type": "humidity",
+                        "currentReading": "89"
+                    },
+                    {
+                        "name": "Sensor-519112",
+                        "id": "Sensor-519112",
+                        "type": "average wind direction",
+                        "currentReading": "N"
+                    },
+                    {
+                        "name": "Sensor-519111",
+                        "id": "Sensor-519111",
+                        "type": "average wind speed",
+                        "currentReading": "0.40"
+                    },
+                    {
+                        "name": "Sensor-519113",
+                        "id": "Sensor-519113",
+                        "type": "gust wind speed",
+                        "currentReading": "2.60"
+                    },
+                    {
+                        "name": "Sensor-519133",
+                        "id": "Sensor-519133",
+                        "type": "road surface sensor type",
+                        "currentReading": "infrared"
+                    },
+                    {
+                        "name": "Sensor-519115",
+                        "id": "Sensor-519115",
+                        "type": "spot wind speed",
+                        "currentReading": "1.90"
+                    },
+                    {
+                        "name": "Sensor-519135",
+                        "id": "Sensor-519135",
+                        "type": "road surface type",
+                        "currentReading": "asphalt"
+                    },
+                    {
+                        "name": "Sensor-519108",
+                        "id": "Sensor-519108",
+                        "type": "dew point",
+                        "currentReading": "-7.20"
+                    },
+                    {
+                        "name": "Sensor-519114",
+                        "id": "Sensor-519114",
+                        "type": "gust wind direction",
+                        "currentReading": "N"
+                    },
+                    {
+                        "name": "Sensor-519127",
+                        "id": "Sensor-519127",
+                        "type": "road surface temperature",
+                        "currentReading": "-2.50"
+                    },
+                    {
+                        "name": "Sensor-519103",
+                        "id": "Sensor-519103",
+                        "type": "temperature",
+                        "currentReading": "-5.70"
+                    },
+                    {
+                        "name": "Sensor-519119",
+                        "id": "Sensor-519119",
+                        "type": "wet bulb temperature",
+                        "currentReading": "-5.90"
+                    },
+                    {
+                        "name": "Sensor-519116",
+                        "id": "Sensor-519116",
+                        "type": "spot wind direction",
+                        "currentReading": "N"
+                    },
+                    {
+                        "name": "Sensor-519132",
+                        "id": "Sensor-519132",
+                        "type": "road surface sensor error",
+                        "currentReading": "dirty lense"
+                    },
+                    {
+                        "name": "Sensor-519105",
+                        "id": "Sensor-519105",
+                        "type": "min temperature",
+                        "currentReading": "-5.80"
+                    },
+                    {
+                        "name": "Sensor-519130",
+                        "id": "Sensor-519130",
+                        "type": "road surface friction index",
+                        "currentReading": "0.15"
+                    },
+                    {
+                        "name": "Sensor-519134",
+                        "id": "Sensor-519134",
+                        "type": "road surface status",
+                        "currentReading": "9"
+                    },
+                    {
+                        "name": "Sensor-519104",
+                        "id": "Sensor-519104",
+                        "type": "max temperature",
+                        "currentReading": "12.90"
+                    }
+                ],
+                "marker": "44.8",
+                "lastUpdated": "2025-04-14T12:40:25.031Z",
+                "nativeId": "50001762",
+                "direction": "w",
+                "publicName": "CO-72 044.75 Westbound : 0.7 mile West of Brainard Lake Road Ward",
+                "routeName": "CO-72W",
+                "id": "OpenTMS-Weather519099",
+                "communicationStatus": "error"
+            },
+            "attributes": {}
+        }
+    ]
+}
