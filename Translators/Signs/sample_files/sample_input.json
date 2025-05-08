@@ -1,0 +1,96 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "coordinates": [
+                    -106.042332,
+                    39.641176
+                ],
+                "type": "Point",
+                "srid": 4326
+            },
+            "properties": {
+                "activationTime": "2025-03-25T23:30:44.822Z",
+                "nativeId": "50007042",
+                "lastUpdated": "2025-03-25T23:30:44.822Z",
+                "messageMarkup": "[jp3][pb0,0,0][fo1][cf255,255,255]60",
+                "routeName": "I-70E",
+                "publicName": "I-70 207.05 Eastbound : 1.6 mile East of US 6/CO 9 Silverthorne",
+                "messageText": "60",
+                "messagePreview": "https://storage.googleapis.com/public-cdot-message-previews-prod/e84739a790097b4b7808c93e18cdf99f.gif",
+                "name": "070E20705VSL1MED : 1.6 mi E of US-6/CO-9 Silverthorne",
+                "displayStatus": "on",
+                "direction": "east",
+                "marker": 207,
+                "submittedBy": "",
+                "id": "OpenTMS-Sign475104",
+                "communicationStatus": "operational",
+                "speed": 60
+            },
+            "attributes": {}
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "coordinates": [
+                    -105.478874,
+                    39.744232
+                ],
+                "type": "Point",
+                "srid": 4326
+            },
+            "properties": {
+                "activationTime": "2025-03-22T23:14:10.465Z",
+                "nativeId": "50299473",
+                "lastUpdated": "2025-03-22T23:14:10.465Z",
+                "messageMarkup": "[jp3][pb0,0,0][fo1][cf255,255,255]55",
+                "routeName": "I-70W",
+                "publicName": "I-70 242.10 Westbound : 0.2 mile West of Veterans Memorial Tunnels",
+                "messageText": "55",
+                "messagePreview": "https://storage.googleapis.com/public-cdot-message-previews-prod/02990d8ec154a3d62720b225dea365e2.gif",
+                "name": "070W24210VSL1MED : 0.2 mi W of Veterans Memorial Tunnels",
+                "displayStatus": "on",
+                "direction": "west",
+                "marker": 242.1,
+                "submittedBy": "",
+                "id": "OpenTMS-Sign465504",
+                "communicationStatus": "operational",
+                "speed": 55
+            },
+            "attributes": {}
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "coordinates": [
+                    -105.64452,
+                    39.762115
+                ],
+                "type": "Point",
+                "srid": 4326
+            },
+            "properties": {
+                "nativeId": "50007572",
+                "messageBeacon": false,
+                "publicName": "I-70 232.55 Eastbound : 0.7 mile East of US 40",
+                "lastUpdated": "2025-04-15T12:37:01.384Z",
+                "messageMarkup": "[jp3][pb0,0,0][fo1][cf255,255,255]65",
+                "routeName": "I-70E",
+                "activationTime": "2025-04-15T12:37:01.384Z",
+                "messageText": "65",
+                "messagePreview": "https://storage.googleapis.com/public-cdot-message-previews-prod/c74b31c2f889937f5cb8df058d8a5810.gif",
+                "name": "070E23255VSL1RHS : 0.7 mi E of US-40",
+                "displayStatus": "on",
+                "direction": "east",
+                "submittedBy": "",
+                "marker": 232.6,
+                "id": "OpenTMS-Sign475299",
+                "communicationStatus": "operational",
+                "speed": 65
+            },
+            "attributes": {}
+        }
+    ]
+}
