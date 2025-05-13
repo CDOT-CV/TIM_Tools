@@ -1,0 +1,36 @@
+{
+    "timRcList": [
+        {
+            "clientId": "OpenTMS-Weather514476",
+            "direction": "I",
+            "route": "I-25N",
+            "roadCode": "OpenTMS-Weather514476",
+            "itisCodes": [
+                "5127"
+            ],
+            "geometry": [
+                {
+                    "latitude": 37.41726,
+                    "longitude": -104.63169
+                }
+            ],
+            "advisory": []
+        },
+        {
+            "clientId": "OpenTMS-Weather519099",
+            "direction": "D",
+            "route": "CO-72W",
+            "roadCode": "OpenTMS-Weather519099",
+            "itisCodes": [
+                "4868"
+            ],
+            "geometry": [
+                {
+                    "latitude": 40.082651,
+                    "longitude": -105.496435
+                }
+            ],
+            "advisory": []
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+{
+    "timRcList": [
+        {
+            "clientId": "OpenTMS-Weather519520",
+            "direction": "I",
+            "route": "CO-82E",
+            "roadCode": "OpenTMS-Weather519520",
+            "itisCodes": [],
+            "geometry": [
+                {
+                    "latitude": 39.330905,
+                    "longitude": -106.985183
+                }
+            ],
+            "advisory": []
+        },
+        {
+            "clientId": "OpenTMS-Weather520126",
+            "direction": "D",
+            "route": "CO-135S",
+            "roadCode": "OpenTMS-Weather520126",
+            "itisCodes": [],
+            "geometry": [
+                {
+                    "latitude": 38.862523,
+                    "longitude": -106.97501
+                }
+            ],
+            "advisory": []
+        }
+    ]
+}
