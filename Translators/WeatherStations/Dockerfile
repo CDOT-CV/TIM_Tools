@@ -14,8 +14,6 @@ ENV FLASK_APP=./Translators/WeatherStations/main.py
 
 ENV PYTHONPATH="/app:${PYTHONPATH}"
 
-RUN apt-get update && apt-get install -y libgeos-dev
-
 RUN pip install -r ./Translators/WeatherStations/requirements.txt
 
 CMD ["python3", "-m", "flask", "run", "--host", "0.0.0.0", "--port", "8084"]
