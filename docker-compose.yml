@@ -100,7 +100,6 @@ services:
       options:
         max-size: '10m'
         max-file: '5'
-
   Incident_translator:
     build: 
       context: .
@@ -119,6 +118,29 @@ services:
       - RUN_LOCAL=${RUN_LOCAL}
     ports: 
       - '8083:8083'
+    logging:
+      options:
+        max-size: '10m'
+        max-file: '5'
+  Weather_Stations_translator:
+    build:
+      context: .
+      dockerfile: ./Translators/WeatherStations/Dockerfile
+    image: ws_translator:latest
+    environment:
+      - dual_carriageway_endpoint=${dual_carriageway_endpoint}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_PASS=${DB_PASS}
+      - DB_USER=${DB_USER}
+      - LOGGING_LEVEL=${LOGGING_LEVEL}
+      - CDOT_FEED_ENDPOINT=${CDOT_FEED_ENDPOINT}
+      - CDOT_FEED_API_KEY=${CDOT_FEED_API_KEY}
+      - TIM_MANAGER_ENDPOINT=${TIM_MANAGER_ENDPOINT}
+      - RUN_LOCAL=${RUN_LOCAL}
+      - HIGH_WIND_THRESHOLD=${HIGH_WIND_THRESHOLD}
+    ports: 
+      - '8084:8084'
     logging:
       options:
         max-size: '10m'
