@@ -57,12 +57,12 @@ The translator can be run using `docker-compose` with the `incident` profile. Th
 
 To run with the incident profile:
 ```bash
-docker-compose --profile incident up
+docker compose --profile incident up
 ```
 
 Alternatively, to run the entire suite:
 ```bash
-docker-compose --profile all up
+docker compose --profile all up
 ```
 
 #### Redis Dependency

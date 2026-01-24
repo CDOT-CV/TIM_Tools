@@ -209,20 +209,20 @@ The translators can be run using Docker Compose with specific profiles to target
 
 To run all services:
 ```bash
-docker-compose --profile all up
+docker compose --profile all up
 ```
 
 To run a specific translator (e.g., Incident):
 ```bash
-docker-compose --profile incident up
+docker compose --profile incident up
 ```
 
 To run multiple specific profiles:
 ```bash
-docker-compose --profile incident --profile wzdx up
+docker compose --profile incident --profile wzdx up
 ```
 
 To stop services:
 ```bash
-docker-compose --profile all down
+docker compose --profile all down
 ```
