@@ -95,3 +95,15 @@ def test_translate_empty_features():
 
     # Assert
     assert result == {"timIncidentList": []}
+
+@patch('Translators.Incident.incident_tim_translator.active_tim')
+@patch('Translators.Incident.incident_tim_translator.calculate_direction')
+def test_translate_already_active_should_not_generate(mock_calculate_direction, mock_active_tim, point_feature):
+    # Arrange
+    mock_active_tim.return_value = True
+
+    # Act
+    result = tim_translator.translate(wrap_feature(point_feature))
+
+    # Assert
+    assert len(result["timIncidentList"]) == 0
