@@ -151,33 +151,78 @@ flowchart TD
 - **ITIS Logic**: Pattern-based regex matching on effect/action/problem fields
 - **Codes**: 3 specific codes for speed reduction, chain requirements, worker safety
 - **Output**: Single timIncidentList → incident-tim endpoint
+- **Docker Profile**: `incident`
 
 ### 🛣️ Road Conditions  
 - **Source**: CDOT Road Conditions API (roadConditions endpoint)
 - **ITIS Logic**: Comprehensive keyword matching against full ITIS enum
 - **Codes**: All 47 ITIS codes via dynamic condition description parsing
 - **Output**: Dual stream → active conditions + all-clear conditions
+- **Docker Profile**: `road-conditions`
 
 ### 🌤️ Weather Stations
 - **Source**: CDOT Weather Stations API (weatherStations endpoint)  
 - **ITIS Logic**: Sensor reading analysis with configurable thresholds
 - **Codes**: 5 weather-specific codes from road surface and wind sensors
 - **Output**: Dual stream → active weather + all-clear weather
+- **Docker Profile**: `weather-stations`
 
 ### 📅 Planned Events
 - **Source**: CDOT Planned Events API (plannedEvents endpoint)
 - **ITIS Logic**: Fixed code for filtered "Closed for the Season" events
 - **Codes**: Single seasonal closure code (774)
 - **Output**: Seasonal closure TIMs → road conditions endpoint
+- **Docker Profile**: `planned-events`
 
 ### 🚦 Signs
 - **Source**: CDOT Signs API (signs endpoint)
 - **ITIS Logic**: Fixed code assignment for all variable speed limit signs
 - **Codes**: Single speed limit code (368) 
 - **Output**: VSL TIMs → dedicated variable speed limit endpoint
+- **Docker Profile**: `signs` or `vsl`
 
 ### 🚧 WZDx
 - **Source**: Separate WZDx API (wzdx endpoint, different from CDOT feeds)
 - **ITIS Logic**: Multi-layered detection (vehicle impact + work types + description parsing)
 - **Codes**: Most comprehensive - structural analysis + full dynamic keyword matching
 - **Output**: Work zone TIMs → dedicated road work endpoint
+- **Docker Profile**: `wzdx`
+
+## 🐳 Running with Docker Compose <a name="docker_compose"></a>
+
+The translators can be run using Docker Compose with specific profiles to target individual services or run the entire suite.
+
+### Available Profiles
+
+| Profile | Description | Included Services |
+|---------|-------------|-------------------|
+| `all` | Runs all translators and dependencies | All translators + Redis |
+| `incident` | Runs the Incident translator | Incident translator + Redis |
+| `road-conditions` | Runs the Road Conditions translator | Road Conditions translator + Redis |
+| `planned-events` | Runs the Planned Events translator | Planned Events translator |
+| `weather-stations` | Runs the Weather Stations translator | Weather Stations translator |
+| `signs` / `vsl` | Runs the Signs/VSL translator | VSL translator |
+| `wzdx` | Runs the WZDx translator | WZDx translator + Redis |
+| `redis` | Runs only the Redis cache | Redis |
+
+### Usage Examples
+
+To run all services:
+```bash
+docker-compose --profile all up
+```
+
+To run a specific translator (e.g., Incident):
+```bash
+docker-compose --profile incident up
+```
+
+To run multiple specific profiles:
+```bash
+docker-compose --profile incident --profile wzdx up
+```
+
+To stop services:
+```bash
+docker-compose --profile all down
+```

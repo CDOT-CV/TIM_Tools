@@ -50,4 +50,25 @@ Using VSCode, a simple launch.json file has been provided to allow debugging the
 
 
 ### Running the Translator via Docker
-The Incident to TIM translator can also be run locally using Docker. The translator Dockerfile can be found under Translators/Incident/. Additionally, there is a docker-compose file which builds and runs the translator. Setting the environment variable RUN_LOCAL to true will run the translator REST service as a flask application that can be accessed on http://localhost:8083. Alternatively, leaving RUN_LOCAL blank will run the translator one time immediately after the build has finished. 
+The Incident to TIM translator can also be run locally using Docker. The translator Dockerfile can be found under `Translators/Incident/`. 
+
+#### Docker Compose Profiles
+The translator can be run using `docker-compose` with the `incident` profile. This will automatically start the Incident translator and its Redis dependency.
+
+To run with the incident profile:
+```bash
+docker-compose --profile incident up
+```
+
+Alternatively, to run the entire suite:
+```bash
+docker-compose --profile all up
+```
+
+#### Redis Dependency
+The Incident translator uses **Redis** as a caching mechanism to track previously processed incidents and prevent duplicate TIM generation. When running via Docker Compose with the `incident` or `all` profile, the Redis service is automatically started and configured.
+
+If running locally without Docker Compose, ensure a Redis instance is available and the `REDIS_HOST` and `REDIS_PORT` environment variables are correctly set in your `.env` file.
+
+#### Legacy Docker Usage
+Setting the environment variable `RUN_LOCAL` to true will run the translator REST service as a flask application that can be accessed on http://localhost:8083. Alternatively, leaving `RUN_LOCAL` blank will run the translator one time immediately after the build has finished. 
