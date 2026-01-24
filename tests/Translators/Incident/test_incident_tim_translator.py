@@ -43,6 +43,23 @@ def linestring_feature():
         }
     }
 
+@pytest.fixture
+def minimal_feature():
+    return {
+        "properties": {
+            "id": "min_1",
+            "routeName": "US-6",
+            "type": "other",
+            "laneImpacts": [],
+            "additionalImpacts": None,
+            "travelerInformationMessage": "",
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [0.0, 0.0]
+        }
+    }
+
 def wrap_feature(feature):
     return {"features": [feature]}
 
@@ -107,3 +124,22 @@ def test_translate_already_active_should_not_generate(mock_calculate_direction, 
 
     # Assert
     assert len(result["timIncidentList"]) == 0
+
+@patch('Translators.Incident.incident_tim_translator.active_tim')
+def test_translate_minimal_properties(mock_active_tim, minimal_feature):
+    # Arrange
+    mock_active_tim.return_value = False
+
+    # Act
+    result = tim_translator.translate(wrap_feature(minimal_feature))
+
+    # Assert
+    assert len(result["timIncidentList"]) == 1
+    tim = result["timIncidentList"][0]
+    assert tim["clientId"] == "min-1"
+    assert tim["incidentId"] == "min-1"
+    assert tim["route"] == "US-6"
+    assert tim["highway"] == "US-6"
+    assert tim["effect"] == ""
+    assert tim["action"] == ""
+    assert tim["itisCodes"] == []
