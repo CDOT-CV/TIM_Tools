@@ -60,6 +60,23 @@ def minimal_feature():
         }
     }
 
+@pytest.fixture
+def multipoint_feature():
+    return {
+        "properties": {
+            "id": "incident_3",
+            "routeName": "route_3",
+            "type": "accident",
+            "laneImpacts": [],
+            "additionalImpacts": [],
+            "travelerInformationMessage": "",
+        },
+        "geometry": {
+            "type": "MultiPoint",
+            "coordinates": [[100.0, 0.0], [101.0, 1.0]]
+        }
+    }
+
 def wrap_feature(feature):
     return {"features": [feature]}
 
@@ -143,3 +160,20 @@ def test_translate_minimal_properties(mock_active_tim, minimal_feature):
     assert tim["effect"] == ""
     assert tim["action"] == ""
     assert tim["itisCodes"] == []
+
+@patch('Translators.Incident.incident_tim_translator.active_tim')
+@patch('Translators.Incident.incident_tim_translator.calculate_direction')
+def test_translate_unknown_geometry_type(mock_calculate_direction, mock_active_tim, multipoint_feature):
+    # Arrange
+    mock_active_tim.return_value = False
+    mock_calculate_direction.return_value = "unknown"
+
+    # Act
+    result = tim_translator.translate(wrap_feature(multipoint_feature))
+
+    # Assert
+    assert len(result["timIncidentList"]) == 1
+    tim = result["timIncidentList"][0]
+    assert tim["startPoint"] == {"latitude": 0.0, "longitude": 100.0, "valid": True}
+    assert tim["endPoint"] == {"latitude": 1.0, "longitude": 101.0, "valid": True}
+    assert tim["direction"] == "unknown"
