@@ -188,7 +188,7 @@ flowchart TD
 - **Output**: Work zone TIMs → dedicated road work endpoint
 - **Docker Profile**: `wzdx`
 
-## 🐳 Running with Docker Compose <a name="docker_compose"></a>
+## Running with Docker Compose
 
 The translators can be run using Docker Compose with specific profiles to target individual services or run the entire suite.
 
