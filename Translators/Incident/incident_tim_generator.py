@@ -16,11 +16,16 @@ def get_itis_codes(tim_body):
 
     speed_reduce_pattern = r"(?i)(reduce speeds?)"
     chains_required_pattern = r"(?i)(chains required)"
+    type_tires_chains_required_pattern = r"(?i)(Traction|Chain)(/Chain)? Law Code (15|18)(\s+and\s+18)?"
     maintenance_pattern = r"(?i)(maintenance operations?)"
 
     if re.search(speed_reduce_pattern, tim_body["effect"]) or re.search(speed_reduce_pattern, tim_body["action"]):
         itisCodes.append(ItisCodes.REDUCE_YOUR_SPEED.value)
-    if re.search(chains_required_pattern, tim_body["effect"]) or re.search(chains_required_pattern, tim_body["action"]):
+    if (
+            re.search(chains_required_pattern, tim_body["effect"])
+            or re.search(chains_required_pattern, tim_body["action"])
+            or re.search(type_tires_chains_required_pattern, tim_body["problem"])
+    ):
         itisCodes.append(ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value)
         itisCodes.append(ItisCodes.ALL_VEHICLES.value)
     if re.search(maintenance_pattern, tim_body["problem"]):
