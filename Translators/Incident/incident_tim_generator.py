@@ -22,6 +22,7 @@ def get_itis_codes(tim_body):
         itisCodes.append(ItisCodes.REDUCE_YOUR_SPEED.value)
     if re.search(chains_required_pattern, tim_body["effect"]) or re.search(chains_required_pattern, tim_body["action"]):
         itisCodes.append(ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value)
+        itisCodes.append(ItisCodes.ALL_VEHICLES.value)
     if re.search(maintenance_pattern, tim_body["problem"]):
         itisCodes.append(ItisCodes.LOOK_OUT_FOR_WORKERS.value)
     return itisCodes

@@ -30,7 +30,10 @@ def sample_incident_feature():
     ),
     (
         {"effect": "Chains required due to snow", "action": "", "problem": ""},
-        [itis_codes.ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value]
+        [
+            itis_codes.ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value,
+            itis_codes.ItisCodes.ALL_VEHICLES.value
+        ]
     ),
     (
         {"effect": "", "action": "", "problem": "Maintenance operations ongoing"},
@@ -41,6 +44,7 @@ def sample_incident_feature():
         [
             itis_codes.ItisCodes.REDUCE_YOUR_SPEED.value,
             itis_codes.ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value,
+            itis_codes.ItisCodes.ALL_VEHICLES.value,
             itis_codes.ItisCodes.LOOK_OUT_FOR_WORKERS.value
         ]
     ),
