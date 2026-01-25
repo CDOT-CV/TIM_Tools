@@ -52,6 +52,41 @@ def sample_incident_feature():
         {"effect": "Normal traffic", "action": "None", "problem": ""},
         []
     ),
+    (
+        {"effect": "", "action": "", "problem": "Traction Law Code 15"},
+        [
+            itis_codes.ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value,
+            itis_codes.ItisCodes.ALL_VEHICLES.value
+        ]
+    ),
+    (
+        {"effect": "", "action": "", "problem": "Chain Law Code 15"},
+        [
+            itis_codes.ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value,
+            itis_codes.ItisCodes.ALL_VEHICLES.value
+        ]
+    ),
+    (
+        {"effect": "", "action": "", "problem": "Traction Law Code 18"},
+        [
+            itis_codes.ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value,
+            itis_codes.ItisCodes.ALL_VEHICLES.value
+        ]
+    ),
+    (
+        {"effect": "", "action": "", "problem": "Chain Law Code 18"},
+        [
+            itis_codes.ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value,
+            itis_codes.ItisCodes.ALL_VEHICLES.value
+        ]
+    ),
+    (
+        {"effect": "", "action": "", "problem": "Traction/Chain Law Code 15 and 18"},
+        [
+            itis_codes.ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value,
+            itis_codes.ItisCodes.ALL_VEHICLES.value
+        ]
+    ),
 ])
 def test_get_itis_codes(tim_body, expected_codes):
     itisCodes = tim_generator.get_itis_codes(tim_body)

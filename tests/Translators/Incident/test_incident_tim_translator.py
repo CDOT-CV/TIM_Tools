@@ -201,3 +201,26 @@ def test_translate_snow_tires_chains_itis_codes(mock_active_tim, minimal_feature
     assert "6156" in tim["itisCodes"]
     assert "9217" in tim["itisCodes"]
     assert "Chains Required." in tim["action"]
+
+@pytest.mark.parametrize("incident_type", [
+    "Traction Law Code 15",
+    "Chain Law Code 15",
+    "Traction Law Code 18",
+    "Chain Law Code 18",
+    "Traction/Chain Law Code 15 and 18",
+])
+@patch('Translators.Incident.incident_tim_translator.active_tim')
+def test_translate_traction_chain_law_itis_codes(mock_active_tim, minimal_feature, incident_type):
+    # Arrange
+    mock_active_tim.return_value = False
+    minimal_feature["properties"]["type"] = incident_type
+
+    # Act
+    result = tim_translator.translate(wrap_feature(minimal_feature))
+
+    # Assert
+    assert len(result["timIncidentList"]) == 1
+    tim = result["timIncidentList"][0]
+    assert "6156" in tim["itisCodes"]
+    assert "9217" in tim["itisCodes"]
+    assert "Chains Required." in tim["action"]
