@@ -194,16 +194,16 @@ The translators can be run using Docker Compose with specific profiles to target
 
 ### Available Profiles
 
-| Profile | Description | Included Services |
-|---------|-------------|-------------------|
-| `all` | Runs all translators and dependencies | All translators + Redis |
-| `incident` | Runs the Incident translator | Incident translator + Redis |
-| `road-conditions` | Runs the Road Conditions translator | Road Conditions translator + Redis |
-| `planned-events` | Runs the Planned Events translator | Planned Events translator |
-| `weather-stations` | Runs the Weather Stations translator | Weather Stations translator |
-| `signs` / `vsl` | Runs the Signs/VSL translator | VSL translator |
-| `wzdx` | Runs the WZDx translator | WZDx translator + Redis |
-| `redis` | Runs only the Redis cache | Redis |
+| Profile            | Description                           | Included Services                  |
+|--------------------|---------------------------------------|------------------------------------|
+| `all`              | Runs all translators and dependencies | All translators + Redis            |
+| `incident`         | Runs the Incident translator          | Incident translator + Redis        |
+| `road-conditions`  | Runs the Road Conditions translator   | Road Conditions translator + Redis |
+| `planned-events`   | Runs the Planned Events translator    | Planned Events translator          |
+| `weather-stations` | Runs the Weather Stations translator  | Weather Stations translator        |
+| `signs` / `vsl`    | Runs the Signs/VSL translator         | VSL translator                     |
+| `wzdx`             | Runs the WZDx translator              | WZDx translator + Redis            |
+| `redis`            | Runs only the Redis cache             | Redis                              |
 
 ### Usage Examples
 
