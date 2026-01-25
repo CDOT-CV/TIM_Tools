@@ -81,18 +81,11 @@ def test_translate_result(mock_active_tim):
     }
     assert pe_tim_translator.translate(pe_geojson) == expected_output
 
-def test_is_both_directions_true():
-    additional_impacts = ["Impacts both directions"]
-    assert pe_tim_translator.is_both_directions(additional_impacts) == True
-
-def test_is_both_directions_false():
-    additional_impacts = ["Impacts one direction"]
-    assert pe_tim_translator.is_both_directions(additional_impacts) == False
-
-def test_is_both_directions_mixed_case():
-    additional_impacts = ["impacts Both Directions"]
-    assert pe_tim_translator.is_both_directions(additional_impacts) == True
-
-def test_is_both_directions_empty_list():
-    additional_impacts = []
-    assert pe_tim_translator.is_both_directions(additional_impacts) == False
+@pytest.mark.parametrize("additional_impacts, result", [
+    (["Impacts Both Directions"], True),
+    (["Impacts one direction"], False),
+    (["impacts Both Directions"], True),
+    ([], False)
+])
+def test_is_both_directions(additional_impacts, result):
+    assert pe_tim_translator.is_both_directions(additional_impacts) == result
