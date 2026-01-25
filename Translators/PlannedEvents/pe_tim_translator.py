@@ -1,5 +1,5 @@
 import logging
-from active_tim import active_tim
+from Translators.Shared.active_tim import active_tim
 from pe_tim_generator import get_geometry, get_itis_codes
 
 class PlannedEventsFeature:
