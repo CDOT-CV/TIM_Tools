@@ -177,3 +177,27 @@ def test_translate_unknown_geometry_type(mock_calculate_direction, mock_active_t
     assert tim["startPoint"] == {"latitude": 0.0, "longitude": 100.0, "valid": True}
     assert tim["endPoint"] == {"latitude": 1.0, "longitude": 101.0, "valid": True}
     assert tim["direction"] == "unknown"
+
+@pytest.mark.parametrize("tim_message", [
+    "Chains required",
+    "Snow tires required",
+    "Snow chains required",
+    "Tires required",
+    "Chains or snow tires required",
+    "Snow tires or chains required",
+])
+@patch('Translators.Incident.incident_tim_translator.active_tim')
+def test_translate_snow_tires_chains_itis_codes(mock_active_tim, minimal_feature, tim_message):
+    # Arrange
+    mock_active_tim.return_value = False
+    minimal_feature["properties"]["travelerInformationMessage"] = tim_message
+
+    # Act
+    result = tim_translator.translate(wrap_feature(minimal_feature))
+
+    # Assert
+    assert len(result["timIncidentList"]) == 1
+    tim = result["timIncidentList"][0]
+    assert "6156" in tim["itisCodes"]
+    assert "9217" in tim["itisCodes"]
+    assert "Chains Required." in tim["action"]
