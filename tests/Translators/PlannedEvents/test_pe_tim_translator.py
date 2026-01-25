@@ -1,22 +1,21 @@
 from unittest.mock import patch
+
+import pytest
+
 import Translators.PlannedEvents.pe_tim_translator as pe_tim_translator
 from Translators.Shared.itis_codes import ItisCodes
 
-def test_calculate_direction_eastbound():
-    coordinates = [(0, 0), (1, 0)]
-    assert pe_tim_translator.calculate_direction(coordinates) == "I"
 
-def test_calculate_direction_westbound():
-    coordinates = [(1, 0), (0, 0)]
-    assert pe_tim_translator.calculate_direction(coordinates) == "D"
+@pytest.mark.parametrize("coordinates, expected_direction", [
+    ([(0, 0), (1, 0)], "I"),
+    ([(1, 0), (0, 0)], "D"),
+    ([(0, 0), (0, 1)], "I"),
+    ([(0, 1), (0, 0)], "D")
+])
+def test_calculate_direction(coordinates, expected_direction):
+    direction = pe_tim_translator.calculate_direction(coordinates)
+    assert direction == expected_direction
 
-def test_calculate_direction_northbound():
-    coordinates = [(0, 0), (0, 1)]
-    assert pe_tim_translator.calculate_direction(coordinates) == "I"
-
-def test_calculate_direction_southbound():
-    coordinates = [(0, 1), (0, 0)]
-    assert pe_tim_translator.calculate_direction(coordinates) == "D"
 
 @patch('Translators.PlannedEvents.pe_tim_translator.active_tim', return_value=False)
 def test_translate_no_result(mock_active_tim):
