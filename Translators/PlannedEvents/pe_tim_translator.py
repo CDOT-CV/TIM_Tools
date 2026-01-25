@@ -58,7 +58,7 @@ def translate(rc_geojson):
     tims = {"timRcList": []}
 
     for feature in rc_geojson["features"]:
-        if feature["properties"]["type"].lower() != "closed for the season":
+        if feature["properties"]["type"].lower() not in ["closed for the season", "closed for season"]:
             continue
         feature = PlannedEventsFeature(feature["properties"], feature["geometry"]["coordinates"])
         tim_body = {}
