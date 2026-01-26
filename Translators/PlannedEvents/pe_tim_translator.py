@@ -1,5 +1,5 @@
 import logging
-from active_tim import active_tim
+from Translators.Shared.active_tim import active_tim
 from pe_tim_generator import get_geometry, get_itis_codes
 
 class PlannedEventsFeature:
@@ -58,17 +58,19 @@ def translate(rc_geojson):
     tims = {"timRcList": []}
 
     for feature in rc_geojson["features"]:
-        if feature["properties"]["type"].lower() != "closed for the season":
+        if feature["properties"]["type"].lower() not in ["closed for the season", "closed for season"]:
             continue
         feature = PlannedEventsFeature(feature["properties"], feature["geometry"]["coordinates"])
-        tim_body = {}
-        tim_body["clientId"] = feature.get_client_id()
-        tim_body["direction"] = "B" if is_both_directions(feature.get_additional_impacts()) else calculate_direction(feature.get_geometry())
-        tim_body["route"] = feature.get_route()
-        tim_body["roadCode"] = feature.get_id()
-        tim_body["itisCodes"] = get_itis_codes()
-        tim_body["geometry"] = get_geometry(feature.get_geometry())
-        tim_body["advisory"] = []
+        tim_body = {
+            "clientId": feature.get_client_id(),
+            "direction": "B" if is_both_directions(feature.get_additional_impacts()) else
+                calculate_direction(feature.get_geometry()),
+            "route": feature.get_route(),
+            "roadCode": feature.get_id(),
+            "itisCodes": get_itis_codes(),
+            "geometry": get_geometry(feature.get_geometry()),
+            "advisory": []
+        }
         active_tim_record = active_tim("RC", tim_body)
         if active_tim_record:
             logging.info(f"TIM already active for record: {tim_body['clientId']}")
