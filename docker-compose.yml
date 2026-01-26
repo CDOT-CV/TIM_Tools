@@ -2,6 +2,12 @@ services:
   redis:
     image: redis-cache:latest
     build: ./redis
+    profiles:
+      - redis
+      - wzdx
+      - incident
+      - road-conditions
+      - all
     ports:
       - '6379:6379'
     logging:
@@ -12,10 +18,13 @@ services:
       - redis-data:/data
 
   WZDx_tim_translator:
-    build: 
+    build:
       context: .
       dockerfile: ./Translators/WZDx/Dockerfile
     image: translator:latest
+    profiles:
+      - wzdx
+      - all
     environment:
       - dual_carriageway_endpoint=${dual_carriageway_endpoint}
       - DB_HOST=${DB_HOST}
@@ -31,15 +40,19 @@ services:
       - DURATION_TIME=${DURATION_TIME}
       - TIM_MANAGER_ENDPOINT=${TIM_MANAGER_ENDPOINT}
       - RUN_LOCAL=${RUN_LOCAL}
-    ports: 
+    ports:
       - '8081:8081'
     logging:
       options:
         max-size: '10m'
         max-file: '5'
+
   Road_conditions_translator:
     build: ./Translators/RoadConditions
     image: rc_translator:latest
+    profiles:
+      - road-conditions
+      - all
     environment:
       - dual_carriageway_endpoint=${dual_carriageway_endpoint}
       - DB_HOST=${DB_HOST}
@@ -52,17 +65,21 @@ services:
       - DURATION_TIME=${DURATION_TIME}
       - TIM_MANAGER_ENDPOINT=${TIM_MANAGER_ENDPOINT}
       - RUN_LOCAL=${RUN_LOCAL}
-    ports: 
+    ports:
       - '8082:8082'
     logging:
       options:
         max-size: '10m'
         max-file: '5'
+
   Planned_Events_translator:
     build:
       context: .
       dockerfile: ./Translators/PlannedEvents/Dockerfile
     image: pe_translator:latest
+    profiles:
+      - planned-events
+      - all
     environment:
       - DB_HOST=${DB_HOST}
       - DB_NAME=${DB_NAME}
@@ -73,17 +90,22 @@ services:
       - CDOT_FEED_API_KEY=${CDOT_FEED_API_KEY}
       - TIM_MANAGER_ENDPOINT=${TIM_MANAGER_ENDPOINT}
       - RUN_LOCAL=${RUN_LOCAL}
-    ports: 
+    ports:
       - '8085:8085'
     logging:
       options:
         max-size: '10m'
         max-file: '5'
+
   VSL_tim_translator:
-    build: 
+    build:
       context: .
       dockerfile: ./Translators/Signs/Dockerfile
     image: vsl_translator:latest
+    profiles:
+      - vsl
+      - signs
+      - all
     environment:
       - DB_HOST=${DB_HOST}
       - DB_NAME=${DB_NAME}
@@ -94,17 +116,21 @@ services:
       - CDOT_FEED_API_KEY=${CDOT_FEED_API_KEY}
       - TIM_MANAGER_ENDPOINT=${TIM_MANAGER_ENDPOINT}
       - RUN_LOCAL=${RUN_LOCAL}
-    ports: 
+    ports:
       - '8086:8086'
     logging:
       options:
         max-size: '10m'
         max-file: '5'
+
   Incident_translator:
-    build: 
+    build:
       context: .
       dockerfile: ./Translators/Incident/Dockerfile
     image: incident_translator:latest
+    profiles:
+      - incident
+      - all
     environment:
       - dual_carriageway_endpoint=${dual_carriageway_endpoint}
       - DB_HOST=${DB_HOST}
@@ -116,17 +142,21 @@ services:
       - CDOT_FEED_API_KEY=${CDOT_FEED_API_KEY}
       - TIM_MANAGER_ENDPOINT=${TIM_MANAGER_ENDPOINT}
       - RUN_LOCAL=${RUN_LOCAL}
-    ports: 
+    ports:
       - '8083:8083'
     logging:
       options:
         max-size: '10m'
         max-file: '5'
+
   Weather_Stations_translator:
     build:
       context: .
       dockerfile: ./Translators/WeatherStations/Dockerfile
     image: ws_translator:latest
+    profiles:
+      - weather-stations
+      - all
     environment:
       - dual_carriageway_endpoint=${dual_carriageway_endpoint}
       - DB_HOST=${DB_HOST}

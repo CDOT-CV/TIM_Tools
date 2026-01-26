@@ -65,7 +65,7 @@ The WZDx/TIM translator can also be run locally using Docker. The translator Doc
 ```bash
 docker build ../../ -f Dockerfile
 ```
-Additionally, there is a docker-compose file which builds and runs both the translator and the redis cache. Setting the environment variable RUN_LOCAL to true will run the translator REST service as a flask application that can be accessed on http://localhost:8081. Alternatively, leaving RUN_LOCAL blank will run the translator one time immediately after the build has finished. 
+Additionally, there is a docker compose file which builds and runs both the translator and the redis cache. Setting the environment variable RUN_LOCAL to true will run the translator REST service as a flask application that can be accessed on http://localhost:8081. Alternatively, leaving RUN_LOCAL blank will run the translator one time immediately after the build has finished. 
 
 
 ### Current Known Limitations

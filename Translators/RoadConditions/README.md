@@ -50,4 +50,4 @@ Using VSCode, a simple launch.json file has been provided to allow debugging the
 
 
 ### Running the Translator via Docker
-The Road Conditions to TIM translator can also be run locally using Docker. The translator Dockerfile can be found under Translators/RoadConditions/. Additionally, there is a docker-compose file which builds and runs the translator. Setting the environment variable RUN_LOCAL to true will run the translator REST service as a flask application that can be accessed on http://localhost:8082. Alternatively, leaving RUN_LOCAL blank will run the translator one time immediately after the build has finished. 
+The Road Conditions to TIM translator can also be run locally using Docker. The translator Dockerfile can be found under Translators/RoadConditions/. Additionally, there is a docker compose file which builds and runs the translator. Setting the environment variable RUN_LOCAL to true will run the translator REST service as a flask application that can be accessed on http://localhost:8082. Alternatively, leaving RUN_LOCAL blank will run the translator one time immediately after the build has finished. 
