@@ -58,6 +58,7 @@ class ItisCodes(Enum):
     STOP_AT_NEXT_SAFE_PLACE = '7188'
     ONLY_TRAVEL_IF_NECESSARY = '7189'
     FALLING_ROCKS = '1203'
+    ALL_VEHICLES = '9217'
 
 ItisCodeExtraKeywords = {
     "herd of animals on roadway": "herd of animals on the roadway",

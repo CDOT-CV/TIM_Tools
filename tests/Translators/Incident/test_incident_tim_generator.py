@@ -30,7 +30,10 @@ def sample_incident_feature():
     ),
     (
         {"effect": "Chains required due to snow", "action": "", "problem": ""},
-        [itis_codes.ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value]
+        [
+            itis_codes.ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value,
+            itis_codes.ItisCodes.ALL_VEHICLES.value
+        ]
     ),
     (
         {"effect": "", "action": "", "problem": "Maintenance operations ongoing"},
@@ -41,12 +44,48 @@ def sample_incident_feature():
         [
             itis_codes.ItisCodes.REDUCE_YOUR_SPEED.value,
             itis_codes.ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value,
+            itis_codes.ItisCodes.ALL_VEHICLES.value,
             itis_codes.ItisCodes.LOOK_OUT_FOR_WORKERS.value
         ]
     ),
     (
         {"effect": "Normal traffic", "action": "None", "problem": ""},
         []
+    ),
+    (
+        {"effect": "", "action": "", "problem": "Traction Law Code 15"},
+        [
+            itis_codes.ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value,
+            itis_codes.ItisCodes.ALL_VEHICLES.value
+        ]
+    ),
+    (
+        {"effect": "", "action": "", "problem": "Chain Law Code 15"},
+        [
+            itis_codes.ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value,
+            itis_codes.ItisCodes.ALL_VEHICLES.value
+        ]
+    ),
+    (
+        {"effect": "", "action": "", "problem": "Traction Law Code 18"},
+        [
+            itis_codes.ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value,
+            itis_codes.ItisCodes.ALL_VEHICLES.value
+        ]
+    ),
+    (
+        {"effect": "", "action": "", "problem": "Chain Law Code 18"},
+        [
+            itis_codes.ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value,
+            itis_codes.ItisCodes.ALL_VEHICLES.value
+        ]
+    ),
+    (
+        {"effect": "", "action": "", "problem": "Traction/Chain Law Code 15 and 18"},
+        [
+            itis_codes.ItisCodes.SNOW_TIRES_OR_CHAINS_REQUIRED.value,
+            itis_codes.ItisCodes.ALL_VEHICLES.value
+        ]
     ),
 ])
 def test_get_itis_codes(tim_body, expected_codes):
